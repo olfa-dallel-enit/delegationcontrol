@@ -1,0 +1,33 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+import "gogoproto/gogo.proto";
+import "fdpd/params.proto";
+import "fdpd/local_domain.proto";
+import "fdpd/domain.proto";
+import "fdpd/forward_policy.proto";
+import "fdpd/validity.proto";
+import "fdpd/decision_policy.proto";
+import "fdpd/permission.proto";
+import "fdpd/delegation_conditions.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+// GenesisState defines the fdpd module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  string port_id = 2;
+  LocalDomain localDomain = 3;
+  repeated Domain domainList = 4 [(gogoproto.nullable) = false];
+  uint64 domainCount = 5;
+  ForwardPolicy forwardPolicy = 6;
+  repeated Validity validityList = 7 [(gogoproto.nullable) = false];
+  uint64 validityCount = 8;
+  DecisionPolicy decisionPolicy = 9;
+  repeated Permission permissionList = 10 [(gogoproto.nullable) = false];
+  uint64 permissionCount = 11;
+  repeated DelegationConditions delegationConditionsList = 12 [(gogoproto.nullable) = false];
+  uint64 delegationConditionsCount = 13;
+  // this line is used by starport scaffolding # genesis/proto/state
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+message Validity {
+  uint64 id = 1;
+  string notBefore = 2; 
+  string notAfter = 3; 
+  string creator = 4;
+}

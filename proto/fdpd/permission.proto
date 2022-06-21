@@ -1,0 +1,11 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+message Permission {
+  uint64 id = 1;
+  string action = 2; 
+  string resource = 3; 
+  string creator = 4;
+}

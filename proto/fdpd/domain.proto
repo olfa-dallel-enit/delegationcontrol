@@ -1,0 +1,12 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+message Domain {
+  uint64 id = 1;
+  string name = 2; 
+  string location = 3; 
+  string ibcChannel = 4; 
+  string creator = 5;
+}

@@ -19749,6 +19749,923 @@ paths:
           format: int64
       tags:
         - Query
+  /delegationcontrol/fdpd/decision_policy:
+    get:
+      summary: Queries a DecisionPolicy by index.
+      operationId: DelegationcontrolFdpdDecisionPolicy
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              DecisionPolicy:
+                type: object
+                properties:
+                  domainList:
+                    type: array
+                    items:
+                      type: string
+                  locationList:
+                    type: array
+                    items:
+                      type: string
+                  cost:
+                    type: string
+                    format: uint64
+                  maxDelegations:
+                    type: string
+                    format: uint64
+                  validity:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uint64
+                      notBefore:
+                        type: string
+                      notAfter:
+                        type: string
+                      creator:
+                        type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /delegationcontrol/fdpd/delegation_conditions:
+    get:
+      summary: Queries a list of DelegationConditions items.
+      operationId: DelegationcontrolFdpdDelegationConditionsAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              DelegationConditions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    cost:
+                      type: string
+                      format: uint64
+                    maxDelegations:
+                      type: string
+                      format: uint64
+                    validity:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uint64
+                        notBefore:
+                          type: string
+                        notAfter:
+                          type: string
+                        creator:
+                          type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/delegationcontrol/fdpd/delegation_conditions/{id}':
+    get:
+      summary: Queries a DelegationConditions by id.
+      operationId: DelegationcontrolFdpdDelegationConditions
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              DelegationConditions:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  cost:
+                    type: string
+                    format: uint64
+                  maxDelegations:
+                    type: string
+                    format: uint64
+                  validity:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uint64
+                      notBefore:
+                        type: string
+                      notAfter:
+                        type: string
+                      creator:
+                        type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /delegationcontrol/fdpd/domain:
+    get:
+      summary: Queries a list of Domain items.
+      operationId: DelegationcontrolFdpdDomainAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Domain:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    name:
+                      type: string
+                    location:
+                      type: string
+                    ibcChannel:
+                      type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/delegationcontrol/fdpd/domain/{id}':
+    get:
+      summary: Queries a Domain by id.
+      operationId: DelegationcontrolFdpdDomain
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Domain:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  name:
+                    type: string
+                  location:
+                    type: string
+                  ibcChannel:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /delegationcontrol/fdpd/forward_policy:
+    get:
+      summary: Queries a ForwardPolicy by index.
+      operationId: DelegationcontrolFdpdForwardPolicy
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              ForwardPolicy:
+                type: object
+                properties:
+                  mode:
+                    type: string
+                  domainList:
+                    type: array
+                    items:
+                      type: string
+                  locationList:
+                    type: array
+                    items:
+                      type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /delegationcontrol/fdpd/local_domain:
+    get:
+      summary: Queries a LocalDomain by index.
+      operationId: DelegationcontrolFdpdLocalDomain
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              LocalDomain:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  location:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /delegationcontrol/fdpd/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: DelegationcontrolFdpdParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /delegationcontrol/fdpd/permission:
+    get:
+      summary: Queries a list of Permission items.
+      operationId: DelegationcontrolFdpdPermissionAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Permission:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    action:
+                      type: string
+                    resource:
+                      type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/delegationcontrol/fdpd/permission/{id}':
+    get:
+      summary: Queries a Permission by id.
+      operationId: DelegationcontrolFdpdPermission
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Permission:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  action:
+                    type: string
+                  resource:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /delegationcontrol/fdpd/validity:
+    get:
+      summary: Queries a list of Validity items.
+      operationId: DelegationcontrolFdpdValidityAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Validity:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    notBefore:
+                      type: string
+                    notAfter:
+                      type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/delegationcontrol/fdpd/validity/{id}':
+    get:
+      summary: Queries a Validity by id.
+      operationId: DelegationcontrolFdpdValidity
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Validity:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  notBefore:
+                    type: string
+                  notAfter:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   /ibc/apps/interchain_accounts/controller/v1/params:
     get:
       summary: Params queries all parameters of the ICA controller submodule.
@@ -47092,6 +48009,521 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
+  delegationcontrol.fdpd.DecisionPolicy:
+    type: object
+    properties:
+      domainList:
+        type: array
+        items:
+          type: string
+      locationList:
+        type: array
+        items:
+          type: string
+      cost:
+        type: string
+        format: uint64
+      maxDelegations:
+        type: string
+        format: uint64
+      validity:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          notBefore:
+            type: string
+          notAfter:
+            type: string
+          creator:
+            type: string
+      creator:
+        type: string
+  delegationcontrol.fdpd.DelegationConditions:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      cost:
+        type: string
+        format: uint64
+      maxDelegations:
+        type: string
+        format: uint64
+      validity:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          notBefore:
+            type: string
+          notAfter:
+            type: string
+          creator:
+            type: string
+      creator:
+        type: string
+  delegationcontrol.fdpd.Domain:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      name:
+        type: string
+      location:
+        type: string
+      ibcChannel:
+        type: string
+      creator:
+        type: string
+  delegationcontrol.fdpd.ForwardPolicy:
+    type: object
+    properties:
+      mode:
+        type: string
+      domainList:
+        type: array
+        items:
+          type: string
+      locationList:
+        type: array
+        items:
+          type: string
+      creator:
+        type: string
+  delegationcontrol.fdpd.LocalDomain:
+    type: object
+    properties:
+      name:
+        type: string
+      location:
+        type: string
+      creator:
+        type: string
+  delegationcontrol.fdpd.MsgCreateDecisionPolicyResponse:
+    type: object
+  delegationcontrol.fdpd.MsgCreateDelegationConditionsResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  delegationcontrol.fdpd.MsgCreateDomainResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  delegationcontrol.fdpd.MsgCreateForwardPolicyResponse:
+    type: object
+  delegationcontrol.fdpd.MsgCreateLocalDomainResponse:
+    type: object
+  delegationcontrol.fdpd.MsgCreatePermissionResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  delegationcontrol.fdpd.MsgCreateValidityResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  delegationcontrol.fdpd.MsgDeleteDecisionPolicyResponse:
+    type: object
+  delegationcontrol.fdpd.MsgDeleteDelegationConditionsResponse:
+    type: object
+  delegationcontrol.fdpd.MsgDeleteDomainResponse:
+    type: object
+  delegationcontrol.fdpd.MsgDeleteForwardPolicyResponse:
+    type: object
+  delegationcontrol.fdpd.MsgDeleteLocalDomainResponse:
+    type: object
+  delegationcontrol.fdpd.MsgDeletePermissionResponse:
+    type: object
+  delegationcontrol.fdpd.MsgDeleteValidityResponse:
+    type: object
+  delegationcontrol.fdpd.MsgSendEstablishCooperationResponse:
+    type: object
+  delegationcontrol.fdpd.MsgSendRequestDelegationResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateDecisionPolicyResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateDelegationConditionsResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateDomainResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateForwardPolicyResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateLocalDomainResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdatePermissionResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateValidityResponse:
+    type: object
+  delegationcontrol.fdpd.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  delegationcontrol.fdpd.Permission:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      action:
+        type: string
+      resource:
+        type: string
+      creator:
+        type: string
+  delegationcontrol.fdpd.QueryAllDelegationConditionsResponse:
+    type: object
+    properties:
+      DelegationConditions:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            cost:
+              type: string
+              format: uint64
+            maxDelegations:
+              type: string
+              format: uint64
+            validity:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uint64
+                notBefore:
+                  type: string
+                notAfter:
+                  type: string
+                creator:
+                  type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  delegationcontrol.fdpd.QueryAllDomainResponse:
+    type: object
+    properties:
+      Domain:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            name:
+              type: string
+            location:
+              type: string
+            ibcChannel:
+              type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  delegationcontrol.fdpd.QueryAllPermissionResponse:
+    type: object
+    properties:
+      Permission:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            action:
+              type: string
+            resource:
+              type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  delegationcontrol.fdpd.QueryAllValidityResponse:
+    type: object
+    properties:
+      Validity:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            notBefore:
+              type: string
+            notAfter:
+              type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  delegationcontrol.fdpd.QueryGetDecisionPolicyResponse:
+    type: object
+    properties:
+      DecisionPolicy:
+        type: object
+        properties:
+          domainList:
+            type: array
+            items:
+              type: string
+          locationList:
+            type: array
+            items:
+              type: string
+          cost:
+            type: string
+            format: uint64
+          maxDelegations:
+            type: string
+            format: uint64
+          validity:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uint64
+              notBefore:
+                type: string
+              notAfter:
+                type: string
+              creator:
+                type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryGetDelegationConditionsResponse:
+    type: object
+    properties:
+      DelegationConditions:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          cost:
+            type: string
+            format: uint64
+          maxDelegations:
+            type: string
+            format: uint64
+          validity:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uint64
+              notBefore:
+                type: string
+              notAfter:
+                type: string
+              creator:
+                type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryGetDomainResponse:
+    type: object
+    properties:
+      Domain:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          name:
+            type: string
+          location:
+            type: string
+          ibcChannel:
+            type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryGetForwardPolicyResponse:
+    type: object
+    properties:
+      ForwardPolicy:
+        type: object
+        properties:
+          mode:
+            type: string
+          domainList:
+            type: array
+            items:
+              type: string
+          locationList:
+            type: array
+            items:
+              type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryGetLocalDomainResponse:
+    type: object
+    properties:
+      LocalDomain:
+        type: object
+        properties:
+          name:
+            type: string
+          location:
+            type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryGetPermissionResponse:
+    type: object
+    properties:
+      Permission:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          action:
+            type: string
+          resource:
+            type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryGetValidityResponse:
+    type: object
+    properties:
+      Validity:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          notBefore:
+            type: string
+          notAfter:
+            type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  delegationcontrol.fdpd.Validity:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      notBefore:
+        type: string
+      notAfter:
+        type: string
+      creator:
+        type: string
   ibc.applications.interchain_accounts.controller.v1.Params:
     type: object
     properties:

@@ -1,0 +1,235 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+import "fdpd/local_domain.proto";
+import "fdpd/domain.proto";
+import "fdpd/forward_policy.proto";
+import "fdpd/decision_policy.proto";
+import "fdpd/delegation_conditions.proto";
+// this line is used by starport scaffolding # proto/tx/import
+import "fdpd/permission.proto";
+import "fdpd/validity.proto";
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreateLocalDomain(MsgCreateLocalDomain) returns (MsgCreateLocalDomainResponse);
+  rpc UpdateLocalDomain(MsgUpdateLocalDomain) returns (MsgUpdateLocalDomainResponse);
+  rpc DeleteLocalDomain(MsgDeleteLocalDomain) returns (MsgDeleteLocalDomainResponse);
+rpc CreateDomain(MsgCreateDomain) returns (MsgCreateDomainResponse);
+  rpc UpdateDomain(MsgUpdateDomain) returns (MsgUpdateDomainResponse);
+  rpc DeleteDomain(MsgDeleteDomain) returns (MsgDeleteDomainResponse);
+  rpc SendEstablishCooperation(MsgSendEstablishCooperation) returns (MsgSendEstablishCooperationResponse);
+  rpc CreateForwardPolicy(MsgCreateForwardPolicy) returns (MsgCreateForwardPolicyResponse);
+  rpc UpdateForwardPolicy(MsgUpdateForwardPolicy) returns (MsgUpdateForwardPolicyResponse);
+  rpc DeleteForwardPolicy(MsgDeleteForwardPolicy) returns (MsgDeleteForwardPolicyResponse);
+rpc CreateValidity(MsgCreateValidity) returns (MsgCreateValidityResponse);
+  rpc UpdateValidity(MsgUpdateValidity) returns (MsgUpdateValidityResponse);
+  rpc DeleteValidity(MsgDeleteValidity) returns (MsgDeleteValidityResponse);
+  rpc CreateDecisionPolicy(MsgCreateDecisionPolicy) returns (MsgCreateDecisionPolicyResponse);
+  rpc UpdateDecisionPolicy(MsgUpdateDecisionPolicy) returns (MsgUpdateDecisionPolicyResponse);
+  rpc DeleteDecisionPolicy(MsgDeleteDecisionPolicy) returns (MsgDeleteDecisionPolicyResponse);
+rpc CreatePermission(MsgCreatePermission) returns (MsgCreatePermissionResponse);
+  rpc UpdatePermission(MsgUpdatePermission) returns (MsgUpdatePermissionResponse);
+  rpc DeletePermission(MsgDeletePermission) returns (MsgDeletePermissionResponse);
+rpc CreateDelegationConditions(MsgCreateDelegationConditions) returns (MsgCreateDelegationConditionsResponse);
+  rpc UpdateDelegationConditions(MsgUpdateDelegationConditions) returns (MsgUpdateDelegationConditionsResponse);
+  rpc DeleteDelegationConditions(MsgDeleteDelegationConditions) returns (MsgDeleteDelegationConditionsResponse);
+  rpc SendRequestDelegation(MsgSendRequestDelegation) returns (MsgSendRequestDelegationResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateLocalDomain {
+  string creator = 1;
+  string name = 3;
+  string location = 4;
+}
+message MsgCreateLocalDomainResponse {}
+
+message MsgUpdateLocalDomain {
+  string creator = 1;
+  string name = 3;
+  string location = 4;
+}
+message MsgUpdateLocalDomainResponse {}
+
+message MsgDeleteLocalDomain {
+  string creator = 1;
+}
+message MsgDeleteLocalDomainResponse {}
+message MsgCreateDomain {
+  string creator = 1;
+  string name = 2;
+  string location = 3;
+  string ibcChannel = 4;
+}
+
+message MsgCreateDomainResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateDomain {
+  string creator = 1;
+  uint64 id = 2;
+  string name = 3;
+  string location = 4;
+  string ibcChannel = 5;
+}
+
+message MsgUpdateDomainResponse {}
+
+message MsgDeleteDomain {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteDomainResponse {}
+
+message MsgSendEstablishCooperation {
+  string creator = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+  string location = 5;
+}
+
+message MsgSendEstablishCooperationResponse {
+}
+message MsgCreateForwardPolicy {
+  string creator = 1;
+  string mode = 3;
+  repeated string domainList = 4;
+  repeated string locationList = 5;
+}
+message MsgCreateForwardPolicyResponse {}
+
+message MsgUpdateForwardPolicy {
+  string creator = 1;
+  string mode = 3;
+  repeated string domainList = 4;
+  repeated string locationList = 5;
+}
+message MsgUpdateForwardPolicyResponse {}
+
+message MsgDeleteForwardPolicy {
+  string creator = 1;
+}
+message MsgDeleteForwardPolicyResponse {}
+message MsgCreateValidity {
+  string creator = 1;
+  string notBefore = 2;
+  string notAfter = 3;
+}
+
+message MsgCreateValidityResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateValidity {
+  string creator = 1;
+  uint64 id = 2;
+  string notBefore = 3;
+  string notAfter = 4;
+}
+
+message MsgUpdateValidityResponse {}
+
+message MsgDeleteValidity {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteValidityResponse {}
+
+message MsgCreateDecisionPolicy {
+  string creator = 1;
+  repeated string domainList = 3;
+  repeated string locationList = 4;
+  uint64 cost = 5;
+  uint64 maxDelegations = 6;
+  Validity validity = 7;
+}
+message MsgCreateDecisionPolicyResponse {}
+
+message MsgUpdateDecisionPolicy {
+  string creator = 1;
+  repeated string domainList = 3;
+  repeated string locationList = 4;
+  uint64 cost = 5;
+  uint64 maxDelegations = 6;
+  Validity validity = 7;
+}
+message MsgUpdateDecisionPolicyResponse {}
+
+message MsgDeleteDecisionPolicy {
+  string creator = 1;
+}
+message MsgDeleteDecisionPolicyResponse {}
+message MsgCreatePermission {
+  string creator = 1;
+  string action = 2;
+  string resource = 3;
+}
+
+message MsgCreatePermissionResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdatePermission {
+  string creator = 1;
+  uint64 id = 2;
+  string action = 3;
+  string resource = 4;
+}
+
+message MsgUpdatePermissionResponse {}
+
+message MsgDeletePermission {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeletePermissionResponse {}
+
+message MsgCreateDelegationConditions {
+  string creator = 1;
+  uint64 cost = 2;
+  uint64 maxDelegations = 3;
+  Validity validity = 4;
+}
+
+message MsgCreateDelegationConditionsResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateDelegationConditions {
+  string creator = 1;
+  uint64 id = 2;
+  uint64 cost = 3;
+  uint64 maxDelegations = 4;
+  Validity validity = 5;
+}
+
+message MsgUpdateDelegationConditionsResponse {}
+
+message MsgDeleteDelegationConditions {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteDelegationConditionsResponse {}
+
+message MsgSendRequestDelegation {
+  string creator = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+  string delegationAction = 5;
+  Permission permission = 6;
+  string forwardMode = 7;
+}
+
+message MsgSendRequestDelegationResponse {
+}
+// this line is used by starport scaffolding # proto/tx/message

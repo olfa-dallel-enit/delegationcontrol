@@ -1,0 +1,172 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "fdpd/params.proto";
+import "fdpd/local_domain.proto";
+import "fdpd/domain.proto";
+import "fdpd/forward_policy.proto";
+import "fdpd/validity.proto";
+import "fdpd/decision_policy.proto";
+import "fdpd/permission.proto";
+import "fdpd/delegation_conditions.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/delegationcontrol/fdpd/params";
+  }
+  // Queries a LocalDomain by index.
+	rpc LocalDomain(QueryGetLocalDomainRequest) returns (QueryGetLocalDomainResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/local_domain";
+	}
+// Queries a Domain by id.
+	rpc Domain(QueryGetDomainRequest) returns (QueryGetDomainResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/domain/{id}";
+	}
+
+	// Queries a list of Domain items.
+	rpc DomainAll(QueryAllDomainRequest) returns (QueryAllDomainResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/domain";
+	}
+
+// Queries a ForwardPolicy by index.
+	rpc ForwardPolicy(QueryGetForwardPolicyRequest) returns (QueryGetForwardPolicyResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/forward_policy";
+	}
+// Queries a Validity by id.
+	rpc Validity(QueryGetValidityRequest) returns (QueryGetValidityResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/validity/{id}";
+	}
+
+	// Queries a list of Validity items.
+	rpc ValidityAll(QueryAllValidityRequest) returns (QueryAllValidityResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/validity";
+	}
+
+// Queries a DecisionPolicy by index.
+	rpc DecisionPolicy(QueryGetDecisionPolicyRequest) returns (QueryGetDecisionPolicyResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/decision_policy";
+	}
+// Queries a Permission by id.
+	rpc Permission(QueryGetPermissionRequest) returns (QueryGetPermissionResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/permission/{id}";
+	}
+
+	// Queries a list of Permission items.
+	rpc PermissionAll(QueryAllPermissionRequest) returns (QueryAllPermissionResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/permission";
+	}
+
+// Queries a DelegationConditions by id.
+	rpc DelegationConditions(QueryGetDelegationConditionsRequest) returns (QueryGetDelegationConditionsResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_conditions/{id}";
+	}
+
+	// Queries a list of DelegationConditions items.
+	rpc DelegationConditionsAll(QueryAllDelegationConditionsRequest) returns (QueryAllDelegationConditionsResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_conditions";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetLocalDomainRequest {}
+
+message QueryGetLocalDomainResponse {
+	LocalDomain LocalDomain = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetDomainRequest {
+	uint64 id = 1;
+}
+
+message QueryGetDomainResponse {
+	Domain Domain = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDomainRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDomainResponse {
+	repeated Domain Domain = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetForwardPolicyRequest {}
+
+message QueryGetForwardPolicyResponse {
+	ForwardPolicy ForwardPolicy = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetValidityRequest {
+	uint64 id = 1;
+}
+
+message QueryGetValidityResponse {
+	Validity Validity = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllValidityRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllValidityResponse {
+	repeated Validity Validity = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDecisionPolicyRequest {}
+
+message QueryGetDecisionPolicyResponse {
+	DecisionPolicy DecisionPolicy = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetPermissionRequest {
+	uint64 id = 1;
+}
+
+message QueryGetPermissionResponse {
+	Permission Permission = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPermissionRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPermissionResponse {
+	repeated Permission Permission = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDelegationConditionsRequest {
+	uint64 id = 1;
+}
+
+message QueryGetDelegationConditionsResponse {
+	DelegationConditions DelegationConditions = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDelegationConditionsRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDelegationConditionsResponse {
+	repeated DelegationConditions DelegationConditions = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3
