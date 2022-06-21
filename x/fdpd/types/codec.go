@@ -31,6 +31,10 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateDelegationConditions{}, "fdpd/UpdateDelegationConditions", nil)
 	cdc.RegisterConcrete(&MsgDeleteDelegationConditions{}, "fdpd/DeleteDelegationConditions", nil)
 	cdc.RegisterConcrete(&MsgSendRequestDelegation{}, "fdpd/SendRequestDelegation", nil)
+	cdc.RegisterConcrete(&MsgConfigureLocalDomain{}, "fdpd/ConfigureLocalDomain", nil)
+	cdc.RegisterConcrete(&MsgCreateDelegationDecision{}, "fdpd/CreateDelegationDecision", nil)
+	cdc.RegisterConcrete(&MsgUpdateDelegationDecision{}, "fdpd/UpdateDelegationDecision", nil)
+	cdc.RegisterConcrete(&MsgDeleteDelegationDecision{}, "fdpd/DeleteDelegationDecision", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -75,6 +79,14 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSendRequestDelegation{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgConfigureLocalDomain{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateDelegationDecision{},
+		&MsgUpdateDelegationDecision{},
+		&MsgDeleteDelegationDecision{},
 	)
 	// this line is used by starport scaffolding # 3
 

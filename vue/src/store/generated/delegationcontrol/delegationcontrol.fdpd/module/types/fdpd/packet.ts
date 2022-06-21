@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Permission } from "../fdpd/permission";
+import { DelegationConditions } from "../fdpd/delegation_conditions";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "delegationcontrol.fdpd";
@@ -17,20 +18,29 @@ export interface NoData {}
 /** EstablishCooperationPacketData defines a struct for the packet payload */
 export interface EstablishCooperationPacketData {
   location: string;
+  sender: string;
 }
 
 /** EstablishCooperationPacketAck defines a struct for the packet acknowledgment */
-export interface EstablishCooperationPacketAck {}
+export interface EstablishCooperationPacketAck {
+  confirmation: string;
+  confirmedBy: string;
+  location: string;
+}
 
 /** RequestDelegationPacketData defines a struct for the packet payload */
 export interface RequestDelegationPacketData {
   delegationAction: string;
   permission: Permission | undefined;
-  forwardMode: string;
 }
 
 /** RequestDelegationPacketAck defines a struct for the packet acknowledgment */
-export interface RequestDelegationPacketAck {}
+export interface RequestDelegationPacketAck {
+  confirmation: string;
+  confirmedBy: string;
+  decision: string;
+  delegationConditions: DelegationConditions | undefined;
+}
 
 const baseFdpdPacketData: object = {};
 
@@ -200,7 +210,7 @@ export const NoData = {
   },
 };
 
-const baseEstablishCooperationPacketData: object = { location: "" };
+const baseEstablishCooperationPacketData: object = { location: "", sender: "" };
 
 export const EstablishCooperationPacketData = {
   encode(
@@ -209,6 +219,9 @@ export const EstablishCooperationPacketData = {
   ): Writer {
     if (message.location !== "") {
       writer.uint32(10).string(message.location);
+    }
+    if (message.sender !== "") {
+      writer.uint32(18).string(message.sender);
     }
     return writer;
   },
@@ -228,6 +241,9 @@ export const EstablishCooperationPacketData = {
         case 1:
           message.location = reader.string();
           break;
+        case 2:
+          message.sender = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -245,12 +261,18 @@ export const EstablishCooperationPacketData = {
     } else {
       message.location = "";
     }
+    if (object.sender !== undefined && object.sender !== null) {
+      message.sender = String(object.sender);
+    } else {
+      message.sender = "";
+    }
     return message;
   },
 
   toJSON(message: EstablishCooperationPacketData): unknown {
     const obj: any = {};
     message.location !== undefined && (obj.location = message.location);
+    message.sender !== undefined && (obj.sender = message.sender);
     return obj;
   },
 
@@ -265,17 +287,35 @@ export const EstablishCooperationPacketData = {
     } else {
       message.location = "";
     }
+    if (object.sender !== undefined && object.sender !== null) {
+      message.sender = object.sender;
+    } else {
+      message.sender = "";
+    }
     return message;
   },
 };
 
-const baseEstablishCooperationPacketAck: object = {};
+const baseEstablishCooperationPacketAck: object = {
+  confirmation: "",
+  confirmedBy: "",
+  location: "",
+};
 
 export const EstablishCooperationPacketAck = {
   encode(
-    _: EstablishCooperationPacketAck,
+    message: EstablishCooperationPacketAck,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.confirmation !== "") {
+      writer.uint32(10).string(message.confirmation);
+    }
+    if (message.confirmedBy !== "") {
+      writer.uint32(18).string(message.confirmedBy);
+    }
+    if (message.location !== "") {
+      writer.uint32(26).string(message.location);
+    }
     return writer;
   },
 
@@ -291,6 +331,15 @@ export const EstablishCooperationPacketAck = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.confirmation = reader.string();
+          break;
+        case 2:
+          message.confirmedBy = reader.string();
+          break;
+        case 3:
+          message.location = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -299,32 +348,64 @@ export const EstablishCooperationPacketAck = {
     return message;
   },
 
-  fromJSON(_: any): EstablishCooperationPacketAck {
+  fromJSON(object: any): EstablishCooperationPacketAck {
     const message = {
       ...baseEstablishCooperationPacketAck,
     } as EstablishCooperationPacketAck;
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      message.confirmation = String(object.confirmation);
+    } else {
+      message.confirmation = "";
+    }
+    if (object.confirmedBy !== undefined && object.confirmedBy !== null) {
+      message.confirmedBy = String(object.confirmedBy);
+    } else {
+      message.confirmedBy = "";
+    }
+    if (object.location !== undefined && object.location !== null) {
+      message.location = String(object.location);
+    } else {
+      message.location = "";
+    }
     return message;
   },
 
-  toJSON(_: EstablishCooperationPacketAck): unknown {
+  toJSON(message: EstablishCooperationPacketAck): unknown {
     const obj: any = {};
+    message.confirmation !== undefined &&
+      (obj.confirmation = message.confirmation);
+    message.confirmedBy !== undefined &&
+      (obj.confirmedBy = message.confirmedBy);
+    message.location !== undefined && (obj.location = message.location);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<EstablishCooperationPacketAck>
+    object: DeepPartial<EstablishCooperationPacketAck>
   ): EstablishCooperationPacketAck {
     const message = {
       ...baseEstablishCooperationPacketAck,
     } as EstablishCooperationPacketAck;
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      message.confirmation = object.confirmation;
+    } else {
+      message.confirmation = "";
+    }
+    if (object.confirmedBy !== undefined && object.confirmedBy !== null) {
+      message.confirmedBy = object.confirmedBy;
+    } else {
+      message.confirmedBy = "";
+    }
+    if (object.location !== undefined && object.location !== null) {
+      message.location = object.location;
+    } else {
+      message.location = "";
+    }
     return message;
   },
 };
 
-const baseRequestDelegationPacketData: object = {
-  delegationAction: "",
-  forwardMode: "",
-};
+const baseRequestDelegationPacketData: object = { delegationAction: "" };
 
 export const RequestDelegationPacketData = {
   encode(
@@ -336,9 +417,6 @@ export const RequestDelegationPacketData = {
     }
     if (message.permission !== undefined) {
       Permission.encode(message.permission, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.forwardMode !== "") {
-      writer.uint32(26).string(message.forwardMode);
     }
     return writer;
   },
@@ -360,9 +438,6 @@ export const RequestDelegationPacketData = {
           break;
         case 2:
           message.permission = Permission.decode(reader, reader.uint32());
-          break;
-        case 3:
-          message.forwardMode = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -389,11 +464,6 @@ export const RequestDelegationPacketData = {
     } else {
       message.permission = undefined;
     }
-    if (object.forwardMode !== undefined && object.forwardMode !== null) {
-      message.forwardMode = String(object.forwardMode);
-    } else {
-      message.forwardMode = "";
-    }
     return message;
   },
 
@@ -405,8 +475,6 @@ export const RequestDelegationPacketData = {
       (obj.permission = message.permission
         ? Permission.toJSON(message.permission)
         : undefined);
-    message.forwardMode !== undefined &&
-      (obj.forwardMode = message.forwardMode);
     return obj;
   },
 
@@ -429,22 +497,36 @@ export const RequestDelegationPacketData = {
     } else {
       message.permission = undefined;
     }
-    if (object.forwardMode !== undefined && object.forwardMode !== null) {
-      message.forwardMode = object.forwardMode;
-    } else {
-      message.forwardMode = "";
-    }
     return message;
   },
 };
 
-const baseRequestDelegationPacketAck: object = {};
+const baseRequestDelegationPacketAck: object = {
+  confirmation: "",
+  confirmedBy: "",
+  decision: "",
+};
 
 export const RequestDelegationPacketAck = {
   encode(
-    _: RequestDelegationPacketAck,
+    message: RequestDelegationPacketAck,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.confirmation !== "") {
+      writer.uint32(10).string(message.confirmation);
+    }
+    if (message.confirmedBy !== "") {
+      writer.uint32(18).string(message.confirmedBy);
+    }
+    if (message.decision !== "") {
+      writer.uint32(26).string(message.decision);
+    }
+    if (message.delegationConditions !== undefined) {
+      DelegationConditions.encode(
+        message.delegationConditions,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -460,6 +542,21 @@ export const RequestDelegationPacketAck = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.confirmation = reader.string();
+          break;
+        case 2:
+          message.confirmedBy = reader.string();
+          break;
+        case 3:
+          message.decision = reader.string();
+          break;
+        case 4:
+          message.delegationConditions = DelegationConditions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -468,24 +565,83 @@ export const RequestDelegationPacketAck = {
     return message;
   },
 
-  fromJSON(_: any): RequestDelegationPacketAck {
+  fromJSON(object: any): RequestDelegationPacketAck {
     const message = {
       ...baseRequestDelegationPacketAck,
     } as RequestDelegationPacketAck;
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      message.confirmation = String(object.confirmation);
+    } else {
+      message.confirmation = "";
+    }
+    if (object.confirmedBy !== undefined && object.confirmedBy !== null) {
+      message.confirmedBy = String(object.confirmedBy);
+    } else {
+      message.confirmedBy = "";
+    }
+    if (object.decision !== undefined && object.decision !== null) {
+      message.decision = String(object.decision);
+    } else {
+      message.decision = "";
+    }
+    if (
+      object.delegationConditions !== undefined &&
+      object.delegationConditions !== null
+    ) {
+      message.delegationConditions = DelegationConditions.fromJSON(
+        object.delegationConditions
+      );
+    } else {
+      message.delegationConditions = undefined;
+    }
     return message;
   },
 
-  toJSON(_: RequestDelegationPacketAck): unknown {
+  toJSON(message: RequestDelegationPacketAck): unknown {
     const obj: any = {};
+    message.confirmation !== undefined &&
+      (obj.confirmation = message.confirmation);
+    message.confirmedBy !== undefined &&
+      (obj.confirmedBy = message.confirmedBy);
+    message.decision !== undefined && (obj.decision = message.decision);
+    message.delegationConditions !== undefined &&
+      (obj.delegationConditions = message.delegationConditions
+        ? DelegationConditions.toJSON(message.delegationConditions)
+        : undefined);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<RequestDelegationPacketAck>
+    object: DeepPartial<RequestDelegationPacketAck>
   ): RequestDelegationPacketAck {
     const message = {
       ...baseRequestDelegationPacketAck,
     } as RequestDelegationPacketAck;
+    if (object.confirmation !== undefined && object.confirmation !== null) {
+      message.confirmation = object.confirmation;
+    } else {
+      message.confirmation = "";
+    }
+    if (object.confirmedBy !== undefined && object.confirmedBy !== null) {
+      message.confirmedBy = object.confirmedBy;
+    } else {
+      message.confirmedBy = "";
+    }
+    if (object.decision !== undefined && object.decision !== null) {
+      message.decision = object.decision;
+    } else {
+      message.decision = "";
+    }
+    if (
+      object.delegationConditions !== undefined &&
+      object.delegationConditions !== null
+    ) {
+      message.delegationConditions = DelegationConditions.fromPartial(
+        object.delegationConditions
+      );
+    } else {
+      message.delegationConditions = undefined;
+    }
     return message;
   },
 };

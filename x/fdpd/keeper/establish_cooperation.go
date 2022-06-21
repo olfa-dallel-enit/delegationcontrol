@@ -74,16 +74,19 @@ func (k Keeper) OnRecvEstablishCooperationPacket(ctx sdk.Context, packet channel
 	}
 
 	// TODO: packet reception logic
-	k.AppendDomain(ctx, types.Domain{
-		Name: data.Sender,
-		Location: data.Location,
-		IbcChannel: packet.SourceChannel,
-		Creator: ctx.ChainID(),
-	})
+	localDomain, found := k.GetLocalDomain(ctx)
+	if found {
+		k.AppendDomain(ctx, types.Domain{
+			Name:       data.Sender,
+			Location:   data.Location,
+			IbcChannel: packet.DestinationChannel,
+			Creator:    ctx.ChainID(),
+		})
 
-	packetAck.Confirmation = "Confirmed"
-	packetAck.ConfirmedBy = ctx.ChainID()
-	packetAck.Location = "" //getLocation
+		packetAck.Confirmation = "Confirmed"
+		packetAck.ConfirmedBy = ctx.ChainID()
+		packetAck.Location = localDomain.Location
+	}
 
 	return packetAck, nil
 }
@@ -108,13 +111,13 @@ func (k Keeper) OnAcknowledgementEstablishCooperationPacket(ctx sdk.Context, pac
 		}
 
 		// TODO: successful acknowledgement logic
-		if packetAck.Confirmation == "Confirmed"{
+		if packetAck.Confirmation == "Confirmed" {
 			k.AppendDomain(ctx, types.Domain{
-				Name: packetAck.ConfirmedBy,
-				Location: packetAck.Location,
-				IbcChannel: packet.DestinationChannel,
-				Creator: ctx.ChainID(),
-			})		
+				Name:       packetAck.ConfirmedBy,
+				Location:   packetAck.Location,
+				IbcChannel: packet.SourceChannel,
+				Creator:    ctx.ChainID(),
+			})
 		}
 
 		return nil

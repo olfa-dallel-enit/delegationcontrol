@@ -5,8 +5,9 @@ import "fdpd/local_domain.proto";
 import "fdpd/domain.proto";
 import "fdpd/forward_policy.proto";
 import "fdpd/decision_policy.proto";
-import "fdpd/delegation_conditions.proto";
+import "fdpd/delegation_decision.proto";
 // this line is used by starport scaffolding # proto/tx/import
+import "fdpd/delegation_conditions.proto";
 import "fdpd/permission.proto";
 import "fdpd/validity.proto";
 
@@ -37,6 +38,10 @@ rpc CreateDelegationConditions(MsgCreateDelegationConditions) returns (MsgCreate
   rpc UpdateDelegationConditions(MsgUpdateDelegationConditions) returns (MsgUpdateDelegationConditionsResponse);
   rpc DeleteDelegationConditions(MsgDeleteDelegationConditions) returns (MsgDeleteDelegationConditionsResponse);
   rpc SendRequestDelegation(MsgSendRequestDelegation) returns (MsgSendRequestDelegationResponse);
+  rpc ConfigureLocalDomain(MsgConfigureLocalDomain) returns (MsgConfigureLocalDomainResponse);
+rpc CreateDelegationDecision(MsgCreateDelegationDecision) returns (MsgCreateDelegationDecisionResponse);
+  rpc UpdateDelegationDecision(MsgUpdateDelegationDecision) returns (MsgUpdateDelegationDecisionResponse);
+  rpc DeleteDelegationDecision(MsgDeleteDelegationDecision) returns (MsgDeleteDelegationDecisionResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -91,7 +96,6 @@ message MsgSendEstablishCooperation {
   string port = 2;
   string channelID = 3;
   uint64 timeoutTimestamp = 4;
-  string location = 5;
 }
 
 message MsgSendEstablishCooperationResponse {
@@ -223,13 +227,44 @@ message MsgDeleteDelegationConditionsResponse {}
 message MsgSendRequestDelegation {
   string creator = 1;
   string port = 2;
-  string channelID = 3;
   uint64 timeoutTimestamp = 4;
   string delegationAction = 5;
   Permission permission = 6;
-  string forwardMode = 7;
 }
 
 message MsgSendRequestDelegationResponse {
 }
+message MsgConfigureLocalDomain {
+  string creator = 1;
+}
+
+message MsgConfigureLocalDomainResponse {
+}
+
+message MsgCreateDelegationDecision {
+  string creator = 1;
+  string decision = 2;
+  DelegationConditions delegationConditions = 3;
+}
+
+message MsgCreateDelegationDecisionResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateDelegationDecision {
+  string creator = 1;
+  uint64 id = 2;
+  string decision = 3;
+  DelegationConditions delegationConditions = 4;
+}
+
+message MsgUpdateDelegationDecisionResponse {}
+
+message MsgDeleteDelegationDecision {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteDelegationDecisionResponse {}
+
 // this line is used by starport scaffolding # proto/tx/message

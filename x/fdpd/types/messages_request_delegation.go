@@ -12,20 +12,16 @@ var _ sdk.Msg = &MsgSendRequestDelegation{}
 func NewMsgSendRequestDelegation(
 	creator string,
 	port string,
-	channelID string,
 	timeoutTimestamp uint64,
 	delegationAction string,
 	permission *Permission,
-	forwardMode string,
 ) *MsgSendRequestDelegation {
 	return &MsgSendRequestDelegation{
 		Creator:          creator,
 		Port:             port,
-		ChannelID:        channelID,
 		TimeoutTimestamp: timeoutTimestamp,
 		DelegationAction: delegationAction,
 		Permission:       permission,
-		ForwardMode:      forwardMode,
 	}
 }
 
@@ -58,9 +54,9 @@ func (msg *MsgSendRequestDelegation) ValidateBasic() error {
 	if msg.Port == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid packet port")
 	}
-	if msg.ChannelID == "" {
+	/*if msg.ChannelID == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid packet channel")
-	}
+	}*/
 	if msg.TimeoutTimestamp == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid packet timeout")
 	}

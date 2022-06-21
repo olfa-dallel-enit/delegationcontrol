@@ -8,14 +8,14 @@ hermes -c ~/.hermes/config.toml config validate
 
 hermes -c ~/.hermes/config.toml keys add earth -f execution/chains/earth/key_seed.json
 hermes -c ~/.hermes/config.toml keys add mars -f execution/chains/mars/key_seed.json
-#hermes -c ~/.hermes/config.toml keys add venus -f execution/chains/venus/key_seed.json
+hermes -c ~/.hermes/config.toml keys add venus -f execution/chains/venus/key_seed.json
 #hermes -c ~/.hermes/config.toml keys add jupiter -f execution/chains/jupiter/key_seed.json
 #hermes -c ~/.hermes/config.toml keys add neptune -f execution/chains/neptune/key_seed.json
 
 #earth-mars
 hermes -c ~/.hermes/config.toml create channel earth --chain-b mars --port-a fdpd --port-b fdpd -o unordered --channel-version fdpd-1 --new-client-connection
 #earth-venus
-#hermes -c ~/.hermes/config.toml create channel earth --chain-b venus --port-a cdac --port-b cdac -o ordered --channel-version cdac-1 --new-client-connection
+hermes -c ~/.hermes/config.toml create channel earth --chain-b venus --port-a fdpd --port-b fdpd -o unordered --channel-version fdpd-1 --new-client-connection
 #mars-neptune
 #hermes -c ~/.hermes/config.toml create channel mars --chain-b neptune --port-a cdac --port-b cdac -o ordered --channel-version cdac-1 --new-client-connection
 #mars-jupiter

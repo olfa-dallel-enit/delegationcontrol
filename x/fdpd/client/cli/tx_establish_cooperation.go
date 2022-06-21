@@ -17,7 +17,7 @@ func CmdSendEstablishCooperation() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "send-establish-cooperation [src-port] [src-channel] [location]",
 		Short: "Send a establish-cooperation over IBC",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,8 +27,6 @@ func CmdSendEstablishCooperation() *cobra.Command {
 			creator := clientCtx.GetFromAddress().String()
 			srcPort := args[0]
 			srcChannel := args[1]
-
-			argLocation := args[2]
 
 			// Get the relative timeout timestamp
 			timeoutTimestamp, err := cmd.Flags().GetUint64(flagPacketTimeoutTimestamp)
@@ -43,7 +41,7 @@ func CmdSendEstablishCooperation() *cobra.Command {
 				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
 			}
 
-			msg := types.NewMsgSendEstablishCooperation(creator, srcPort, srcChannel, timeoutTimestamp, argLocation)
+			msg := types.NewMsgSendEstablishCooperation(creator, srcPort, srcChannel, timeoutTimestamp)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

@@ -74,6 +74,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				DelegationConditionsCount: 2,
+				DelegationDecisionList: []types.DelegationDecision{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				DelegationDecisionCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -179,6 +188,32 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				DelegationConditionsCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated delegationDecision",
+			genState: &types.GenesisState{
+				DelegationDecisionList: []types.DelegationDecision{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid delegationDecision count",
+			genState: &types.GenesisState{
+				DelegationDecisionList: []types.DelegationDecision{
+					{
+						Id: 1,
+					},
+				},
+				DelegationDecisionCount: 0,
 			},
 			valid: false,
 		},

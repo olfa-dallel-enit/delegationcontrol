@@ -66,6 +66,15 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		DelegationConditionsCount: 2,
+		DelegationDecisionList: []types.DelegationDecision{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		DelegationDecisionCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -90,5 +99,7 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.PermissionCount, got.PermissionCount)
 	require.ElementsMatch(t, genesisState.DelegationConditionsList, got.DelegationConditionsList)
 	require.Equal(t, genesisState.DelegationConditionsCount, got.DelegationConditionsCount)
+	require.ElementsMatch(t, genesisState.DelegationDecisionList, got.DelegationDecisionList)
+	require.Equal(t, genesisState.DelegationDecisionCount, got.DelegationDecisionCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

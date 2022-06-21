@@ -13,24 +13,33 @@ func (k msgServer) SendRequestDelegation(goCtx context.Context, msg *types.MsgSe
 
 	// TODO: logic before transmitting the packet
 
-	// Construct the packet
-	var packet types.RequestDelegationPacketData
+	forwardPolicy, found := k.GetForwardPolicy(ctx)
 
-	packet.DelegationAction = msg.DelegationAction
-	packet.Permission = msg.Permission
-	packet.ForwardMode = msg.ForwardMode
+	if found {
+		// Construct the packet
+		var packet types.RequestDelegationPacketData
 
-	// Transmit the packet
-	err := k.TransmitRequestDelegationPacket(
-		ctx,
-		packet,
-		msg.Port,
-		msg.ChannelID,
-		clienttypes.ZeroHeight(),
-		msg.TimeoutTimestamp,
-	)
-	if err != nil {
-		return nil, err
+		packet.DelegationAction = msg.DelegationAction
+		packet.Permission = msg.Permission
+
+		switch forwardPolicy.Mode {
+		case "broadcast":
+			for _, domain := range k.GetAllDomain(ctx) {
+				// Transmit the packet
+				k.TransmitRequestDelegationPacket(
+					ctx,
+					packet,
+					msg.Port,
+					domain.IbcChannel,
+					clienttypes.ZeroHeight(),
+					msg.TimeoutTimestamp,
+				)
+			}
+		}
+
+		/*if err != nil {
+			return nil, err
+		}*/
 	}
 
 	return &types.MsgSendRequestDelegationResponse{}, nil

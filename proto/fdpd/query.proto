@@ -12,6 +12,7 @@ import "fdpd/validity.proto";
 import "fdpd/decision_policy.proto";
 import "fdpd/permission.proto";
 import "fdpd/delegation_conditions.proto";
+import "fdpd/delegation_decision.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "delegationcontrol/x/fdpd/types";
@@ -72,6 +73,16 @@ service Query {
 	// Queries a list of DelegationConditions items.
 	rpc DelegationConditionsAll(QueryAllDelegationConditionsRequest) returns (QueryAllDelegationConditionsResponse) {
 		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_conditions";
+	}
+
+// Queries a DelegationDecision by id.
+	rpc DelegationDecision(QueryGetDelegationDecisionRequest) returns (QueryGetDelegationDecisionResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_decision/{id}";
+	}
+
+	// Queries a list of DelegationDecision items.
+	rpc DelegationDecisionAll(QueryAllDelegationDecisionRequest) returns (QueryAllDelegationDecisionResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_decision";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -166,6 +177,23 @@ message QueryAllDelegationConditionsRequest {
 
 message QueryAllDelegationConditionsResponse {
 	repeated DelegationConditions DelegationConditions = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDelegationDecisionRequest {
+	uint64 id = 1;
+}
+
+message QueryGetDelegationDecisionResponse {
+	DelegationDecision DelegationDecision = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDelegationDecisionRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDelegationDecisionResponse {
+	repeated DelegationDecision DelegationDecision = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

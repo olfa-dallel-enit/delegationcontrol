@@ -108,6 +108,22 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteDelegationConditions int = 100
 
+	opWeightMsgConfigureLocalDomain = "op_weight_msg_configure_local_domain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgConfigureLocalDomain int = 100
+
+	opWeightMsgCreateDelegationDecision = "op_weight_msg_delegation_decision"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateDelegationDecision int = 100
+
+	opWeightMsgUpdateDelegationDecision = "op_weight_msg_delegation_decision"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateDelegationDecision int = 100
+
+	opWeightMsgDeleteDelegationDecision = "op_weight_msg_delegation_decision"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteDelegationDecision int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -164,6 +180,17 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			},
 		},
 		DelegationConditionsCount: 2,
+		DelegationDecisionList: []types.DelegationDecision{
+			{
+				Id:      0,
+				Creator: sample.AccAddress(),
+			},
+			{
+				Id:      1,
+				Creator: sample.AccAddress(),
+			},
+		},
+		DelegationDecisionCount: 2,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&fdpdGenesis)
@@ -416,6 +443,50 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteDelegationConditions,
 		fdpdsimulation.SimulateMsgDeleteDelegationConditions(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgConfigureLocalDomain int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgConfigureLocalDomain, &weightMsgConfigureLocalDomain, nil,
+		func(_ *rand.Rand) {
+			weightMsgConfigureLocalDomain = defaultWeightMsgConfigureLocalDomain
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgConfigureLocalDomain,
+		fdpdsimulation.SimulateMsgConfigureLocalDomain(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateDelegationDecision int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateDelegationDecision, &weightMsgCreateDelegationDecision, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateDelegationDecision = defaultWeightMsgCreateDelegationDecision
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateDelegationDecision,
+		fdpdsimulation.SimulateMsgCreateDelegationDecision(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateDelegationDecision int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateDelegationDecision, &weightMsgUpdateDelegationDecision, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateDelegationDecision = defaultWeightMsgUpdateDelegationDecision
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateDelegationDecision,
+		fdpdsimulation.SimulateMsgUpdateDelegationDecision(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteDelegationDecision int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteDelegationDecision, &weightMsgDeleteDelegationDecision, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteDelegationDecision = defaultWeightMsgDeleteDelegationDecision
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteDelegationDecision,
+		fdpdsimulation.SimulateMsgDeleteDelegationDecision(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -16,19 +16,23 @@ func (k msgServer) SendEstablishCooperation(goCtx context.Context, msg *types.Ms
 	// Construct the packet
 	var packet types.EstablishCooperationPacketData
 
-	packet.Location = msg.Location
+	localDomain, found := k.GetLocalDomain(ctx)
+	if found {
+		packet.Location = localDomain.Location
+		packet.Sender = ctx.ChainID()
 
-	// Transmit the packet
-	err := k.TransmitEstablishCooperationPacket(
-		ctx,
-		packet,
-		msg.Port,
-		msg.ChannelID,
-		clienttypes.ZeroHeight(),
-		msg.TimeoutTimestamp,
-	)
-	if err != nil {
-		return nil, err
+		// Transmit the packet
+		err := k.TransmitEstablishCooperationPacket(
+			ctx,
+			packet,
+			msg.Port,
+			msg.ChannelID,
+			clienttypes.ZeroHeight(),
+			msg.TimeoutTimestamp,
+		)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &types.MsgSendEstablishCooperationResponse{}, nil

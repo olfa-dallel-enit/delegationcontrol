@@ -63,3 +63,8 @@ const (
 	DelegationConditionsKey      = "DelegationConditions-value-"
 	DelegationConditionsCountKey = "DelegationConditions-count-"
 )
+
+const (
+	DelegationDecisionKey      = "DelegationDecision-value-"
+	DelegationDecisionCountKey = "DelegationDecision-count-"
+)

@@ -3,6 +3,7 @@ package delegationcontrol.fdpd;
 
 // this line is used by starport scaffolding # proto/packet/import
 import "fdpd/permission.proto";
+import "fdpd/delegation_conditions.proto";
 
 option go_package = "delegationcontrol/x/fdpd/types";
 
@@ -34,11 +35,13 @@ message EstablishCooperationPacketAck {
 message RequestDelegationPacketData {
   string delegationAction = 1;
   Permission permission = 2;
-  string forwardMode = 3;
 }
 
 // RequestDelegationPacketAck defines a struct for the packet acknowledgment
 message RequestDelegationPacketAck {
-
+  string confirmation = 1;
+  string confirmedBy = 2;
+  string decision = 3;
+  DelegationConditions delegationConditions = 4;
 	}
 // this line is used by starport scaffolding # ibc/packet/proto/message

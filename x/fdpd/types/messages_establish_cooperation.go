@@ -14,14 +14,12 @@ func NewMsgSendEstablishCooperation(
 	port string,
 	channelID string,
 	timeoutTimestamp uint64,
-	location string,
 ) *MsgSendEstablishCooperation {
 	return &MsgSendEstablishCooperation{
 		Creator:          creator,
 		Port:             port,
 		ChannelID:        channelID,
 		TimeoutTimestamp: timeoutTimestamp,
-		Location:         location,
 	}
 }
 

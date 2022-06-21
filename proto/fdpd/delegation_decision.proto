@@ -1,0 +1,12 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+option go_package = "delegationcontrol/x/fdpd/types";
+import "fdpd/delegation_conditions.proto"; 
+
+message DelegationDecision {
+  uint64 id = 1;
+  string decision = 2; 
+  DelegationConditions delegationConditions = 3; 
+  string creator = 4;
+}

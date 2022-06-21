@@ -53,6 +53,10 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdUpdateDelegationConditions())
 	cmd.AddCommand(CmdDeleteDelegationConditions())
 	cmd.AddCommand(CmdSendRequestDelegation())
+	cmd.AddCommand(CmdConfigureLocalDomain())
+	cmd.AddCommand(CmdCreateDelegationDecision())
+	cmd.AddCommand(CmdUpdateDelegationDecision())
+	cmd.AddCommand(CmdDeleteDelegationDecision())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

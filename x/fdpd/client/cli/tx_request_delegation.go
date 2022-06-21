@@ -16,9 +16,9 @@ var _ = strconv.Itoa(0)
 
 func CmdSendRequestDelegation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-request-delegation [src-port] [src-channel] [delegation-action] [permission] [forward-mode]",
+		Use:   "send-request-delegation [src-port] [src-channel] [delegation-action] [permission]",
 		Short: "Send a request-delegation over IBC",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,7 +27,6 @@ func CmdSendRequestDelegation() *cobra.Command {
 
 			creator := clientCtx.GetFromAddress().String()
 			srcPort := args[0]
-			srcChannel := args[1]
 
 			argDelegationAction := args[2]
 			argPermission := new(types.Permission)
@@ -35,14 +34,13 @@ func CmdSendRequestDelegation() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argForwardMode := args[4]
 
 			// Get the relative timeout timestamp
 			timeoutTimestamp, err := cmd.Flags().GetUint64(flagPacketTimeoutTimestamp)
 			if err != nil {
 				return err
 			}
-			consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, srcChannel)
+			consensusState, _, _, err := channelutils.QueryLatestConsensusState(clientCtx, srcPort, "channel-0")
 			if err != nil {
 				return err
 			}
@@ -50,7 +48,7 @@ func CmdSendRequestDelegation() *cobra.Command {
 				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
 			}
 
-			msg := types.NewMsgSendRequestDelegation(creator, srcPort, srcChannel, timeoutTimestamp, argDelegationAction, argPermission, argForwardMode)
+			msg := types.NewMsgSendRequestDelegation(creator, srcPort, timeoutTimestamp, argDelegationAction, argPermission)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

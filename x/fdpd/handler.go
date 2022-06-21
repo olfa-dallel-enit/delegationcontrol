@@ -98,6 +98,21 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSendRequestDelegation:
 			res, err := msgServer.SendRequestDelegation(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgConfigureLocalDomain:
+			res, err := msgServer.ConfigureLocalDomain(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreateDelegationDecision:
+			res, err := msgServer.CreateDelegationDecision(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+
+		case *types.MsgUpdateDelegationDecision:
+			res, err := msgServer.UpdateDelegationDecision(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+
+		case *types.MsgDeleteDelegationDecision:
+			res, err := msgServer.DeleteDelegationDecision(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
