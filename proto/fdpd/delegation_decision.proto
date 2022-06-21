@@ -9,4 +9,5 @@ message DelegationDecision {
   string decision = 2; 
   DelegationConditions delegationConditions = 3; 
   string creator = 4;
+  string decisionDomain = 5;
 }

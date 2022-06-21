@@ -39,9 +39,8 @@ message RequestDelegationPacketData {
 
 // RequestDelegationPacketAck defines a struct for the packet acknowledgment
 message RequestDelegationPacketAck {
-  string confirmation = 1;
-  string confirmedBy = 2;
-  string decision = 3;
-  DelegationConditions delegationConditions = 4;
+  string decisionDomain = 1;
+  string decision = 2;
+  DelegationConditions delegationConditions = 3;
 	}
 // this line is used by starport scaffolding # ibc/packet/proto/message

@@ -28,9 +28,9 @@ func CmdSendRequestDelegation() *cobra.Command {
 			creator := clientCtx.GetFromAddress().String()
 			srcPort := args[0]
 
-			argDelegationAction := args[2]
+			argDelegationAction := args[1]
 			argPermission := new(types.Permission)
-			err = json.Unmarshal([]byte(args[3]), argPermission)
+			err = json.Unmarshal([]byte(args[2]), argPermission)
 			if err != nil {
 				return err
 			}
