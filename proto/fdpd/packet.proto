@@ -21,10 +21,14 @@ message NoData {
 // EstablishCooperationPacketData defines a struct for the packet payload
 message EstablishCooperationPacketData {
   string location = 1;
+  string sender = 2;
 }
 
 // EstablishCooperationPacketAck defines a struct for the packet acknowledgment
 message EstablishCooperationPacketAck {
+  string confirmation = 1;
+  string confirmedBy = 2;
+  string location = 3;
 	}
 // RequestDelegationPacketData defines a struct for the packet payload
 message RequestDelegationPacketData {
@@ -35,5 +39,6 @@ message RequestDelegationPacketData {
 
 // RequestDelegationPacketAck defines a struct for the packet acknowledgment
 message RequestDelegationPacketAck {
+
 	}
 // this line is used by starport scaffolding # ibc/packet/proto/message
