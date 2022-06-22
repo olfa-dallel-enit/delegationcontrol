@@ -10,4 +10,5 @@ message CalculationTime {
   uint64 duration = 4; 
   string requestLabel = 5; 
   string creator = 6;
+  string details = 7;
 }

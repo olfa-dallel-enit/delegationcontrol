@@ -8,6 +8,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/spf13/cast"
+
+	"time"
 )
 
 func (k msgServer) CheckDelegation(goCtx context.Context, msg *types.MsgCheckDelegation) (*types.MsgCheckDelegationResponse, error) {
@@ -15,6 +17,8 @@ func (k msgServer) CheckDelegation(goCtx context.Context, msg *types.MsgCheckDel
 
 	// TODO: Handling the message
 	_ = ctx
+
+	startTimestamp := time.Now().UnixNano()
 
 	delegationDecisions := k.GetDelegationDecisionByLabel(ctx, msg.Label)
 
@@ -36,6 +40,16 @@ func (k msgServer) CheckDelegation(goCtx context.Context, msg *types.MsgCheckDel
 		Creator:                ctx.ChainID(),
 		DelegationRequestLabel: msg.Label,
 		Decision:               finalDecision,
+	})
+
+	endTimestamp := time.Now().UnixNano()
+
+	k.AppendCalculationTime(ctx, types.CalculationTime{
+		StartTimestamp: cast.ToString(startTimestamp),
+		EndTimestamp: cast.ToString(endTimestamp),
+		Duration: cast.ToUint64(endTimestamp - startTimestamp),
+		RequestLabel: msg.Label,
+		Details: "SelectionCriteria: " + msg.SelectionCriteria,
 	})
 
 	return &types.MsgCheckDelegationResponse{}, nil
