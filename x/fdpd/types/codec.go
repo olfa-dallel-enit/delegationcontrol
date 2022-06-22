@@ -51,6 +51,10 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateDelegationRequestLog{}, "fdpd/CreateDelegationRequestLog", nil)
 	cdc.RegisterConcrete(&MsgUpdateDelegationRequestLog{}, "fdpd/UpdateDelegationRequestLog", nil)
 	cdc.RegisterConcrete(&MsgDeleteDelegationRequestLog{}, "fdpd/DeleteDelegationRequestLog", nil)
+	cdc.RegisterConcrete(&MsgCreateCalculationTime{}, "fdpd/CreateCalculationTime", nil)
+	cdc.RegisterConcrete(&MsgUpdateCalculationTime{}, "fdpd/UpdateCalculationTime", nil)
+	cdc.RegisterConcrete(&MsgDeleteCalculationTime{}, "fdpd/DeleteCalculationTime", nil)
+	cdc.RegisterConcrete(&MsgCalculateRequestDelegationTiming{}, "fdpd/CalculateRequestDelegationTiming", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -131,6 +135,14 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateDelegationRequestLog{},
 		&MsgUpdateDelegationRequestLog{},
 		&MsgDeleteDelegationRequestLog{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateCalculationTime{},
+		&MsgUpdateCalculationTime{},
+		&MsgDeleteCalculationTime{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCalculateRequestDelegationTiming{},
 	)
 	// this line is used by starport scaffolding # 3
 

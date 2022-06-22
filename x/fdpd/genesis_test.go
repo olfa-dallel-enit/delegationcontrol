@@ -118,6 +118,15 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		DelegationRequestLogCount: 2,
+		CalculationTimeList: []types.CalculationTime{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		CalculationTimeCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -153,5 +162,7 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.FinalDelegationDecisionCount, got.FinalDelegationDecisionCount)
 	require.ElementsMatch(t, genesisState.DelegationRequestLogList, got.DelegationRequestLogList)
 	require.Equal(t, genesisState.DelegationRequestLogCount, got.DelegationRequestLogCount)
+	require.ElementsMatch(t, genesisState.CalculationTimeList, got.CalculationTimeList)
+	require.Equal(t, genesisState.CalculationTimeCount, got.CalculationTimeCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

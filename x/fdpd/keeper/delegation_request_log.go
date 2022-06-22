@@ -104,3 +104,20 @@ func GetDelegationRequestLogIDBytes(id uint64) []byte {
 func GetDelegationRequestLogIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
+
+func (k Keeper) GetAllDelegationRequestLogByLabel(ctx sdk.Context, label string) (list []types.DelegationRequestLog) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DelegationRequestLogKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.DelegationRequestLog
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.RequestLabel == label{
+			list = append(list, val)
+		}
+	}
+
+	return
+}

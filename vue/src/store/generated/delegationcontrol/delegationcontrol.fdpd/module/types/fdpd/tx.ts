@@ -392,6 +392,43 @@ export interface MsgDeleteDelegationRequestLog {
 
 export interface MsgDeleteDelegationRequestLogResponse {}
 
+export interface MsgCreateCalculationTime {
+  creator: string;
+  startTimestamp: string;
+  endTimestamp: string;
+  duration: number;
+  requestLabel: string;
+}
+
+export interface MsgCreateCalculationTimeResponse {
+  id: number;
+}
+
+export interface MsgUpdateCalculationTime {
+  creator: string;
+  id: number;
+  startTimestamp: string;
+  endTimestamp: string;
+  duration: number;
+  requestLabel: string;
+}
+
+export interface MsgUpdateCalculationTimeResponse {}
+
+export interface MsgDeleteCalculationTime {
+  creator: string;
+  id: number;
+}
+
+export interface MsgDeleteCalculationTimeResponse {}
+
+export interface MsgCalculateRequestDelegationTiming {
+  creator: string;
+  requestLabel: string;
+}
+
+export interface MsgCalculateRequestDelegationTimingResponse {}
+
 const baseMsgCreateLocalDomain: object = {
   creator: "",
   name: "",
@@ -7794,6 +7831,717 @@ export const MsgDeleteDelegationRequestLogResponse = {
   },
 };
 
+const baseMsgCreateCalculationTime: object = {
+  creator: "",
+  startTimestamp: "",
+  endTimestamp: "",
+  duration: 0,
+  requestLabel: "",
+};
+
+export const MsgCreateCalculationTime = {
+  encode(
+    message: MsgCreateCalculationTime,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.startTimestamp !== "") {
+      writer.uint32(18).string(message.startTimestamp);
+    }
+    if (message.endTimestamp !== "") {
+      writer.uint32(26).string(message.endTimestamp);
+    }
+    if (message.duration !== 0) {
+      writer.uint32(32).uint64(message.duration);
+    }
+    if (message.requestLabel !== "") {
+      writer.uint32(42).string(message.requestLabel);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateCalculationTime {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateCalculationTime,
+    } as MsgCreateCalculationTime;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.startTimestamp = reader.string();
+          break;
+        case 3:
+          message.endTimestamp = reader.string();
+          break;
+        case 4:
+          message.duration = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
+          message.requestLabel = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateCalculationTime {
+    const message = {
+      ...baseMsgCreateCalculationTime,
+    } as MsgCreateCalculationTime;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.startTimestamp !== undefined && object.startTimestamp !== null) {
+      message.startTimestamp = String(object.startTimestamp);
+    } else {
+      message.startTimestamp = "";
+    }
+    if (object.endTimestamp !== undefined && object.endTimestamp !== null) {
+      message.endTimestamp = String(object.endTimestamp);
+    } else {
+      message.endTimestamp = "";
+    }
+    if (object.duration !== undefined && object.duration !== null) {
+      message.duration = Number(object.duration);
+    } else {
+      message.duration = 0;
+    }
+    if (object.requestLabel !== undefined && object.requestLabel !== null) {
+      message.requestLabel = String(object.requestLabel);
+    } else {
+      message.requestLabel = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateCalculationTime): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.startTimestamp !== undefined &&
+      (obj.startTimestamp = message.startTimestamp);
+    message.endTimestamp !== undefined &&
+      (obj.endTimestamp = message.endTimestamp);
+    message.duration !== undefined && (obj.duration = message.duration);
+    message.requestLabel !== undefined &&
+      (obj.requestLabel = message.requestLabel);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateCalculationTime>
+  ): MsgCreateCalculationTime {
+    const message = {
+      ...baseMsgCreateCalculationTime,
+    } as MsgCreateCalculationTime;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.startTimestamp !== undefined && object.startTimestamp !== null) {
+      message.startTimestamp = object.startTimestamp;
+    } else {
+      message.startTimestamp = "";
+    }
+    if (object.endTimestamp !== undefined && object.endTimestamp !== null) {
+      message.endTimestamp = object.endTimestamp;
+    } else {
+      message.endTimestamp = "";
+    }
+    if (object.duration !== undefined && object.duration !== null) {
+      message.duration = object.duration;
+    } else {
+      message.duration = 0;
+    }
+    if (object.requestLabel !== undefined && object.requestLabel !== null) {
+      message.requestLabel = object.requestLabel;
+    } else {
+      message.requestLabel = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateCalculationTimeResponse: object = { id: 0 };
+
+export const MsgCreateCalculationTimeResponse = {
+  encode(
+    message: MsgCreateCalculationTimeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateCalculationTimeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateCalculationTimeResponse,
+    } as MsgCreateCalculationTimeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateCalculationTimeResponse {
+    const message = {
+      ...baseMsgCreateCalculationTimeResponse,
+    } as MsgCreateCalculationTimeResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateCalculationTimeResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateCalculationTimeResponse>
+  ): MsgCreateCalculationTimeResponse {
+    const message = {
+      ...baseMsgCreateCalculationTimeResponse,
+    } as MsgCreateCalculationTimeResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateCalculationTime: object = {
+  creator: "",
+  id: 0,
+  startTimestamp: "",
+  endTimestamp: "",
+  duration: 0,
+  requestLabel: "",
+};
+
+export const MsgUpdateCalculationTime = {
+  encode(
+    message: MsgUpdateCalculationTime,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    if (message.startTimestamp !== "") {
+      writer.uint32(26).string(message.startTimestamp);
+    }
+    if (message.endTimestamp !== "") {
+      writer.uint32(34).string(message.endTimestamp);
+    }
+    if (message.duration !== 0) {
+      writer.uint32(40).uint64(message.duration);
+    }
+    if (message.requestLabel !== "") {
+      writer.uint32(50).string(message.requestLabel);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateCalculationTime {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateCalculationTime,
+    } as MsgUpdateCalculationTime;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.startTimestamp = reader.string();
+          break;
+        case 4:
+          message.endTimestamp = reader.string();
+          break;
+        case 5:
+          message.duration = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.requestLabel = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateCalculationTime {
+    const message = {
+      ...baseMsgUpdateCalculationTime,
+    } as MsgUpdateCalculationTime;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    if (object.startTimestamp !== undefined && object.startTimestamp !== null) {
+      message.startTimestamp = String(object.startTimestamp);
+    } else {
+      message.startTimestamp = "";
+    }
+    if (object.endTimestamp !== undefined && object.endTimestamp !== null) {
+      message.endTimestamp = String(object.endTimestamp);
+    } else {
+      message.endTimestamp = "";
+    }
+    if (object.duration !== undefined && object.duration !== null) {
+      message.duration = Number(object.duration);
+    } else {
+      message.duration = 0;
+    }
+    if (object.requestLabel !== undefined && object.requestLabel !== null) {
+      message.requestLabel = String(object.requestLabel);
+    } else {
+      message.requestLabel = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUpdateCalculationTime): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    message.startTimestamp !== undefined &&
+      (obj.startTimestamp = message.startTimestamp);
+    message.endTimestamp !== undefined &&
+      (obj.endTimestamp = message.endTimestamp);
+    message.duration !== undefined && (obj.duration = message.duration);
+    message.requestLabel !== undefined &&
+      (obj.requestLabel = message.requestLabel);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgUpdateCalculationTime>
+  ): MsgUpdateCalculationTime {
+    const message = {
+      ...baseMsgUpdateCalculationTime,
+    } as MsgUpdateCalculationTime;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    if (object.startTimestamp !== undefined && object.startTimestamp !== null) {
+      message.startTimestamp = object.startTimestamp;
+    } else {
+      message.startTimestamp = "";
+    }
+    if (object.endTimestamp !== undefined && object.endTimestamp !== null) {
+      message.endTimestamp = object.endTimestamp;
+    } else {
+      message.endTimestamp = "";
+    }
+    if (object.duration !== undefined && object.duration !== null) {
+      message.duration = object.duration;
+    } else {
+      message.duration = 0;
+    }
+    if (object.requestLabel !== undefined && object.requestLabel !== null) {
+      message.requestLabel = object.requestLabel;
+    } else {
+      message.requestLabel = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateCalculationTimeResponse: object = {};
+
+export const MsgUpdateCalculationTimeResponse = {
+  encode(
+    _: MsgUpdateCalculationTimeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateCalculationTimeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateCalculationTimeResponse,
+    } as MsgUpdateCalculationTimeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateCalculationTimeResponse {
+    const message = {
+      ...baseMsgUpdateCalculationTimeResponse,
+    } as MsgUpdateCalculationTimeResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUpdateCalculationTimeResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUpdateCalculationTimeResponse>
+  ): MsgUpdateCalculationTimeResponse {
+    const message = {
+      ...baseMsgUpdateCalculationTimeResponse,
+    } as MsgUpdateCalculationTimeResponse;
+    return message;
+  },
+};
+
+const baseMsgDeleteCalculationTime: object = { creator: "", id: 0 };
+
+export const MsgDeleteCalculationTime = {
+  encode(
+    message: MsgDeleteCalculationTime,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteCalculationTime {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteCalculationTime,
+    } as MsgDeleteCalculationTime;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteCalculationTime {
+    const message = {
+      ...baseMsgDeleteCalculationTime,
+    } as MsgDeleteCalculationTime;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgDeleteCalculationTime): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgDeleteCalculationTime>
+  ): MsgDeleteCalculationTime {
+    const message = {
+      ...baseMsgDeleteCalculationTime,
+    } as MsgDeleteCalculationTime;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgDeleteCalculationTimeResponse: object = {};
+
+export const MsgDeleteCalculationTimeResponse = {
+  encode(
+    _: MsgDeleteCalculationTimeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteCalculationTimeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteCalculationTimeResponse,
+    } as MsgDeleteCalculationTimeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteCalculationTimeResponse {
+    const message = {
+      ...baseMsgDeleteCalculationTimeResponse,
+    } as MsgDeleteCalculationTimeResponse;
+    return message;
+  },
+
+  toJSON(_: MsgDeleteCalculationTimeResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgDeleteCalculationTimeResponse>
+  ): MsgDeleteCalculationTimeResponse {
+    const message = {
+      ...baseMsgDeleteCalculationTimeResponse,
+    } as MsgDeleteCalculationTimeResponse;
+    return message;
+  },
+};
+
+const baseMsgCalculateRequestDelegationTiming: object = {
+  creator: "",
+  requestLabel: "",
+};
+
+export const MsgCalculateRequestDelegationTiming = {
+  encode(
+    message: MsgCalculateRequestDelegationTiming,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.requestLabel !== "") {
+      writer.uint32(18).string(message.requestLabel);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCalculateRequestDelegationTiming {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCalculateRequestDelegationTiming,
+    } as MsgCalculateRequestDelegationTiming;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.requestLabel = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCalculateRequestDelegationTiming {
+    const message = {
+      ...baseMsgCalculateRequestDelegationTiming,
+    } as MsgCalculateRequestDelegationTiming;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.requestLabel !== undefined && object.requestLabel !== null) {
+      message.requestLabel = String(object.requestLabel);
+    } else {
+      message.requestLabel = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCalculateRequestDelegationTiming): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.requestLabel !== undefined &&
+      (obj.requestLabel = message.requestLabel);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCalculateRequestDelegationTiming>
+  ): MsgCalculateRequestDelegationTiming {
+    const message = {
+      ...baseMsgCalculateRequestDelegationTiming,
+    } as MsgCalculateRequestDelegationTiming;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.requestLabel !== undefined && object.requestLabel !== null) {
+      message.requestLabel = object.requestLabel;
+    } else {
+      message.requestLabel = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCalculateRequestDelegationTimingResponse: object = {};
+
+export const MsgCalculateRequestDelegationTimingResponse = {
+  encode(
+    _: MsgCalculateRequestDelegationTimingResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCalculateRequestDelegationTimingResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCalculateRequestDelegationTimingResponse,
+    } as MsgCalculateRequestDelegationTimingResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCalculateRequestDelegationTimingResponse {
+    const message = {
+      ...baseMsgCalculateRequestDelegationTimingResponse,
+    } as MsgCalculateRequestDelegationTimingResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCalculateRequestDelegationTimingResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCalculateRequestDelegationTimingResponse>
+  ): MsgCalculateRequestDelegationTimingResponse {
+    const message = {
+      ...baseMsgCalculateRequestDelegationTimingResponse,
+    } as MsgCalculateRequestDelegationTimingResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateLocalDomain(
@@ -7916,10 +8664,22 @@ export interface Msg {
   UpdateDelegationRequestLog(
     request: MsgUpdateDelegationRequestLog
   ): Promise<MsgUpdateDelegationRequestLogResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteDelegationRequestLog(
     request: MsgDeleteDelegationRequestLog
   ): Promise<MsgDeleteDelegationRequestLogResponse>;
+  CreateCalculationTime(
+    request: MsgCreateCalculationTime
+  ): Promise<MsgCreateCalculationTimeResponse>;
+  UpdateCalculationTime(
+    request: MsgUpdateCalculationTime
+  ): Promise<MsgUpdateCalculationTimeResponse>;
+  DeleteCalculationTime(
+    request: MsgDeleteCalculationTime
+  ): Promise<MsgDeleteCalculationTimeResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CalculateRequestDelegationTiming(
+    request: MsgCalculateRequestDelegationTiming
+  ): Promise<MsgCalculateRequestDelegationTimingResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -8520,6 +9280,62 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgDeleteDelegationRequestLogResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateCalculationTime(
+    request: MsgCreateCalculationTime
+  ): Promise<MsgCreateCalculationTimeResponse> {
+    const data = MsgCreateCalculationTime.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "CreateCalculationTime",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateCalculationTimeResponse.decode(new Reader(data))
+    );
+  }
+
+  UpdateCalculationTime(
+    request: MsgUpdateCalculationTime
+  ): Promise<MsgUpdateCalculationTimeResponse> {
+    const data = MsgUpdateCalculationTime.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "UpdateCalculationTime",
+      data
+    );
+    return promise.then((data) =>
+      MsgUpdateCalculationTimeResponse.decode(new Reader(data))
+    );
+  }
+
+  DeleteCalculationTime(
+    request: MsgDeleteCalculationTime
+  ): Promise<MsgDeleteCalculationTimeResponse> {
+    const data = MsgDeleteCalculationTime.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "DeleteCalculationTime",
+      data
+    );
+    return promise.then((data) =>
+      MsgDeleteCalculationTimeResponse.decode(new Reader(data))
+    );
+  }
+
+  CalculateRequestDelegationTiming(
+    request: MsgCalculateRequestDelegationTiming
+  ): Promise<MsgCalculateRequestDelegationTimingResponse> {
+    const data = MsgCalculateRequestDelegationTiming.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "CalculateRequestDelegationTiming",
+      data
+    );
+    return promise.then((data) =>
+      MsgCalculateRequestDelegationTimingResponse.decode(new Reader(data))
     );
   }
 }

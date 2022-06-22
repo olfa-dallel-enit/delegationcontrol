@@ -73,6 +73,10 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCreateDelegationRequestLog())
 	cmd.AddCommand(CmdUpdateDelegationRequestLog())
 	cmd.AddCommand(CmdDeleteDelegationRequestLog())
+	cmd.AddCommand(CmdCreateCalculationTime())
+	cmd.AddCommand(CmdUpdateCalculationTime())
+	cmd.AddCommand(CmdDeleteCalculationTime())
+	cmd.AddCommand(CmdCalculateRequestDelegationTiming())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

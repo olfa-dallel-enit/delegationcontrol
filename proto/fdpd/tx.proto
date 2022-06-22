@@ -10,6 +10,7 @@ import "fdpd/selection_policy.proto";
 import "fdpd/delegation_request.proto";
 import "fdpd/final_delegation_decision.proto";
 import "fdpd/delegation_request_log.proto";
+import "fdpd/calculation_time.proto";
 // this line is used by starport scaffolding # proto/tx/import
 import "fdpd/permission.proto";
 import "fdpd/selection_criteria.proto";
@@ -63,6 +64,10 @@ rpc CreateFinalDelegationDecision(MsgCreateFinalDelegationDecision) returns (Msg
 rpc CreateDelegationRequestLog(MsgCreateDelegationRequestLog) returns (MsgCreateDelegationRequestLogResponse);
   rpc UpdateDelegationRequestLog(MsgUpdateDelegationRequestLog) returns (MsgUpdateDelegationRequestLogResponse);
   rpc DeleteDelegationRequestLog(MsgDeleteDelegationRequestLog) returns (MsgDeleteDelegationRequestLogResponse);
+rpc CreateCalculationTime(MsgCreateCalculationTime) returns (MsgCreateCalculationTimeResponse);
+  rpc UpdateCalculationTime(MsgUpdateCalculationTime) returns (MsgUpdateCalculationTimeResponse);
+  rpc DeleteCalculationTime(MsgDeleteCalculationTime) returns (MsgDeleteCalculationTimeResponse);
+  rpc CalculateRequestDelegationTiming(MsgCalculateRequestDelegationTiming) returns (MsgCalculateRequestDelegationTimingResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -435,5 +440,43 @@ message MsgDeleteDelegationRequestLog {
 }
 
 message MsgDeleteDelegationRequestLogResponse {}
+
+message MsgCreateCalculationTime {
+  string creator = 1;
+  string startTimestamp = 2;
+  string endTimestamp = 3;
+  uint64 duration = 4;
+  string requestLabel = 5;
+}
+
+message MsgCreateCalculationTimeResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateCalculationTime {
+  string creator = 1;
+  uint64 id = 2;
+  string startTimestamp = 3;
+  string endTimestamp = 4;
+  uint64 duration = 5;
+  string requestLabel = 6;
+}
+
+message MsgUpdateCalculationTimeResponse {}
+
+message MsgDeleteCalculationTime {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteCalculationTimeResponse {}
+
+message MsgCalculateRequestDelegationTiming {
+  string creator = 1;
+  string requestLabel = 2;
+}
+
+message MsgCalculateRequestDelegationTimingResponse {
+}
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -11,6 +11,8 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 	"github.com/spf13/cast"
+
+	"time"
 )
 
 // TransmitRequestDelegationPacket transmits the packet over IBC with the specified source port and source channel
@@ -78,13 +80,18 @@ func (k Keeper) OnRecvRequestDelegationPacket(ctx sdk.Context, packet channeltyp
 	// TODO: packet reception logic
 
 	//extract delegation policy to evaluate
-	packetAck.Decision = "permit"
-	packetAck.DecisionDomain = ctx.ChainID()
-	packetAck.DelegationRequestLabel = data.Label
-	packetAck.Cost = ""
-	packetAck.MaxDelegateeNb = ""
-	packetAck.NotBefore = ""
-	packetAck.NotAfter = ""
+
+	delegationDecision, found := k.GetDelegationDecision(ctx, 0)
+
+	if found {
+		packetAck.Decision = "permit"
+		packetAck.DecisionDomain = ctx.ChainID()
+		packetAck.DelegationRequestLabel = data.Label
+		packetAck.Cost = cast.ToString(delegationDecision.DelegationConditions.Cost)
+		packetAck.MaxDelegateeNb = cast.ToString(delegationDecision.DelegationConditions.MaxDelegateeNb)
+		packetAck.NotBefore = delegationDecision.DelegationConditions.Validity.NotBefore
+		packetAck.NotAfter = delegationDecision.DelegationConditions.Validity.NotAfter
+	}
 
 	return packetAck, nil
 }
@@ -125,6 +132,15 @@ func (k Keeper) OnAcknowledgementRequestDelegationPacket(ctx sdk.Context, packet
 					NotAfter:  packetAck.NotAfter,
 				},
 			},
+		})
+
+		k.AppendDelegationRequestLog(ctx, types.DelegationRequestLog{
+			Creator:      ctx.ChainID(),
+			Transaction:  "send-request-delegation",
+			Details:      "ConfirmedBy: " + packetAck.DecisionDomain,
+			RequestLabel: packetAck.DelegationRequestLabel,
+			Function:     "OnAcknowledgementRequestDelegationPacket",
+			Timestamp:    cast.ToString(time.Now().UnixNano()),
 		})
 
 		return nil

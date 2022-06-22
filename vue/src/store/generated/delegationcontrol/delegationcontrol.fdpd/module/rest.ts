@@ -9,6 +9,18 @@
  * ---------------------------------------------------------------
  */
 
+export interface FdpdCalculationTime {
+  /** @format uint64 */
+  id?: string;
+  startTimestamp?: string;
+  endTimestamp?: string;
+
+  /** @format uint64 */
+  duration?: string;
+  requestLabel?: string;
+  creator?: string;
+}
+
 export interface FdpdDecisionPolicy {
   domainList?: string[];
   locationList?: string[];
@@ -62,6 +74,7 @@ export interface FdpdDelegationRequestLog {
   details?: string;
   function?: string;
   creator?: string;
+  timestamp?: string;
 }
 
 export interface FdpdDomain {
@@ -94,9 +107,16 @@ export interface FdpdLocalDomain {
   creator?: string;
 }
 
+export type FdpdMsgCalculateRequestDelegationTimingResponse = object;
+
 export type FdpdMsgCheckDelegationResponse = object;
 
 export type FdpdMsgConfigureLocalDomainResponse = object;
+
+export interface FdpdMsgCreateCalculationTimeResponse {
+  /** @format uint64 */
+  id?: string;
+}
 
 export type FdpdMsgCreateDecisionPolicyResponse = object;
 
@@ -151,6 +171,8 @@ export interface FdpdMsgCreateValidityResponse {
   id?: string;
 }
 
+export type FdpdMsgDeleteCalculationTimeResponse = object;
+
 export type FdpdMsgDeleteDecisionPolicyResponse = object;
 
 export type FdpdMsgDeleteDelegationConditionsResponse = object;
@@ -180,6 +202,8 @@ export type FdpdMsgDeleteValidityResponse = object;
 export type FdpdMsgSendEstablishCooperationResponse = object;
 
 export type FdpdMsgSendRequestDelegationResponse = object;
+
+export type FdpdMsgUpdateCalculationTimeResponse = object;
 
 export type FdpdMsgUpdateDecisionPolicyResponse = object;
 
@@ -218,6 +242,21 @@ export interface FdpdPermission {
   action?: string;
   resource?: string;
   creator?: string;
+}
+
+export interface FdpdQueryAllCalculationTimeResponse {
+  CalculationTime?: FdpdCalculationTime[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
 }
 
 export interface FdpdQueryAllDelegationConditionsResponse {
@@ -353,6 +392,10 @@ export interface FdpdQueryAllValidityResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface FdpdQueryGetCalculationTimeResponse {
+  CalculationTime?: FdpdCalculationTime;
 }
 
 export interface FdpdQueryGetDecisionPolicyResponse {
@@ -717,10 +760,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title fdpd/decision_policy.proto
+ * @title fdpd/calculation_time.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCalculationTimeAll
+   * @summary Queries a list of CalculationTime items.
+   * @request GET:/delegationcontrol/fdpd/calculation_time
+   */
+  queryCalculationTimeAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FdpdQueryAllCalculationTimeResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/calculation_time`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCalculationTime
+   * @summary Queries a CalculationTime by id.
+   * @request GET:/delegationcontrol/fdpd/calculation_time/{id}
+   */
+  queryCalculationTime = (id: string, params: RequestParams = {}) =>
+    this.request<FdpdQueryGetCalculationTimeResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/calculation_time/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

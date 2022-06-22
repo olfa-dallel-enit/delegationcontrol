@@ -188,6 +188,22 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteDelegationRequestLog int = 100
 
+	opWeightMsgCreateCalculationTime = "op_weight_msg_calculation_time"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateCalculationTime int = 100
+
+	opWeightMsgUpdateCalculationTime = "op_weight_msg_calculation_time"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateCalculationTime int = 100
+
+	opWeightMsgDeleteCalculationTime = "op_weight_msg_calculation_time"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteCalculationTime int = 100
+
+	opWeightMsgCalculateRequestDelegationTiming = "op_weight_msg_calculate_request_delegation_timing"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCalculateRequestDelegationTiming int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -299,6 +315,17 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			},
 		},
 		DelegationRequestLogCount: 2,
+		CalculationTimeList: []types.CalculationTime{
+			{
+				Id:      0,
+				Creator: sample.AccAddress(),
+			},
+			{
+				Id:      1,
+				Creator: sample.AccAddress(),
+			},
+		},
+		CalculationTimeCount: 2,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&fdpdGenesis)
@@ -771,6 +798,50 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteDelegationRequestLog,
 		fdpdsimulation.SimulateMsgDeleteDelegationRequestLog(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateCalculationTime int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateCalculationTime, &weightMsgCreateCalculationTime, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateCalculationTime = defaultWeightMsgCreateCalculationTime
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateCalculationTime,
+		fdpdsimulation.SimulateMsgCreateCalculationTime(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateCalculationTime int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateCalculationTime, &weightMsgUpdateCalculationTime, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateCalculationTime = defaultWeightMsgUpdateCalculationTime
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateCalculationTime,
+		fdpdsimulation.SimulateMsgUpdateCalculationTime(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteCalculationTime int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteCalculationTime, &weightMsgDeleteCalculationTime, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteCalculationTime = defaultWeightMsgDeleteCalculationTime
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteCalculationTime,
+		fdpdsimulation.SimulateMsgDeleteCalculationTime(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCalculateRequestDelegationTiming int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCalculateRequestDelegationTiming, &weightMsgCalculateRequestDelegationTiming, nil,
+		func(_ *rand.Rand) {
+			weightMsgCalculateRequestDelegationTiming = defaultWeightMsgCalculateRequestDelegationTiming
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCalculateRequestDelegationTiming,
+		fdpdsimulation.SimulateMsgCalculateRequestDelegationTiming(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

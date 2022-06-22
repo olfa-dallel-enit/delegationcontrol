@@ -10,4 +10,5 @@ message DelegationRequestLog {
   string details = 4; 
   string function = 5; 
   string creator = 6;
+  string timestamp = 7;
 }

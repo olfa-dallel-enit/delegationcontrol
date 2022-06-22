@@ -18,6 +18,7 @@ import "fdpd/selection_criteria.proto";
 import "fdpd/delegation_request.proto";
 import "fdpd/final_delegation_decision.proto";
 import "fdpd/delegation_request_log.proto";
+import "fdpd/calculation_time.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "delegationcontrol/x/fdpd/types";
@@ -132,6 +133,16 @@ service Query {
 	// Queries a list of DelegationRequestLog items.
 	rpc DelegationRequestLogAll(QueryAllDelegationRequestLogRequest) returns (QueryAllDelegationRequestLogResponse) {
 		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_request_log";
+	}
+
+// Queries a CalculationTime by id.
+	rpc CalculationTime(QueryGetCalculationTimeRequest) returns (QueryGetCalculationTimeResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/calculation_time/{id}";
+	}
+
+	// Queries a list of CalculationTime items.
+	rpc CalculationTimeAll(QueryAllCalculationTimeRequest) returns (QueryAllCalculationTimeResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/calculation_time";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -316,6 +327,23 @@ message QueryAllDelegationRequestLogRequest {
 
 message QueryAllDelegationRequestLogResponse {
 	repeated DelegationRequestLog DelegationRequestLog = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCalculationTimeRequest {
+	uint64 id = 1;
+}
+
+message QueryGetCalculationTimeResponse {
+	CalculationTime CalculationTime = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCalculationTimeRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCalculationTimeResponse {
+	repeated CalculationTime CalculationTime = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

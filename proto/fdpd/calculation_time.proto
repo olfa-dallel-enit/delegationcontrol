@@ -1,0 +1,13 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+message CalculationTime {
+  uint64 id = 1;
+  string startTimestamp = 2; 
+  string endTimestamp = 3; 
+  uint64 duration = 4; 
+  string requestLabel = 5; 
+  string creator = 6;
+}

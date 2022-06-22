@@ -15,6 +15,7 @@ import { SelectionCriteria } from "../fdpd/selection_criteria";
 import { DelegationRequest } from "../fdpd/delegation_request";
 import { FinalDelegationDecision } from "../fdpd/final_delegation_decision";
 import { DelegationRequestLog } from "../fdpd/delegation_request_log";
+import { CalculationTime } from "../fdpd/calculation_time";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -43,8 +44,10 @@ export interface GenesisState {
   finalDelegationDecisionList: FinalDelegationDecision[];
   finalDelegationDecisionCount: number;
   delegationRequestLogList: DelegationRequestLog[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   delegationRequestLogCount: number;
+  calculationTimeList: CalculationTime[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  calculationTimeCount: number;
 }
 
 const baseGenesisState: object = {
@@ -58,6 +61,7 @@ const baseGenesisState: object = {
   delegationRequestCount: 0,
   finalDelegationDecisionCount: 0,
   delegationRequestLogCount: 0,
+  calculationTimeCount: 0,
 };
 
 export const GenesisState = {
@@ -146,6 +150,12 @@ export const GenesisState = {
     if (message.delegationRequestLogCount !== 0) {
       writer.uint32(192).uint64(message.delegationRequestLogCount);
     }
+    for (const v of message.calculationTimeList) {
+      CalculationTime.encode(v!, writer.uint32(202).fork()).ldelim();
+    }
+    if (message.calculationTimeCount !== 0) {
+      writer.uint32(208).uint64(message.calculationTimeCount);
+    }
     return writer;
   },
 
@@ -162,6 +172,7 @@ export const GenesisState = {
     message.delegationRequestList = [];
     message.finalDelegationDecisionList = [];
     message.delegationRequestLogList = [];
+    message.calculationTimeList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -269,6 +280,14 @@ export const GenesisState = {
             reader.uint64() as Long
           );
           break;
+        case 25:
+          message.calculationTimeList.push(
+            CalculationTime.decode(reader, reader.uint32())
+          );
+          break;
+        case 26:
+          message.calculationTimeCount = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -288,6 +307,7 @@ export const GenesisState = {
     message.delegationRequestList = [];
     message.finalDelegationDecisionList = [];
     message.delegationRequestLogList = [];
+    message.calculationTimeList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -460,6 +480,22 @@ export const GenesisState = {
     } else {
       message.delegationRequestLogCount = 0;
     }
+    if (
+      object.calculationTimeList !== undefined &&
+      object.calculationTimeList !== null
+    ) {
+      for (const e of object.calculationTimeList) {
+        message.calculationTimeList.push(CalculationTime.fromJSON(e));
+      }
+    }
+    if (
+      object.calculationTimeCount !== undefined &&
+      object.calculationTimeCount !== null
+    ) {
+      message.calculationTimeCount = Number(object.calculationTimeCount);
+    } else {
+      message.calculationTimeCount = 0;
+    }
     return message;
   },
 
@@ -565,6 +601,15 @@ export const GenesisState = {
     }
     message.delegationRequestLogCount !== undefined &&
       (obj.delegationRequestLogCount = message.delegationRequestLogCount);
+    if (message.calculationTimeList) {
+      obj.calculationTimeList = message.calculationTimeList.map((e) =>
+        e ? CalculationTime.toJSON(e) : undefined
+      );
+    } else {
+      obj.calculationTimeList = [];
+    }
+    message.calculationTimeCount !== undefined &&
+      (obj.calculationTimeCount = message.calculationTimeCount);
     return obj;
   },
 
@@ -579,6 +624,7 @@ export const GenesisState = {
     message.delegationRequestList = [];
     message.finalDelegationDecisionList = [];
     message.delegationRequestLogList = [];
+    message.calculationTimeList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -751,6 +797,22 @@ export const GenesisState = {
       message.delegationRequestLogCount = object.delegationRequestLogCount;
     } else {
       message.delegationRequestLogCount = 0;
+    }
+    if (
+      object.calculationTimeList !== undefined &&
+      object.calculationTimeList !== null
+    ) {
+      for (const e of object.calculationTimeList) {
+        message.calculationTimeList.push(CalculationTime.fromPartial(e));
+      }
+    }
+    if (
+      object.calculationTimeCount !== undefined &&
+      object.calculationTimeCount !== null
+    ) {
+      message.calculationTimeCount = object.calculationTimeCount;
+    } else {
+      message.calculationTimeCount = 0;
     }
     return message;
   },

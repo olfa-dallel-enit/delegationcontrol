@@ -11,6 +11,7 @@ export interface DelegationRequestLog {
   details: string;
   function: string;
   creator: string;
+  timestamp: string;
 }
 
 const baseDelegationRequestLog: object = {
@@ -20,6 +21,7 @@ const baseDelegationRequestLog: object = {
   details: "",
   function: "",
   creator: "",
+  timestamp: "",
 };
 
 export const DelegationRequestLog = {
@@ -44,6 +46,9 @@ export const DelegationRequestLog = {
     }
     if (message.creator !== "") {
       writer.uint32(50).string(message.creator);
+    }
+    if (message.timestamp !== "") {
+      writer.uint32(58).string(message.timestamp);
     }
     return writer;
   },
@@ -72,6 +77,9 @@ export const DelegationRequestLog = {
           break;
         case 6:
           message.creator = reader.string();
+          break;
+        case 7:
+          message.timestamp = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -113,6 +121,11 @@ export const DelegationRequestLog = {
     } else {
       message.creator = "";
     }
+    if (object.timestamp !== undefined && object.timestamp !== null) {
+      message.timestamp = String(object.timestamp);
+    } else {
+      message.timestamp = "";
+    }
     return message;
   },
 
@@ -126,6 +139,7 @@ export const DelegationRequestLog = {
     message.details !== undefined && (obj.details = message.details);
     message.function !== undefined && (obj.function = message.function);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.timestamp !== undefined && (obj.timestamp = message.timestamp);
     return obj;
   },
 
@@ -160,6 +174,11 @@ export const DelegationRequestLog = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.timestamp !== undefined && object.timestamp !== null) {
+      message.timestamp = object.timestamp;
+    } else {
+      message.timestamp = "";
     }
     return message;
   },

@@ -88,6 +88,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 	// Set delegationRequestLog count
 	k.SetDelegationRequestLogCount(ctx, genState.DelegationRequestLogCount)
+	// Set all the calculationTime
+	for _, elem := range genState.CalculationTimeList {
+		k.SetCalculationTime(ctx, elem)
+	}
+
+	// Set calculationTime count
+	k.SetCalculationTimeCount(ctx, genState.CalculationTimeCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -147,6 +154,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.FinalDelegationDecisionCount = k.GetFinalDelegationDecisionCount(ctx)
 	genesis.DelegationRequestLogList = k.GetAllDelegationRequestLog(ctx)
 	genesis.DelegationRequestLogCount = k.GetDelegationRequestLogCount(ctx)
+	genesis.CalculationTimeList = k.GetAllCalculationTime(ctx)
+	genesis.CalculationTimeCount = k.GetCalculationTimeCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

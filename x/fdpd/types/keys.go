@@ -92,3 +92,8 @@ const (
 	DelegationRequestLogKey      = "DelegationRequestLog-value-"
 	DelegationRequestLogCountKey = "DelegationRequestLog-count-"
 )
+
+const (
+	CalculationTimeKey      = "CalculationTime-value-"
+	CalculationTimeCountKey = "CalculationTime-count-"
+)

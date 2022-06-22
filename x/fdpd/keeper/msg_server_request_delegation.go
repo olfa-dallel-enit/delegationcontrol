@@ -6,12 +6,24 @@ import (
 	"delegationcontrol/x/fdpd/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	clienttypes "github.com/cosmos/ibc-go/v3/modules/core/02-client/types"
+
+	"github.com/spf13/cast"
+	"time"
 )
 
 func (k msgServer) SendRequestDelegation(goCtx context.Context, msg *types.MsgSendRequestDelegation) (*types.MsgSendRequestDelegationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: logic before transmitting the packet
+
+	k.AppendDelegationRequestLog(ctx, types.DelegationRequestLog{
+		Creator:      ctx.ChainID(),
+		Transaction:  "send-request-delegation",
+		Details:      "",
+		RequestLabel: msg.DelegationRequest.Label,
+		Function:     "SendRequestDelegation",
+		Timestamp:    cast.ToString(time.Now().UnixNano()),
+	})
 
 	forwardPolicy, found := k.GetForwardPolicy(ctx)
 

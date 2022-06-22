@@ -19,6 +19,7 @@ import { SelectionCriteria } from "../fdpd/selection_criteria";
 import { DelegationRequest } from "../fdpd/delegation_request";
 import { FinalDelegationDecision } from "../fdpd/final_delegation_decision";
 import { DelegationRequestLog } from "../fdpd/delegation_request_log";
+import { CalculationTime } from "../fdpd/calculation_time";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -205,6 +206,23 @@ export interface QueryAllDelegationRequestLogRequest {
 
 export interface QueryAllDelegationRequestLogResponse {
   DelegationRequestLog: DelegationRequestLog[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetCalculationTimeRequest {
+  id: number;
+}
+
+export interface QueryGetCalculationTimeResponse {
+  CalculationTime: CalculationTime | undefined;
+}
+
+export interface QueryAllCalculationTimeRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllCalculationTimeResponse {
+  CalculationTime: CalculationTime[];
   pagination: PageResponse | undefined;
 }
 
@@ -3761,6 +3779,344 @@ export const QueryAllDelegationRequestLogResponse = {
   },
 };
 
+const baseQueryGetCalculationTimeRequest: object = { id: 0 };
+
+export const QueryGetCalculationTimeRequest = {
+  encode(
+    message: QueryGetCalculationTimeRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetCalculationTimeRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetCalculationTimeRequest,
+    } as QueryGetCalculationTimeRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetCalculationTimeRequest {
+    const message = {
+      ...baseQueryGetCalculationTimeRequest,
+    } as QueryGetCalculationTimeRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetCalculationTimeRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetCalculationTimeRequest>
+  ): QueryGetCalculationTimeRequest {
+    const message = {
+      ...baseQueryGetCalculationTimeRequest,
+    } as QueryGetCalculationTimeRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetCalculationTimeResponse: object = {};
+
+export const QueryGetCalculationTimeResponse = {
+  encode(
+    message: QueryGetCalculationTimeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.CalculationTime !== undefined) {
+      CalculationTime.encode(
+        message.CalculationTime,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetCalculationTimeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetCalculationTimeResponse,
+    } as QueryGetCalculationTimeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.CalculationTime = CalculationTime.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetCalculationTimeResponse {
+    const message = {
+      ...baseQueryGetCalculationTimeResponse,
+    } as QueryGetCalculationTimeResponse;
+    if (
+      object.CalculationTime !== undefined &&
+      object.CalculationTime !== null
+    ) {
+      message.CalculationTime = CalculationTime.fromJSON(
+        object.CalculationTime
+      );
+    } else {
+      message.CalculationTime = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetCalculationTimeResponse): unknown {
+    const obj: any = {};
+    message.CalculationTime !== undefined &&
+      (obj.CalculationTime = message.CalculationTime
+        ? CalculationTime.toJSON(message.CalculationTime)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetCalculationTimeResponse>
+  ): QueryGetCalculationTimeResponse {
+    const message = {
+      ...baseQueryGetCalculationTimeResponse,
+    } as QueryGetCalculationTimeResponse;
+    if (
+      object.CalculationTime !== undefined &&
+      object.CalculationTime !== null
+    ) {
+      message.CalculationTime = CalculationTime.fromPartial(
+        object.CalculationTime
+      );
+    } else {
+      message.CalculationTime = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllCalculationTimeRequest: object = {};
+
+export const QueryAllCalculationTimeRequest = {
+  encode(
+    message: QueryAllCalculationTimeRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllCalculationTimeRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllCalculationTimeRequest,
+    } as QueryAllCalculationTimeRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllCalculationTimeRequest {
+    const message = {
+      ...baseQueryAllCalculationTimeRequest,
+    } as QueryAllCalculationTimeRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllCalculationTimeRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllCalculationTimeRequest>
+  ): QueryAllCalculationTimeRequest {
+    const message = {
+      ...baseQueryAllCalculationTimeRequest,
+    } as QueryAllCalculationTimeRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllCalculationTimeResponse: object = {};
+
+export const QueryAllCalculationTimeResponse = {
+  encode(
+    message: QueryAllCalculationTimeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.CalculationTime) {
+      CalculationTime.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllCalculationTimeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllCalculationTimeResponse,
+    } as QueryAllCalculationTimeResponse;
+    message.CalculationTime = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.CalculationTime.push(
+            CalculationTime.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllCalculationTimeResponse {
+    const message = {
+      ...baseQueryAllCalculationTimeResponse,
+    } as QueryAllCalculationTimeResponse;
+    message.CalculationTime = [];
+    if (
+      object.CalculationTime !== undefined &&
+      object.CalculationTime !== null
+    ) {
+      for (const e of object.CalculationTime) {
+        message.CalculationTime.push(CalculationTime.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllCalculationTimeResponse): unknown {
+    const obj: any = {};
+    if (message.CalculationTime) {
+      obj.CalculationTime = message.CalculationTime.map((e) =>
+        e ? CalculationTime.toJSON(e) : undefined
+      );
+    } else {
+      obj.CalculationTime = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllCalculationTimeResponse>
+  ): QueryAllCalculationTimeResponse {
+    const message = {
+      ...baseQueryAllCalculationTimeResponse,
+    } as QueryAllCalculationTimeResponse;
+    message.CalculationTime = [];
+    if (
+      object.CalculationTime !== undefined &&
+      object.CalculationTime !== null
+    ) {
+      for (const e of object.CalculationTime) {
+        message.CalculationTime.push(CalculationTime.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -3847,6 +4203,14 @@ export interface Query {
   DelegationRequestLogAll(
     request: QueryAllDelegationRequestLogRequest
   ): Promise<QueryAllDelegationRequestLogResponse>;
+  /** Queries a CalculationTime by id. */
+  CalculationTime(
+    request: QueryGetCalculationTimeRequest
+  ): Promise<QueryGetCalculationTimeResponse>;
+  /** Queries a list of CalculationTime items. */
+  CalculationTimeAll(
+    request: QueryAllCalculationTimeRequest
+  ): Promise<QueryAllCalculationTimeResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -4169,6 +4533,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllDelegationRequestLogResponse.decode(new Reader(data))
+    );
+  }
+
+  CalculationTime(
+    request: QueryGetCalculationTimeRequest
+  ): Promise<QueryGetCalculationTimeResponse> {
+    const data = QueryGetCalculationTimeRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Query",
+      "CalculationTime",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetCalculationTimeResponse.decode(new Reader(data))
+    );
+  }
+
+  CalculationTimeAll(
+    request: QueryAllCalculationTimeRequest
+  ): Promise<QueryAllCalculationTimeResponse> {
+    const data = QueryAllCalculationTimeRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Query",
+      "CalculationTimeAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllCalculationTimeResponse.decode(new Reader(data))
     );
   }
 }
