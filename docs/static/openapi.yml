@@ -20062,6 +20062,8 @@ paths:
                           type: string
                     creator:
                       type: string
+                    decisionDomain:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -20211,6 +20213,8 @@ paths:
                       creator:
                         type: string
                   creator:
+                    type: string
+                  decisionDomain:
                     type: string
         default:
           description: An unexpected error response.
@@ -20712,6 +20716,67 @@ paths:
           required: true
           type: string
           format: uint64
+      tags:
+        - Query
+  /delegationcontrol/fdpd/selection_policy:
+    get:
+      summary: Queries a SelectionPolicy by index.
+      operationId: DelegationcontrolFdpdSelectionPolicy
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              SelectionPolicy:
+                type: object
+                properties:
+                  domainList:
+                    type: array
+                    items:
+                      type: string
+                  delegatorLocationList:
+                    type: array
+                    items:
+                      type: string
+                  cost:
+                    type: string
+                    format: uint64
+                  nbDelegations:
+                    type: string
+                    format: uint64
+                  validity:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uint64
+                      notBefore:
+                        type: string
+                      notAfter:
+                        type: string
+                      creator:
+                        type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   /delegationcontrol/fdpd/validity:
@@ -48326,6 +48391,8 @@ definitions:
             type: string
       creator:
         type: string
+      decisionDomain:
+        type: string
   delegationcontrol.fdpd.Domain:
     type: object
     properties:
@@ -48396,6 +48463,8 @@ definitions:
       id:
         type: string
         format: uint64
+  delegationcontrol.fdpd.MsgCreateSelectionPolicyResponse:
+    type: object
   delegationcontrol.fdpd.MsgCreateValidityResponse:
     type: object
     properties:
@@ -48416,6 +48485,8 @@ definitions:
     type: object
   delegationcontrol.fdpd.MsgDeletePermissionResponse:
     type: object
+  delegationcontrol.fdpd.MsgDeleteSelectionPolicyResponse:
+    type: object
   delegationcontrol.fdpd.MsgDeleteValidityResponse:
     type: object
   delegationcontrol.fdpd.MsgSendEstablishCooperationResponse:
@@ -48435,6 +48506,8 @@ definitions:
   delegationcontrol.fdpd.MsgUpdateLocalDomainResponse:
     type: object
   delegationcontrol.fdpd.MsgUpdatePermissionResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateSelectionPolicyResponse:
     type: object
   delegationcontrol.fdpd.MsgUpdateValidityResponse:
     type: object
@@ -48549,6 +48622,8 @@ definitions:
                 creator:
                   type: string
             creator:
+              type: string
+            decisionDomain:
               type: string
       pagination:
         type: object
@@ -48805,6 +48880,8 @@ definitions:
                 type: string
           creator:
             type: string
+          decisionDomain:
+            type: string
   delegationcontrol.fdpd.QueryGetDomainResponse:
     type: object
     properties:
@@ -48867,6 +48944,40 @@ definitions:
             type: string
           creator:
             type: string
+  delegationcontrol.fdpd.QueryGetSelectionPolicyResponse:
+    type: object
+    properties:
+      SelectionPolicy:
+        type: object
+        properties:
+          domainList:
+            type: array
+            items:
+              type: string
+          delegatorLocationList:
+            type: array
+            items:
+              type: string
+          cost:
+            type: string
+            format: uint64
+          nbDelegations:
+            type: string
+            format: uint64
+          validity:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uint64
+              notBefore:
+                type: string
+              notAfter:
+                type: string
+              creator:
+                type: string
+          creator:
+            type: string
   delegationcontrol.fdpd.QueryGetValidityResponse:
     type: object
     properties:
@@ -48889,6 +49000,37 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  delegationcontrol.fdpd.SelectionPolicy:
+    type: object
+    properties:
+      domainList:
+        type: array
+        items:
+          type: string
+      delegatorLocationList:
+        type: array
+        items:
+          type: string
+      cost:
+        type: string
+        format: uint64
+      nbDelegations:
+        type: string
+        format: uint64
+      validity:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          notBefore:
+            type: string
+          notAfter:
+            type: string
+          creator:
+            type: string
+      creator:
+        type: string
   delegationcontrol.fdpd.Validity:
     type: object
     properties:

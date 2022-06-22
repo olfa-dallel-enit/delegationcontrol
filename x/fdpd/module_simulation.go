@@ -124,6 +124,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteDelegationDecision int = 100
 
+	opWeightMsgCreateSelectionPolicy = "op_weight_msg_selection_policy"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateSelectionPolicy int = 100
+
+	opWeightMsgUpdateSelectionPolicy = "op_weight_msg_selection_policy"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateSelectionPolicy int = 100
+
+	opWeightMsgDeleteSelectionPolicy = "op_weight_msg_selection_policy"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteSelectionPolicy int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -487,6 +499,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteDelegationDecision,
 		fdpdsimulation.SimulateMsgDeleteDelegationDecision(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateSelectionPolicy int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateSelectionPolicy, &weightMsgCreateSelectionPolicy, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateSelectionPolicy = defaultWeightMsgCreateSelectionPolicy
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateSelectionPolicy,
+		fdpdsimulation.SimulateMsgCreateSelectionPolicy(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateSelectionPolicy int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateSelectionPolicy, &weightMsgUpdateSelectionPolicy, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateSelectionPolicy = defaultWeightMsgUpdateSelectionPolicy
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateSelectionPolicy,
+		fdpdsimulation.SimulateMsgUpdateSelectionPolicy(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteSelectionPolicy int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteSelectionPolicy, &weightMsgDeleteSelectionPolicy, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteSelectionPolicy = defaultWeightMsgDeleteSelectionPolicy
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteSelectionPolicy,
+		fdpdsimulation.SimulateMsgDeleteSelectionPolicy(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -10,6 +10,7 @@ import { DecisionPolicy } from "../fdpd/decision_policy";
 import { Permission } from "../fdpd/permission";
 import { DelegationConditions } from "../fdpd/delegation_conditions";
 import { DelegationDecision } from "../fdpd/delegation_decision";
+import { SelectionPolicy } from "../fdpd/selection_policy";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -29,8 +30,9 @@ export interface GenesisState {
   delegationConditionsList: DelegationConditions[];
   delegationConditionsCount: number;
   delegationDecisionList: DelegationDecision[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   delegationDecisionCount: number;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  selectionPolicy: SelectionPolicy | undefined;
 }
 
 const baseGenesisState: object = {
@@ -97,6 +99,12 @@ export const GenesisState = {
     }
     if (message.delegationDecisionCount !== 0) {
       writer.uint32(120).uint64(message.delegationDecisionCount);
+    }
+    if (message.selectionPolicy !== undefined) {
+      SelectionPolicy.encode(
+        message.selectionPolicy,
+        writer.uint32(130).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -169,6 +177,12 @@ export const GenesisState = {
         case 15:
           message.delegationDecisionCount = longToNumber(
             reader.uint64() as Long
+          );
+          break;
+        case 16:
+          message.selectionPolicy = SelectionPolicy.decode(
+            reader,
+            reader.uint32()
           );
           break;
         default:
@@ -278,6 +292,16 @@ export const GenesisState = {
     } else {
       message.delegationDecisionCount = 0;
     }
+    if (
+      object.selectionPolicy !== undefined &&
+      object.selectionPolicy !== null
+    ) {
+      message.selectionPolicy = SelectionPolicy.fromJSON(
+        object.selectionPolicy
+      );
+    } else {
+      message.selectionPolicy = undefined;
+    }
     return message;
   },
 
@@ -343,6 +367,10 @@ export const GenesisState = {
     }
     message.delegationDecisionCount !== undefined &&
       (obj.delegationDecisionCount = message.delegationDecisionCount);
+    message.selectionPolicy !== undefined &&
+      (obj.selectionPolicy = message.selectionPolicy
+        ? SelectionPolicy.toJSON(message.selectionPolicy)
+        : undefined);
     return obj;
   },
 
@@ -446,6 +474,16 @@ export const GenesisState = {
       message.delegationDecisionCount = object.delegationDecisionCount;
     } else {
       message.delegationDecisionCount = 0;
+    }
+    if (
+      object.selectionPolicy !== undefined &&
+      object.selectionPolicy !== null
+    ) {
+      message.selectionPolicy = SelectionPolicy.fromPartial(
+        object.selectionPolicy
+      );
+    } else {
+      message.selectionPolicy = undefined;
     }
     return message;
   },

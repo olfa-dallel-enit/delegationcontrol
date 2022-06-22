@@ -103,8 +103,9 @@ func (k Keeper) OnAcknowledgementRequestDelegationPacket(ctx sdk.Context, packet
 		// TODO: successful acknowledgement logic
 
 		k.AppendDelegationDecision(ctx, types.DelegationDecision{
-			Creator: ctx.ChainID(),
+			Creator:        ctx.ChainID(),
 			DecisionDomain: packetAck.DecisionDomain,
+			Decision:       packetAck.Decision,
 		})
 
 		return nil

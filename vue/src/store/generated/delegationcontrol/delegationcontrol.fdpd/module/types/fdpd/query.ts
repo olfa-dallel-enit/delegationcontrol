@@ -14,6 +14,7 @@ import { DecisionPolicy } from "../fdpd/decision_policy";
 import { Permission } from "../fdpd/permission";
 import { DelegationConditions } from "../fdpd/delegation_conditions";
 import { DelegationDecision } from "../fdpd/delegation_decision";
+import { SelectionPolicy } from "../fdpd/selection_policy";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -127,6 +128,12 @@ export interface QueryAllDelegationDecisionRequest {
 export interface QueryAllDelegationDecisionResponse {
   DelegationDecision: DelegationDecision[];
   pagination: PageResponse | undefined;
+}
+
+export interface QueryGetSelectionPolicyRequest {}
+
+export interface QueryGetSelectionPolicyResponse {
+  SelectionPolicy: SelectionPolicy | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -2186,6 +2193,146 @@ export const QueryAllDelegationDecisionResponse = {
   },
 };
 
+const baseQueryGetSelectionPolicyRequest: object = {};
+
+export const QueryGetSelectionPolicyRequest = {
+  encode(
+    _: QueryGetSelectionPolicyRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetSelectionPolicyRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetSelectionPolicyRequest,
+    } as QueryGetSelectionPolicyRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetSelectionPolicyRequest {
+    const message = {
+      ...baseQueryGetSelectionPolicyRequest,
+    } as QueryGetSelectionPolicyRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetSelectionPolicyRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetSelectionPolicyRequest>
+  ): QueryGetSelectionPolicyRequest {
+    const message = {
+      ...baseQueryGetSelectionPolicyRequest,
+    } as QueryGetSelectionPolicyRequest;
+    return message;
+  },
+};
+
+const baseQueryGetSelectionPolicyResponse: object = {};
+
+export const QueryGetSelectionPolicyResponse = {
+  encode(
+    message: QueryGetSelectionPolicyResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.SelectionPolicy !== undefined) {
+      SelectionPolicy.encode(
+        message.SelectionPolicy,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetSelectionPolicyResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetSelectionPolicyResponse,
+    } as QueryGetSelectionPolicyResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.SelectionPolicy = SelectionPolicy.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSelectionPolicyResponse {
+    const message = {
+      ...baseQueryGetSelectionPolicyResponse,
+    } as QueryGetSelectionPolicyResponse;
+    if (
+      object.SelectionPolicy !== undefined &&
+      object.SelectionPolicy !== null
+    ) {
+      message.SelectionPolicy = SelectionPolicy.fromJSON(
+        object.SelectionPolicy
+      );
+    } else {
+      message.SelectionPolicy = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSelectionPolicyResponse): unknown {
+    const obj: any = {};
+    message.SelectionPolicy !== undefined &&
+      (obj.SelectionPolicy = message.SelectionPolicy
+        ? SelectionPolicy.toJSON(message.SelectionPolicy)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSelectionPolicyResponse>
+  ): QueryGetSelectionPolicyResponse {
+    const message = {
+      ...baseQueryGetSelectionPolicyResponse,
+    } as QueryGetSelectionPolicyResponse;
+    if (
+      object.SelectionPolicy !== undefined &&
+      object.SelectionPolicy !== null
+    ) {
+      message.SelectionPolicy = SelectionPolicy.fromPartial(
+        object.SelectionPolicy
+      );
+    } else {
+      message.SelectionPolicy = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -2236,6 +2383,10 @@ export interface Query {
   DelegationDecisionAll(
     request: QueryAllDelegationDecisionRequest
   ): Promise<QueryAllDelegationDecisionResponse>;
+  /** Queries a SelectionPolicy by index. */
+  SelectionPolicy(
+    request: QueryGetSelectionPolicyRequest
+  ): Promise<QueryGetSelectionPolicyResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -2428,6 +2579,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllDelegationDecisionResponse.decode(new Reader(data))
+    );
+  }
+
+  SelectionPolicy(
+    request: QueryGetSelectionPolicyRequest
+  ): Promise<QueryGetSelectionPolicyResponse> {
+    const data = QueryGetSelectionPolicyRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Query",
+      "SelectionPolicy",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetSelectionPolicyResponse.decode(new Reader(data))
     );
   }
 }

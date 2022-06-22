@@ -6,10 +6,11 @@ import "fdpd/domain.proto";
 import "fdpd/forward_policy.proto";
 import "fdpd/decision_policy.proto";
 import "fdpd/delegation_decision.proto";
+import "fdpd/selection_policy.proto";
 // this line is used by starport scaffolding # proto/tx/import
+import "fdpd/validity.proto";
 import "fdpd/delegation_conditions.proto";
 import "fdpd/permission.proto";
-import "fdpd/validity.proto";
 
 option go_package = "delegationcontrol/x/fdpd/types";
 
@@ -42,6 +43,9 @@ rpc CreateDelegationConditions(MsgCreateDelegationConditions) returns (MsgCreate
 rpc CreateDelegationDecision(MsgCreateDelegationDecision) returns (MsgCreateDelegationDecisionResponse);
   rpc UpdateDelegationDecision(MsgUpdateDelegationDecision) returns (MsgUpdateDelegationDecisionResponse);
   rpc DeleteDelegationDecision(MsgDeleteDelegationDecision) returns (MsgDeleteDelegationDecisionResponse);
+  rpc CreateSelectionPolicy(MsgCreateSelectionPolicy) returns (MsgCreateSelectionPolicyResponse);
+  rpc UpdateSelectionPolicy(MsgUpdateSelectionPolicy) returns (MsgUpdateSelectionPolicyResponse);
+  rpc DeleteSelectionPolicy(MsgDeleteSelectionPolicy) returns (MsgDeleteSelectionPolicyResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -267,4 +271,28 @@ message MsgDeleteDelegationDecision {
 
 message MsgDeleteDelegationDecisionResponse {}
 
+message MsgCreateSelectionPolicy {
+  string creator = 1;
+  repeated string domainList = 3;
+  repeated string delegatorLocationList = 4;
+  uint64 cost = 5;
+  uint64 nbDelegations = 6;
+  Validity validity = 7;
+}
+message MsgCreateSelectionPolicyResponse {}
+
+message MsgUpdateSelectionPolicy {
+  string creator = 1;
+  repeated string domainList = 3;
+  repeated string delegatorLocationList = 4;
+  uint64 cost = 5;
+  uint64 nbDelegations = 6;
+  Validity validity = 7;
+}
+message MsgUpdateSelectionPolicyResponse {}
+
+message MsgDeleteSelectionPolicy {
+  string creator = 1;
+}
+message MsgDeleteSelectionPolicyResponse {}
 // this line is used by starport scaffolding # proto/tx/message

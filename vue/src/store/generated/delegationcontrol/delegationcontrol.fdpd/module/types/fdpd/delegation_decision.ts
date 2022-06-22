@@ -10,9 +10,15 @@ export interface DelegationDecision {
   decision: string;
   delegationConditions: DelegationConditions | undefined;
   creator: string;
+  decisionDomain: string;
 }
 
-const baseDelegationDecision: object = { id: 0, decision: "", creator: "" };
+const baseDelegationDecision: object = {
+  id: 0,
+  decision: "",
+  creator: "",
+  decisionDomain: "",
+};
 
 export const DelegationDecision = {
   encode(
@@ -33,6 +39,9 @@ export const DelegationDecision = {
     }
     if (message.creator !== "") {
       writer.uint32(34).string(message.creator);
+    }
+    if (message.decisionDomain !== "") {
+      writer.uint32(42).string(message.decisionDomain);
     }
     return writer;
   },
@@ -58,6 +67,9 @@ export const DelegationDecision = {
           break;
         case 4:
           message.creator = reader.string();
+          break;
+        case 5:
+          message.decisionDomain = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -94,6 +106,11 @@ export const DelegationDecision = {
     } else {
       message.creator = "";
     }
+    if (object.decisionDomain !== undefined && object.decisionDomain !== null) {
+      message.decisionDomain = String(object.decisionDomain);
+    } else {
+      message.decisionDomain = "";
+    }
     return message;
   },
 
@@ -106,6 +123,8 @@ export const DelegationDecision = {
         ? DelegationConditions.toJSON(message.delegationConditions)
         : undefined);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.decisionDomain !== undefined &&
+      (obj.decisionDomain = message.decisionDomain);
     return obj;
   },
 
@@ -135,6 +154,11 @@ export const DelegationDecision = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.decisionDomain !== undefined && object.decisionDomain !== null) {
+      message.decisionDomain = object.decisionDomain;
+    } else {
+      message.decisionDomain = "";
     }
     return message;
   },

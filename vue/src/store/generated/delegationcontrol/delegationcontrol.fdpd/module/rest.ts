@@ -41,6 +41,7 @@ export interface FdpdDelegationDecision {
   decision?: string;
   delegationConditions?: FdpdDelegationConditions;
   creator?: string;
+  decisionDomain?: string;
 }
 
 export interface FdpdDomain {
@@ -93,6 +94,8 @@ export interface FdpdMsgCreatePermissionResponse {
   id?: string;
 }
 
+export type FdpdMsgCreateSelectionPolicyResponse = object;
+
 export interface FdpdMsgCreateValidityResponse {
   /** @format uint64 */
   id?: string;
@@ -111,6 +114,8 @@ export type FdpdMsgDeleteForwardPolicyResponse = object;
 export type FdpdMsgDeleteLocalDomainResponse = object;
 
 export type FdpdMsgDeletePermissionResponse = object;
+
+export type FdpdMsgDeleteSelectionPolicyResponse = object;
 
 export type FdpdMsgDeleteValidityResponse = object;
 
@@ -131,6 +136,8 @@ export type FdpdMsgUpdateForwardPolicyResponse = object;
 export type FdpdMsgUpdateLocalDomainResponse = object;
 
 export type FdpdMsgUpdatePermissionResponse = object;
+
+export type FdpdMsgUpdateSelectionPolicyResponse = object;
 
 export type FdpdMsgUpdateValidityResponse = object;
 
@@ -250,6 +257,10 @@ export interface FdpdQueryGetPermissionResponse {
   Permission?: FdpdPermission;
 }
 
+export interface FdpdQueryGetSelectionPolicyResponse {
+  SelectionPolicy?: FdpdSelectionPolicy;
+}
+
 export interface FdpdQueryGetValidityResponse {
   Validity?: FdpdValidity;
 }
@@ -260,6 +271,19 @@ export interface FdpdQueryGetValidityResponse {
 export interface FdpdQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: FdpdParams;
+}
+
+export interface FdpdSelectionPolicy {
+  domainList?: string[];
+  delegatorLocationList?: string[];
+
+  /** @format uint64 */
+  cost?: string;
+
+  /** @format uint64 */
+  nbDelegations?: string;
+  validity?: FdpdValidity;
+  creator?: string;
 }
 
 export interface FdpdValidity {
@@ -767,6 +791,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryPermission = (id: string, params: RequestParams = {}) =>
     this.request<FdpdQueryGetPermissionResponse, RpcStatus>({
       path: `/delegationcontrol/fdpd/permission/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySelectionPolicy
+   * @summary Queries a SelectionPolicy by index.
+   * @request GET:/delegationcontrol/fdpd/selection_policy
+   */
+  querySelectionPolicy = (params: RequestParams = {}) =>
+    this.request<FdpdQueryGetSelectionPolicyResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/selection_policy`,
       method: "GET",
       format: "json",
       ...params,

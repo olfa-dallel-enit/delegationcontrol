@@ -35,11 +35,47 @@ func (k msgServer) SendRequestDelegation(goCtx context.Context, msg *types.MsgSe
 					msg.TimeoutTimestamp,
 				)
 			}
+		case "multicast":
+			for _, domainName := range forwardPolicy.DomainList {
+				domain, exist := k.GetDomainByName(ctx, domainName)
+				if exist {
+					k.TransmitRequestDelegationPacket(
+						ctx,
+						packet,
+						msg.Port,
+						domain.IbcChannel,
+						clienttypes.ZeroHeight(),
+						msg.TimeoutTimestamp,
+					)
+				}
+			}
+		case "unicast":
+			domainName := forwardPolicy.DomainList[0]
+			domain, exist := k.GetDomainByName(ctx, domainName)
+			if exist {
+				k.TransmitRequestDelegationPacket(
+					ctx,
+					packet,
+					msg.Port,
+					domain.IbcChannel,
+					clienttypes.ZeroHeight(),
+					msg.TimeoutTimestamp,
+				)
+			}
+		case "geocast":
+			for _, location := range forwardPolicy.LocationList {
+				for _, domain := range k.GetAllDomainByLocation(ctx, location) {
+					k.TransmitRequestDelegationPacket(
+						ctx,
+						packet,
+						msg.Port,
+						domain.IbcChannel,
+						clienttypes.ZeroHeight(),
+						msg.TimeoutTimestamp,
+					)
+				}
+			}
 		}
-
-		/*if err != nil {
-			return nil, err
-		}*/
 	}
 
 	return &types.MsgSendRequestDelegationResponse{}, nil

@@ -20,6 +20,7 @@ func DefaultGenesis() *GenesisState {
 		PermissionList:           []Permission{},
 		DelegationConditionsList: []DelegationConditions{},
 		DelegationDecisionList:   []DelegationDecision{},
+		SelectionPolicy:          nil,
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

@@ -83,6 +83,13 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				DelegationDecisionCount: 2,
+				SelectionPolicy: &types.SelectionPolicy{
+					DomainList:            []string{"22"},
+					DelegatorLocationList: []string{"48"},
+					Cost:                  65,
+					NbDelegations:         14,
+					Validity:              new(types.Validity),
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,

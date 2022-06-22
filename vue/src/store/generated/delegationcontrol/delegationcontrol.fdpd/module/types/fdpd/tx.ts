@@ -240,6 +240,34 @@ export interface MsgDeleteDelegationDecision {
 
 export interface MsgDeleteDelegationDecisionResponse {}
 
+export interface MsgCreateSelectionPolicy {
+  creator: string;
+  domainList: string[];
+  delegatorLocationList: string[];
+  cost: number;
+  nbDelegations: number;
+  validity: Validity | undefined;
+}
+
+export interface MsgCreateSelectionPolicyResponse {}
+
+export interface MsgUpdateSelectionPolicy {
+  creator: string;
+  domainList: string[];
+  delegatorLocationList: string[];
+  cost: number;
+  nbDelegations: number;
+  validity: Validity | undefined;
+}
+
+export interface MsgUpdateSelectionPolicyResponse {}
+
+export interface MsgDeleteSelectionPolicy {
+  creator: string;
+}
+
+export interface MsgDeleteSelectionPolicyResponse {}
+
 const baseMsgCreateLocalDomain: object = {
   creator: "",
   name: "",
@@ -4641,6 +4669,599 @@ export const MsgDeleteDelegationDecisionResponse = {
   },
 };
 
+const baseMsgCreateSelectionPolicy: object = {
+  creator: "",
+  domainList: "",
+  delegatorLocationList: "",
+  cost: 0,
+  nbDelegations: 0,
+};
+
+export const MsgCreateSelectionPolicy = {
+  encode(
+    message: MsgCreateSelectionPolicy,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    for (const v of message.domainList) {
+      writer.uint32(26).string(v!);
+    }
+    for (const v of message.delegatorLocationList) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.cost !== 0) {
+      writer.uint32(40).uint64(message.cost);
+    }
+    if (message.nbDelegations !== 0) {
+      writer.uint32(48).uint64(message.nbDelegations);
+    }
+    if (message.validity !== undefined) {
+      Validity.encode(message.validity, writer.uint32(58).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateSelectionPolicy {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateSelectionPolicy,
+    } as MsgCreateSelectionPolicy;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 3:
+          message.domainList.push(reader.string());
+          break;
+        case 4:
+          message.delegatorLocationList.push(reader.string());
+          break;
+        case 5:
+          message.cost = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.nbDelegations = longToNumber(reader.uint64() as Long);
+          break;
+        case 7:
+          message.validity = Validity.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateSelectionPolicy {
+    const message = {
+      ...baseMsgCreateSelectionPolicy,
+    } as MsgCreateSelectionPolicy;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(String(e));
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(String(e));
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = Number(object.cost);
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = Number(object.nbDelegations);
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromJSON(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateSelectionPolicy): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.domainList) {
+      obj.domainList = message.domainList.map((e) => e);
+    } else {
+      obj.domainList = [];
+    }
+    if (message.delegatorLocationList) {
+      obj.delegatorLocationList = message.delegatorLocationList.map((e) => e);
+    } else {
+      obj.delegatorLocationList = [];
+    }
+    message.cost !== undefined && (obj.cost = message.cost);
+    message.nbDelegations !== undefined &&
+      (obj.nbDelegations = message.nbDelegations);
+    message.validity !== undefined &&
+      (obj.validity = message.validity
+        ? Validity.toJSON(message.validity)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateSelectionPolicy>
+  ): MsgCreateSelectionPolicy {
+    const message = {
+      ...baseMsgCreateSelectionPolicy,
+    } as MsgCreateSelectionPolicy;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(e);
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(e);
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = object.cost;
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = object.nbDelegations;
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromPartial(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateSelectionPolicyResponse: object = {};
+
+export const MsgCreateSelectionPolicyResponse = {
+  encode(
+    _: MsgCreateSelectionPolicyResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateSelectionPolicyResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateSelectionPolicyResponse,
+    } as MsgCreateSelectionPolicyResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateSelectionPolicyResponse {
+    const message = {
+      ...baseMsgCreateSelectionPolicyResponse,
+    } as MsgCreateSelectionPolicyResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateSelectionPolicyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateSelectionPolicyResponse>
+  ): MsgCreateSelectionPolicyResponse {
+    const message = {
+      ...baseMsgCreateSelectionPolicyResponse,
+    } as MsgCreateSelectionPolicyResponse;
+    return message;
+  },
+};
+
+const baseMsgUpdateSelectionPolicy: object = {
+  creator: "",
+  domainList: "",
+  delegatorLocationList: "",
+  cost: 0,
+  nbDelegations: 0,
+};
+
+export const MsgUpdateSelectionPolicy = {
+  encode(
+    message: MsgUpdateSelectionPolicy,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    for (const v of message.domainList) {
+      writer.uint32(26).string(v!);
+    }
+    for (const v of message.delegatorLocationList) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.cost !== 0) {
+      writer.uint32(40).uint64(message.cost);
+    }
+    if (message.nbDelegations !== 0) {
+      writer.uint32(48).uint64(message.nbDelegations);
+    }
+    if (message.validity !== undefined) {
+      Validity.encode(message.validity, writer.uint32(58).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateSelectionPolicy {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateSelectionPolicy,
+    } as MsgUpdateSelectionPolicy;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 3:
+          message.domainList.push(reader.string());
+          break;
+        case 4:
+          message.delegatorLocationList.push(reader.string());
+          break;
+        case 5:
+          message.cost = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.nbDelegations = longToNumber(reader.uint64() as Long);
+          break;
+        case 7:
+          message.validity = Validity.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateSelectionPolicy {
+    const message = {
+      ...baseMsgUpdateSelectionPolicy,
+    } as MsgUpdateSelectionPolicy;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(String(e));
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(String(e));
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = Number(object.cost);
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = Number(object.nbDelegations);
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromJSON(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUpdateSelectionPolicy): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.domainList) {
+      obj.domainList = message.domainList.map((e) => e);
+    } else {
+      obj.domainList = [];
+    }
+    if (message.delegatorLocationList) {
+      obj.delegatorLocationList = message.delegatorLocationList.map((e) => e);
+    } else {
+      obj.delegatorLocationList = [];
+    }
+    message.cost !== undefined && (obj.cost = message.cost);
+    message.nbDelegations !== undefined &&
+      (obj.nbDelegations = message.nbDelegations);
+    message.validity !== undefined &&
+      (obj.validity = message.validity
+        ? Validity.toJSON(message.validity)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgUpdateSelectionPolicy>
+  ): MsgUpdateSelectionPolicy {
+    const message = {
+      ...baseMsgUpdateSelectionPolicy,
+    } as MsgUpdateSelectionPolicy;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(e);
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(e);
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = object.cost;
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = object.nbDelegations;
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromPartial(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateSelectionPolicyResponse: object = {};
+
+export const MsgUpdateSelectionPolicyResponse = {
+  encode(
+    _: MsgUpdateSelectionPolicyResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateSelectionPolicyResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateSelectionPolicyResponse,
+    } as MsgUpdateSelectionPolicyResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateSelectionPolicyResponse {
+    const message = {
+      ...baseMsgUpdateSelectionPolicyResponse,
+    } as MsgUpdateSelectionPolicyResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUpdateSelectionPolicyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUpdateSelectionPolicyResponse>
+  ): MsgUpdateSelectionPolicyResponse {
+    const message = {
+      ...baseMsgUpdateSelectionPolicyResponse,
+    } as MsgUpdateSelectionPolicyResponse;
+    return message;
+  },
+};
+
+const baseMsgDeleteSelectionPolicy: object = { creator: "" };
+
+export const MsgDeleteSelectionPolicy = {
+  encode(
+    message: MsgDeleteSelectionPolicy,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteSelectionPolicy {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteSelectionPolicy,
+    } as MsgDeleteSelectionPolicy;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteSelectionPolicy {
+    const message = {
+      ...baseMsgDeleteSelectionPolicy,
+    } as MsgDeleteSelectionPolicy;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgDeleteSelectionPolicy): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgDeleteSelectionPolicy>
+  ): MsgDeleteSelectionPolicy {
+    const message = {
+      ...baseMsgDeleteSelectionPolicy,
+    } as MsgDeleteSelectionPolicy;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgDeleteSelectionPolicyResponse: object = {};
+
+export const MsgDeleteSelectionPolicyResponse = {
+  encode(
+    _: MsgDeleteSelectionPolicyResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteSelectionPolicyResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteSelectionPolicyResponse,
+    } as MsgDeleteSelectionPolicyResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteSelectionPolicyResponse {
+    const message = {
+      ...baseMsgDeleteSelectionPolicyResponse,
+    } as MsgDeleteSelectionPolicyResponse;
+    return message;
+  },
+
+  toJSON(_: MsgDeleteSelectionPolicyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgDeleteSelectionPolicyResponse>
+  ): MsgDeleteSelectionPolicyResponse {
+    const message = {
+      ...baseMsgDeleteSelectionPolicyResponse,
+    } as MsgDeleteSelectionPolicyResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateLocalDomain(
@@ -4715,10 +5336,19 @@ export interface Msg {
   UpdateDelegationDecision(
     request: MsgUpdateDelegationDecision
   ): Promise<MsgUpdateDelegationDecisionResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteDelegationDecision(
     request: MsgDeleteDelegationDecision
   ): Promise<MsgDeleteDelegationDecisionResponse>;
+  CreateSelectionPolicy(
+    request: MsgCreateSelectionPolicy
+  ): Promise<MsgCreateSelectionPolicyResponse>;
+  UpdateSelectionPolicy(
+    request: MsgUpdateSelectionPolicy
+  ): Promise<MsgUpdateSelectionPolicyResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  DeleteSelectionPolicy(
+    request: MsgDeleteSelectionPolicy
+  ): Promise<MsgDeleteSelectionPolicyResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -5095,6 +5725,48 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgDeleteDelegationDecisionResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateSelectionPolicy(
+    request: MsgCreateSelectionPolicy
+  ): Promise<MsgCreateSelectionPolicyResponse> {
+    const data = MsgCreateSelectionPolicy.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "CreateSelectionPolicy",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateSelectionPolicyResponse.decode(new Reader(data))
+    );
+  }
+
+  UpdateSelectionPolicy(
+    request: MsgUpdateSelectionPolicy
+  ): Promise<MsgUpdateSelectionPolicyResponse> {
+    const data = MsgUpdateSelectionPolicy.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "UpdateSelectionPolicy",
+      data
+    );
+    return promise.then((data) =>
+      MsgUpdateSelectionPolicyResponse.decode(new Reader(data))
+    );
+  }
+
+  DeleteSelectionPolicy(
+    request: MsgDeleteSelectionPolicy
+  ): Promise<MsgDeleteSelectionPolicyResponse> {
+    const data = MsgDeleteSelectionPolicy.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "DeleteSelectionPolicy",
+      data
+    );
+    return promise.then((data) =>
+      MsgDeleteSelectionPolicyResponse.decode(new Reader(data))
     );
   }
 }

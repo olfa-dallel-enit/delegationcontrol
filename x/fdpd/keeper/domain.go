@@ -6,6 +6,8 @@ import (
 	"delegationcontrol/x/fdpd/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"strings"
 )
 
 // GetDomainCount get the total number of domain
@@ -103,4 +105,37 @@ func GetDomainIDBytes(id uint64) []byte {
 // GetDomainIDFromBytes returns ID in uint64 format from a byte array
 func GetDomainIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
+}
+
+func (k Keeper) GetDomainByName(ctx sdk.Context, domainName string) (domain types.Domain, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DomainKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Domain
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.Name == domainName {
+			return val, true
+		}
+	}
+	return domain, false
+}
+
+func (k Keeper) GetAllDomainByLocation(ctx sdk.Context, location string) (list []types.Domain) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DomainKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Domain
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if strings.ToUpper(val.Location) == strings.ToUpper(location) {
+			list = append(list, val)
+		}
+	}
+
+	return
 }

@@ -36,8 +36,7 @@ export interface RequestDelegationPacketData {
 
 /** RequestDelegationPacketAck defines a struct for the packet acknowledgment */
 export interface RequestDelegationPacketAck {
-  confirmation: string;
-  confirmedBy: string;
+  decisionDomain: string;
   decision: string;
   delegationConditions: DelegationConditions | undefined;
 }
@@ -502,8 +501,7 @@ export const RequestDelegationPacketData = {
 };
 
 const baseRequestDelegationPacketAck: object = {
-  confirmation: "",
-  confirmedBy: "",
+  decisionDomain: "",
   decision: "",
 };
 
@@ -512,19 +510,16 @@ export const RequestDelegationPacketAck = {
     message: RequestDelegationPacketAck,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.confirmation !== "") {
-      writer.uint32(10).string(message.confirmation);
-    }
-    if (message.confirmedBy !== "") {
-      writer.uint32(18).string(message.confirmedBy);
+    if (message.decisionDomain !== "") {
+      writer.uint32(10).string(message.decisionDomain);
     }
     if (message.decision !== "") {
-      writer.uint32(26).string(message.decision);
+      writer.uint32(18).string(message.decision);
     }
     if (message.delegationConditions !== undefined) {
       DelegationConditions.encode(
         message.delegationConditions,
-        writer.uint32(34).fork()
+        writer.uint32(26).fork()
       ).ldelim();
     }
     return writer;
@@ -543,15 +538,12 @@ export const RequestDelegationPacketAck = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.confirmation = reader.string();
+          message.decisionDomain = reader.string();
           break;
         case 2:
-          message.confirmedBy = reader.string();
-          break;
-        case 3:
           message.decision = reader.string();
           break;
-        case 4:
+        case 3:
           message.delegationConditions = DelegationConditions.decode(
             reader,
             reader.uint32()
@@ -569,15 +561,10 @@ export const RequestDelegationPacketAck = {
     const message = {
       ...baseRequestDelegationPacketAck,
     } as RequestDelegationPacketAck;
-    if (object.confirmation !== undefined && object.confirmation !== null) {
-      message.confirmation = String(object.confirmation);
+    if (object.decisionDomain !== undefined && object.decisionDomain !== null) {
+      message.decisionDomain = String(object.decisionDomain);
     } else {
-      message.confirmation = "";
-    }
-    if (object.confirmedBy !== undefined && object.confirmedBy !== null) {
-      message.confirmedBy = String(object.confirmedBy);
-    } else {
-      message.confirmedBy = "";
+      message.decisionDomain = "";
     }
     if (object.decision !== undefined && object.decision !== null) {
       message.decision = String(object.decision);
@@ -599,10 +586,8 @@ export const RequestDelegationPacketAck = {
 
   toJSON(message: RequestDelegationPacketAck): unknown {
     const obj: any = {};
-    message.confirmation !== undefined &&
-      (obj.confirmation = message.confirmation);
-    message.confirmedBy !== undefined &&
-      (obj.confirmedBy = message.confirmedBy);
+    message.decisionDomain !== undefined &&
+      (obj.decisionDomain = message.decisionDomain);
     message.decision !== undefined && (obj.decision = message.decision);
     message.delegationConditions !== undefined &&
       (obj.delegationConditions = message.delegationConditions
@@ -617,15 +602,10 @@ export const RequestDelegationPacketAck = {
     const message = {
       ...baseRequestDelegationPacketAck,
     } as RequestDelegationPacketAck;
-    if (object.confirmation !== undefined && object.confirmation !== null) {
-      message.confirmation = object.confirmation;
+    if (object.decisionDomain !== undefined && object.decisionDomain !== null) {
+      message.decisionDomain = object.decisionDomain;
     } else {
-      message.confirmation = "";
-    }
-    if (object.confirmedBy !== undefined && object.confirmedBy !== null) {
-      message.confirmedBy = object.confirmedBy;
-    } else {
-      message.confirmedBy = "";
+      message.decisionDomain = "";
     }
     if (object.decision !== undefined && object.decision !== null) {
       message.decision = object.decision;
