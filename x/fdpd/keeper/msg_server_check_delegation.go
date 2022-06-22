@@ -33,9 +33,9 @@ func (k msgServer) CheckDelegation(goCtx context.Context, msg *types.MsgCheckDel
 	}
 
 	k.AppendFinalDelegationDecision(ctx, types.FinalDelegationDecision{
-		Creator: ctx.ChainID(),
+		Creator:                ctx.ChainID(),
 		DelegationRequestLabel: msg.Label,
-		Decision: finalDecision,
+		Decision:               finalDecision,
 	})
 
 	return &types.MsgCheckDelegationResponse{}, nil

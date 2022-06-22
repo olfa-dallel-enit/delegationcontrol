@@ -18,6 +18,7 @@ import { SelectionPolicy } from "../fdpd/selection_policy";
 import { SelectionCriteria } from "../fdpd/selection_criteria";
 import { DelegationRequest } from "../fdpd/delegation_request";
 import { FinalDelegationDecision } from "../fdpd/final_delegation_decision";
+import { DelegationRequestLog } from "../fdpd/delegation_request_log";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -187,6 +188,23 @@ export interface QueryAllFinalDelegationDecisionRequest {
 
 export interface QueryAllFinalDelegationDecisionResponse {
   FinalDelegationDecision: FinalDelegationDecision[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetDelegationRequestLogRequest {
+  id: number;
+}
+
+export interface QueryGetDelegationRequestLogResponse {
+  DelegationRequestLog: DelegationRequestLog | undefined;
+}
+
+export interface QueryAllDelegationRequestLogRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllDelegationRequestLogResponse {
+  DelegationRequestLog: DelegationRequestLog[];
   pagination: PageResponse | undefined;
 }
 
@@ -3405,6 +3423,344 @@ export const QueryAllFinalDelegationDecisionResponse = {
   },
 };
 
+const baseQueryGetDelegationRequestLogRequest: object = { id: 0 };
+
+export const QueryGetDelegationRequestLogRequest = {
+  encode(
+    message: QueryGetDelegationRequestLogRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetDelegationRequestLogRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetDelegationRequestLogRequest,
+    } as QueryGetDelegationRequestLogRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetDelegationRequestLogRequest {
+    const message = {
+      ...baseQueryGetDelegationRequestLogRequest,
+    } as QueryGetDelegationRequestLogRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetDelegationRequestLogRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetDelegationRequestLogRequest>
+  ): QueryGetDelegationRequestLogRequest {
+    const message = {
+      ...baseQueryGetDelegationRequestLogRequest,
+    } as QueryGetDelegationRequestLogRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetDelegationRequestLogResponse: object = {};
+
+export const QueryGetDelegationRequestLogResponse = {
+  encode(
+    message: QueryGetDelegationRequestLogResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.DelegationRequestLog !== undefined) {
+      DelegationRequestLog.encode(
+        message.DelegationRequestLog,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetDelegationRequestLogResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetDelegationRequestLogResponse,
+    } as QueryGetDelegationRequestLogResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.DelegationRequestLog = DelegationRequestLog.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetDelegationRequestLogResponse {
+    const message = {
+      ...baseQueryGetDelegationRequestLogResponse,
+    } as QueryGetDelegationRequestLogResponse;
+    if (
+      object.DelegationRequestLog !== undefined &&
+      object.DelegationRequestLog !== null
+    ) {
+      message.DelegationRequestLog = DelegationRequestLog.fromJSON(
+        object.DelegationRequestLog
+      );
+    } else {
+      message.DelegationRequestLog = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetDelegationRequestLogResponse): unknown {
+    const obj: any = {};
+    message.DelegationRequestLog !== undefined &&
+      (obj.DelegationRequestLog = message.DelegationRequestLog
+        ? DelegationRequestLog.toJSON(message.DelegationRequestLog)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetDelegationRequestLogResponse>
+  ): QueryGetDelegationRequestLogResponse {
+    const message = {
+      ...baseQueryGetDelegationRequestLogResponse,
+    } as QueryGetDelegationRequestLogResponse;
+    if (
+      object.DelegationRequestLog !== undefined &&
+      object.DelegationRequestLog !== null
+    ) {
+      message.DelegationRequestLog = DelegationRequestLog.fromPartial(
+        object.DelegationRequestLog
+      );
+    } else {
+      message.DelegationRequestLog = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllDelegationRequestLogRequest: object = {};
+
+export const QueryAllDelegationRequestLogRequest = {
+  encode(
+    message: QueryAllDelegationRequestLogRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllDelegationRequestLogRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllDelegationRequestLogRequest,
+    } as QueryAllDelegationRequestLogRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllDelegationRequestLogRequest {
+    const message = {
+      ...baseQueryAllDelegationRequestLogRequest,
+    } as QueryAllDelegationRequestLogRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllDelegationRequestLogRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllDelegationRequestLogRequest>
+  ): QueryAllDelegationRequestLogRequest {
+    const message = {
+      ...baseQueryAllDelegationRequestLogRequest,
+    } as QueryAllDelegationRequestLogRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllDelegationRequestLogResponse: object = {};
+
+export const QueryAllDelegationRequestLogResponse = {
+  encode(
+    message: QueryAllDelegationRequestLogResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.DelegationRequestLog) {
+      DelegationRequestLog.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllDelegationRequestLogResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllDelegationRequestLogResponse,
+    } as QueryAllDelegationRequestLogResponse;
+    message.DelegationRequestLog = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.DelegationRequestLog.push(
+            DelegationRequestLog.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllDelegationRequestLogResponse {
+    const message = {
+      ...baseQueryAllDelegationRequestLogResponse,
+    } as QueryAllDelegationRequestLogResponse;
+    message.DelegationRequestLog = [];
+    if (
+      object.DelegationRequestLog !== undefined &&
+      object.DelegationRequestLog !== null
+    ) {
+      for (const e of object.DelegationRequestLog) {
+        message.DelegationRequestLog.push(DelegationRequestLog.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllDelegationRequestLogResponse): unknown {
+    const obj: any = {};
+    if (message.DelegationRequestLog) {
+      obj.DelegationRequestLog = message.DelegationRequestLog.map((e) =>
+        e ? DelegationRequestLog.toJSON(e) : undefined
+      );
+    } else {
+      obj.DelegationRequestLog = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllDelegationRequestLogResponse>
+  ): QueryAllDelegationRequestLogResponse {
+    const message = {
+      ...baseQueryAllDelegationRequestLogResponse,
+    } as QueryAllDelegationRequestLogResponse;
+    message.DelegationRequestLog = [];
+    if (
+      object.DelegationRequestLog !== undefined &&
+      object.DelegationRequestLog !== null
+    ) {
+      for (const e of object.DelegationRequestLog) {
+        message.DelegationRequestLog.push(DelegationRequestLog.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -3483,6 +3839,14 @@ export interface Query {
   FinalDelegationDecisionAll(
     request: QueryAllFinalDelegationDecisionRequest
   ): Promise<QueryAllFinalDelegationDecisionResponse>;
+  /** Queries a DelegationRequestLog by id. */
+  DelegationRequestLog(
+    request: QueryGetDelegationRequestLogRequest
+  ): Promise<QueryGetDelegationRequestLogResponse>;
+  /** Queries a list of DelegationRequestLog items. */
+  DelegationRequestLogAll(
+    request: QueryAllDelegationRequestLogRequest
+  ): Promise<QueryAllDelegationRequestLogResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -3777,6 +4141,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllFinalDelegationDecisionResponse.decode(new Reader(data))
+    );
+  }
+
+  DelegationRequestLog(
+    request: QueryGetDelegationRequestLogRequest
+  ): Promise<QueryGetDelegationRequestLogResponse> {
+    const data = QueryGetDelegationRequestLogRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Query",
+      "DelegationRequestLog",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetDelegationRequestLogResponse.decode(new Reader(data))
+    );
+  }
+
+  DelegationRequestLogAll(
+    request: QueryAllDelegationRequestLogRequest
+  ): Promise<QueryAllDelegationRequestLogResponse> {
+    const data = QueryAllDelegationRequestLogRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Query",
+      "DelegationRequestLogAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllDelegationRequestLogResponse.decode(new Reader(data))
     );
   }
 }

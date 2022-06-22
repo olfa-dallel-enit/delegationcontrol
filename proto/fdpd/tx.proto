@@ -9,6 +9,7 @@ import "fdpd/delegation_decision.proto";
 import "fdpd/selection_policy.proto";
 import "fdpd/delegation_request.proto";
 import "fdpd/final_delegation_decision.proto";
+import "fdpd/delegation_request_log.proto";
 // this line is used by starport scaffolding # proto/tx/import
 import "fdpd/permission.proto";
 import "fdpd/selection_criteria.proto";
@@ -59,6 +60,9 @@ rpc CreateDelegationRequest(MsgCreateDelegationRequest) returns (MsgCreateDelega
 rpc CreateFinalDelegationDecision(MsgCreateFinalDelegationDecision) returns (MsgCreateFinalDelegationDecisionResponse);
   rpc UpdateFinalDelegationDecision(MsgUpdateFinalDelegationDecision) returns (MsgUpdateFinalDelegationDecisionResponse);
   rpc DeleteFinalDelegationDecision(MsgDeleteFinalDelegationDecision) returns (MsgDeleteFinalDelegationDecisionResponse);
+rpc CreateDelegationRequestLog(MsgCreateDelegationRequestLog) returns (MsgCreateDelegationRequestLogResponse);
+  rpc UpdateDelegationRequestLog(MsgUpdateDelegationRequestLog) returns (MsgUpdateDelegationRequestLogResponse);
+  rpc DeleteDelegationRequestLog(MsgDeleteDelegationRequestLog) returns (MsgDeleteDelegationRequestLogResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -401,5 +405,35 @@ message MsgDeleteFinalDelegationDecision {
 }
 
 message MsgDeleteFinalDelegationDecisionResponse {}
+
+message MsgCreateDelegationRequestLog {
+  string creator = 1;
+  string transaction = 2;
+  string requestLabel = 3;
+  string details = 4;
+  string function = 5;
+}
+
+message MsgCreateDelegationRequestLogResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateDelegationRequestLog {
+  string creator = 1;
+  uint64 id = 2;
+  string transaction = 3;
+  string requestLabel = 4;
+  string details = 5;
+  string function = 6;
+}
+
+message MsgUpdateDelegationRequestLogResponse {}
+
+message MsgDeleteDelegationRequestLog {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteDelegationRequestLogResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

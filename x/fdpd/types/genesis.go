@@ -24,6 +24,7 @@ func DefaultGenesis() *GenesisState {
 		SelectionCriteriaList:       []SelectionCriteria{},
 		DelegationRequestList:       []DelegationRequest{},
 		FinalDelegationDecisionList: []FinalDelegationDecision{},
+		DelegationRequestLogList:    []DelegationRequestLog{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -130,6 +131,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("finalDelegationDecision id should be lower or equal than the last id")
 		}
 		finalDelegationDecisionIdMap[elem.Id] = true
+	}
+	// Check for duplicated ID in delegationRequestLog
+	delegationRequestLogIdMap := make(map[uint64]bool)
+	delegationRequestLogCount := gs.GetDelegationRequestLogCount()
+	for _, elem := range gs.DelegationRequestLogList {
+		if _, ok := delegationRequestLogIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for delegationRequestLog")
+		}
+		if elem.Id >= delegationRequestLogCount {
+			return fmt.Errorf("delegationRequestLog id should be lower or equal than the last id")
+		}
+		delegationRequestLogIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

@@ -54,6 +54,16 @@ export interface FdpdDelegationRequest {
   creator?: string;
 }
 
+export interface FdpdDelegationRequestLog {
+  /** @format uint64 */
+  id?: string;
+  transaction?: string;
+  requestLabel?: string;
+  details?: string;
+  function?: string;
+  creator?: string;
+}
+
 export interface FdpdDomain {
   /** @format uint64 */
   id?: string;
@@ -100,6 +110,11 @@ export interface FdpdMsgCreateDelegationDecisionResponse {
   id?: string;
 }
 
+export interface FdpdMsgCreateDelegationRequestLogResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
 export interface FdpdMsgCreateDelegationRequestResponse {
   /** @format uint64 */
   id?: string;
@@ -142,6 +157,8 @@ export type FdpdMsgDeleteDelegationConditionsResponse = object;
 
 export type FdpdMsgDeleteDelegationDecisionResponse = object;
 
+export type FdpdMsgDeleteDelegationRequestLogResponse = object;
+
 export type FdpdMsgDeleteDelegationRequestResponse = object;
 
 export type FdpdMsgDeleteDomainResponse = object;
@@ -169,6 +186,8 @@ export type FdpdMsgUpdateDecisionPolicyResponse = object;
 export type FdpdMsgUpdateDelegationConditionsResponse = object;
 
 export type FdpdMsgUpdateDelegationDecisionResponse = object;
+
+export type FdpdMsgUpdateDelegationRequestLogResponse = object;
 
 export type FdpdMsgUpdateDelegationRequestResponse = object;
 
@@ -218,6 +237,21 @@ export interface FdpdQueryAllDelegationConditionsResponse {
 
 export interface FdpdQueryAllDelegationDecisionResponse {
   DelegationDecision?: FdpdDelegationDecision[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface FdpdQueryAllDelegationRequestLogResponse {
+  DelegationRequestLog?: FdpdDelegationRequestLog[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -331,6 +365,10 @@ export interface FdpdQueryGetDelegationConditionsResponse {
 
 export interface FdpdQueryGetDelegationDecisionResponse {
   DelegationDecision?: FdpdDelegationDecision;
+}
+
+export interface FdpdQueryGetDelegationRequestLogResponse {
+  DelegationRequestLog?: FdpdDelegationRequestLog;
 }
 
 export interface FdpdQueryGetDelegationRequestResponse {
@@ -820,6 +858,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryDelegationRequest = (id: string, params: RequestParams = {}) =>
     this.request<FdpdQueryGetDelegationRequestResponse, RpcStatus>({
       path: `/delegationcontrol/fdpd/delegation_request/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDelegationRequestLogAll
+   * @summary Queries a list of DelegationRequestLog items.
+   * @request GET:/delegationcontrol/fdpd/delegation_request_log
+   */
+  queryDelegationRequestLogAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FdpdQueryAllDelegationRequestLogResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/delegation_request_log`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDelegationRequestLog
+   * @summary Queries a DelegationRequestLog by id.
+   * @request GET:/delegationcontrol/fdpd/delegation_request_log/{id}
+   */
+  queryDelegationRequestLog = (id: string, params: RequestParams = {}) =>
+    this.request<FdpdQueryGetDelegationRequestLogResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/delegation_request_log/${id}`,
       method: "GET",
       format: "json",
       ...params,

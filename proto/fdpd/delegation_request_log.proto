@@ -1,0 +1,13 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+option go_package = "delegationcontrol/x/fdpd/types";
+
+message DelegationRequestLog {
+  uint64 id = 1;
+  string transaction = 2; 
+  string requestLabel = 3; 
+  string details = 4; 
+  string function = 5; 
+  string creator = 6;
+}

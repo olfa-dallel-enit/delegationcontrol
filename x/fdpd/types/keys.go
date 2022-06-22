@@ -87,3 +87,8 @@ const (
 	FinalDelegationDecisionKey      = "FinalDelegationDecision-value-"
 	FinalDelegationDecisionCountKey = "FinalDelegationDecision-count-"
 )
+
+const (
+	DelegationRequestLogKey      = "DelegationRequestLog-value-"
+	DelegationRequestLogCountKey = "DelegationRequestLog-count-"
+)
