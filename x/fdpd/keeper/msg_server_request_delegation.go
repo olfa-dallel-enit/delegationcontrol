@@ -19,8 +19,10 @@ func (k msgServer) SendRequestDelegation(goCtx context.Context, msg *types.MsgSe
 		// Construct the packet
 		var packet types.RequestDelegationPacketData
 
-		packet.DelegationAction = msg.DelegationAction
-		packet.Permission = msg.Permission
+		packet.Label = msg.DelegationRequest.Label
+		packet.DelegationAction = msg.DelegationRequest.DelegationAction
+		packet.AccessAction = msg.DelegationRequest.Permission.Action
+		packet.Resource = msg.DelegationRequest.Permission.Resource
 
 		switch forwardPolicy.Mode {
 		case "broadcast":

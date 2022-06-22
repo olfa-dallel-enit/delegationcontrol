@@ -16,9 +16,9 @@ var _ = strconv.Itoa(0)
 
 func CmdSendRequestDelegation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-request-delegation [src-port] [src-channel] [delegation-action] [permission]",
+		Use:   "send-request-delegation [src-port] [src-channel] [delegation-request]",
 		Short: "Send a request-delegation over IBC",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -28,9 +28,8 @@ func CmdSendRequestDelegation() *cobra.Command {
 			creator := clientCtx.GetFromAddress().String()
 			srcPort := args[0]
 
-			argDelegationAction := args[1]
-			argPermission := new(types.Permission)
-			err = json.Unmarshal([]byte(args[2]), argPermission)
+			argDelegationRequest := new(types.DelegationRequest)
+			err = json.Unmarshal([]byte(args[1]), argDelegationRequest)
 			if err != nil {
 				return err
 			}
@@ -48,7 +47,7 @@ func CmdSendRequestDelegation() *cobra.Command {
 				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
 			}
 
-			msg := types.NewMsgSendRequestDelegation(creator, srcPort, timeoutTimestamp, argDelegationAction, argPermission)
+			msg := types.NewMsgSendRequestDelegation(creator, srcPort, timeoutTimestamp, argDelegationRequest)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

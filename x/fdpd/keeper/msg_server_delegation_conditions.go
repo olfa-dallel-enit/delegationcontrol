@@ -15,7 +15,7 @@ func (k msgServer) CreateDelegationConditions(goCtx context.Context, msg *types.
 	var delegationConditions = types.DelegationConditions{
 		Creator:        msg.Creator,
 		Cost:           msg.Cost,
-		MaxDelegations: msg.MaxDelegations,
+		MaxDelegateeNb: msg.MaxDelegateeNb,
 		Validity:       msg.Validity,
 	}
 
@@ -36,7 +36,7 @@ func (k msgServer) UpdateDelegationConditions(goCtx context.Context, msg *types.
 		Creator:        msg.Creator,
 		Id:             msg.Id,
 		Cost:           msg.Cost,
-		MaxDelegations: msg.MaxDelegations,
+		MaxDelegateeNb: msg.MaxDelegateeNb,
 		Validity:       msg.Validity,
 	}
 

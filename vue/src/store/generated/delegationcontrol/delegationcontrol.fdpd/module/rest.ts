@@ -30,7 +30,7 @@ export interface FdpdDelegationConditions {
   cost?: string;
 
   /** @format uint64 */
-  maxDelegations?: string;
+  maxDelegateeNb?: string;
   validity?: FdpdValidity;
   creator?: string;
 }
@@ -42,6 +42,16 @@ export interface FdpdDelegationDecision {
   delegationConditions?: FdpdDelegationConditions;
   creator?: string;
   decisionDomain?: string;
+  delegationRequestLabel?: string;
+}
+
+export interface FdpdDelegationRequest {
+  /** @format uint64 */
+  id?: string;
+  label?: string;
+  delegationAction?: string;
+  permission?: FdpdPermission;
+  creator?: string;
 }
 
 export interface FdpdDomain {
@@ -50,6 +60,14 @@ export interface FdpdDomain {
   name?: string;
   location?: string;
   ibcChannel?: string;
+  creator?: string;
+}
+
+export interface FdpdFinalDelegationDecision {
+  /** @format uint64 */
+  id?: string;
+  delegationRequestLabel?: string;
+  decision?: string;
   creator?: string;
 }
 
@@ -82,7 +100,17 @@ export interface FdpdMsgCreateDelegationDecisionResponse {
   id?: string;
 }
 
+export interface FdpdMsgCreateDelegationRequestResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
 export interface FdpdMsgCreateDomainResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
+export interface FdpdMsgCreateFinalDelegationDecisionResponse {
   /** @format uint64 */
   id?: string;
 }
@@ -114,7 +142,11 @@ export type FdpdMsgDeleteDelegationConditionsResponse = object;
 
 export type FdpdMsgDeleteDelegationDecisionResponse = object;
 
+export type FdpdMsgDeleteDelegationRequestResponse = object;
+
 export type FdpdMsgDeleteDomainResponse = object;
+
+export type FdpdMsgDeleteFinalDelegationDecisionResponse = object;
 
 export type FdpdMsgDeleteForwardPolicyResponse = object;
 
@@ -138,7 +170,11 @@ export type FdpdMsgUpdateDelegationConditionsResponse = object;
 
 export type FdpdMsgUpdateDelegationDecisionResponse = object;
 
+export type FdpdMsgUpdateDelegationRequestResponse = object;
+
 export type FdpdMsgUpdateDomainResponse = object;
+
+export type FdpdMsgUpdateFinalDelegationDecisionResponse = object;
 
 export type FdpdMsgUpdateForwardPolicyResponse = object;
 
@@ -195,8 +231,38 @@ export interface FdpdQueryAllDelegationDecisionResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface FdpdQueryAllDelegationRequestResponse {
+  DelegationRequest?: FdpdDelegationRequest[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface FdpdQueryAllDomainResponse {
   Domain?: FdpdDomain[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface FdpdQueryAllFinalDelegationDecisionResponse {
+  FinalDelegationDecision?: FdpdFinalDelegationDecision[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -267,8 +333,16 @@ export interface FdpdQueryGetDelegationDecisionResponse {
   DelegationDecision?: FdpdDelegationDecision;
 }
 
+export interface FdpdQueryGetDelegationRequestResponse {
+  DelegationRequest?: FdpdDelegationRequest;
+}
+
 export interface FdpdQueryGetDomainResponse {
   Domain?: FdpdDomain;
+}
+
+export interface FdpdQueryGetFinalDelegationDecisionResponse {
+  FinalDelegationDecision?: FdpdFinalDelegationDecision;
 }
 
 export interface FdpdQueryGetForwardPolicyResponse {
@@ -713,6 +787,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryDelegationRequestAll
+   * @summary Queries a list of DelegationRequest items.
+   * @request GET:/delegationcontrol/fdpd/delegation_request
+   */
+  queryDelegationRequestAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FdpdQueryAllDelegationRequestResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/delegation_request`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDelegationRequest
+   * @summary Queries a DelegationRequest by id.
+   * @request GET:/delegationcontrol/fdpd/delegation_request/{id}
+   */
+  queryDelegationRequest = (id: string, params: RequestParams = {}) =>
+    this.request<FdpdQueryGetDelegationRequestResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/delegation_request/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryDomainAll
    * @summary Queries a list of Domain items.
    * @request GET:/delegationcontrol/fdpd/domain
@@ -746,6 +862,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryDomain = (id: string, params: RequestParams = {}) =>
     this.request<FdpdQueryGetDomainResponse, RpcStatus>({
       path: `/delegationcontrol/fdpd/domain/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryFinalDelegationDecisionAll
+   * @summary Queries a list of FinalDelegationDecision items.
+   * @request GET:/delegationcontrol/fdpd/final_delegation_decision
+   */
+  queryFinalDelegationDecisionAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FdpdQueryAllFinalDelegationDecisionResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/final_delegation_decision`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryFinalDelegationDecision
+   * @summary Queries a FinalDelegationDecision by id.
+   * @request GET:/delegationcontrol/fdpd/final_delegation_decision/{id}
+   */
+  queryFinalDelegationDecision = (id: string, params: RequestParams = {}) =>
+    this.request<FdpdQueryGetFinalDelegationDecisionResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/final_delegation_decision/${id}`,
       method: "GET",
       format: "json",
       ...params,

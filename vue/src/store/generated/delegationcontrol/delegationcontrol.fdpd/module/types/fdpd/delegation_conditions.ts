@@ -8,7 +8,7 @@ export const protobufPackage = "delegationcontrol.fdpd";
 export interface DelegationConditions {
   id: number;
   cost: number;
-  maxDelegations: number;
+  maxDelegateeNb: number;
   validity: Validity | undefined;
   creator: string;
 }
@@ -16,7 +16,7 @@ export interface DelegationConditions {
 const baseDelegationConditions: object = {
   id: 0,
   cost: 0,
-  maxDelegations: 0,
+  maxDelegateeNb: 0,
   creator: "",
 };
 
@@ -31,8 +31,8 @@ export const DelegationConditions = {
     if (message.cost !== 0) {
       writer.uint32(16).uint64(message.cost);
     }
-    if (message.maxDelegations !== 0) {
-      writer.uint32(24).uint64(message.maxDelegations);
+    if (message.maxDelegateeNb !== 0) {
+      writer.uint32(24).uint64(message.maxDelegateeNb);
     }
     if (message.validity !== undefined) {
       Validity.encode(message.validity, writer.uint32(34).fork()).ldelim();
@@ -57,7 +57,7 @@ export const DelegationConditions = {
           message.cost = longToNumber(reader.uint64() as Long);
           break;
         case 3:
-          message.maxDelegations = longToNumber(reader.uint64() as Long);
+          message.maxDelegateeNb = longToNumber(reader.uint64() as Long);
           break;
         case 4:
           message.validity = Validity.decode(reader, reader.uint32());
@@ -85,10 +85,10 @@ export const DelegationConditions = {
     } else {
       message.cost = 0;
     }
-    if (object.maxDelegations !== undefined && object.maxDelegations !== null) {
-      message.maxDelegations = Number(object.maxDelegations);
+    if (object.maxDelegateeNb !== undefined && object.maxDelegateeNb !== null) {
+      message.maxDelegateeNb = Number(object.maxDelegateeNb);
     } else {
-      message.maxDelegations = 0;
+      message.maxDelegateeNb = 0;
     }
     if (object.validity !== undefined && object.validity !== null) {
       message.validity = Validity.fromJSON(object.validity);
@@ -107,8 +107,8 @@ export const DelegationConditions = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     message.cost !== undefined && (obj.cost = message.cost);
-    message.maxDelegations !== undefined &&
-      (obj.maxDelegations = message.maxDelegations);
+    message.maxDelegateeNb !== undefined &&
+      (obj.maxDelegateeNb = message.maxDelegateeNb);
     message.validity !== undefined &&
       (obj.validity = message.validity
         ? Validity.toJSON(message.validity)
@@ -129,10 +129,10 @@ export const DelegationConditions = {
     } else {
       message.cost = 0;
     }
-    if (object.maxDelegations !== undefined && object.maxDelegations !== null) {
-      message.maxDelegations = object.maxDelegations;
+    if (object.maxDelegateeNb !== undefined && object.maxDelegateeNb !== null) {
+      message.maxDelegateeNb = object.maxDelegateeNb;
     } else {
-      message.maxDelegations = 0;
+      message.maxDelegateeNb = 0;
     }
     if (object.validity !== undefined && object.validity !== null) {
       message.validity = Validity.fromPartial(object.validity);

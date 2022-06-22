@@ -22,7 +22,7 @@ func CmdCreateDelegationConditions() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argMaxDelegations, err := cast.ToUint64E(args[1])
+			argMaxDelegateeNb, err := cast.ToUint64E(args[1])
 			if err != nil {
 				return err
 			}
@@ -37,7 +37,7 @@ func CmdCreateDelegationConditions() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateDelegationConditions(clientCtx.GetFromAddress().String(), argCost, argMaxDelegations, argValidity)
+			msg := types.NewMsgCreateDelegationConditions(clientCtx.GetFromAddress().String(), argCost, argMaxDelegateeNb, argValidity)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -66,7 +66,7 @@ func CmdUpdateDelegationConditions() *cobra.Command {
 				return err
 			}
 
-			argMaxDelegations, err := cast.ToUint64E(args[2])
+			argMaxDelegateeNb, err := cast.ToUint64E(args[2])
 			if err != nil {
 				return err
 			}
@@ -82,7 +82,7 @@ func CmdUpdateDelegationConditions() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateDelegationConditions(clientCtx.GetFromAddress().String(), id, argCost, argMaxDelegations, argValidity)
+			msg := types.NewMsgUpdateDelegationConditions(clientCtx.GetFromAddress().String(), id, argCost, argMaxDelegateeNb, argValidity)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

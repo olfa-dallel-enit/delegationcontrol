@@ -4,11 +4,13 @@ import (
 	"errors"
 
 	"delegationcontrol/x/fdpd/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/ibc-go/v3/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
+	"github.com/spf13/cast"
 )
 
 // TransmitRequestDelegationPacket transmits the packet over IBC with the specified source port and source channel
@@ -75,8 +77,14 @@ func (k Keeper) OnRecvRequestDelegationPacket(ctx sdk.Context, packet channeltyp
 
 	// TODO: packet reception logic
 
+	//extract delegation policy to evaluate
 	packetAck.Decision = "permit"
 	packetAck.DecisionDomain = ctx.ChainID()
+	packetAck.DelegationRequestLabel = data.Label
+	packetAck.Cost = ""
+	packetAck.MaxDelegateeNb = ""
+	packetAck.NotBefore = ""
+	packetAck.NotAfter = ""
 
 	return packetAck, nil
 }
@@ -103,9 +111,20 @@ func (k Keeper) OnAcknowledgementRequestDelegationPacket(ctx sdk.Context, packet
 		// TODO: successful acknowledgement logic
 
 		k.AppendDelegationDecision(ctx, types.DelegationDecision{
-			Creator:        ctx.ChainID(),
-			DecisionDomain: packetAck.DecisionDomain,
-			Decision:       packetAck.Decision,
+			Creator:                ctx.ChainID(),
+			DecisionDomain:         packetAck.DecisionDomain,
+			Decision:               packetAck.Decision,
+			DelegationRequestLabel: packetAck.DelegationRequestLabel,
+			DelegationConditions: &types.DelegationConditions{
+				Creator:        ctx.ChainID(),
+				Cost:           cast.ToUint64(packetAck.Cost),
+				MaxDelegateeNb: cast.ToUint64(packetAck.MaxDelegateeNb),
+				Validity: &types.Validity{
+					Creator:   ctx.ChainID(),
+					NotBefore: packetAck.NotBefore,
+					NotAfter:  packetAck.NotAfter,
+				},
+			},
 		})
 
 		return nil

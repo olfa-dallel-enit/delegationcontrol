@@ -77,3 +77,13 @@ const (
 	SelectionCriteriaKey      = "SelectionCriteria-value-"
 	SelectionCriteriaCountKey = "SelectionCriteria-count-"
 )
+
+const (
+	DelegationRequestKey      = "DelegationRequest-value-"
+	DelegationRequestCountKey = "DelegationRequest-count-"
+)
+
+const (
+	FinalDelegationDecisionKey      = "FinalDelegationDecision-value-"
+	FinalDelegationDecisionCountKey = "FinalDelegationDecision-count-"
+)

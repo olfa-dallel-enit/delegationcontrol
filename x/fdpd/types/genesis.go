@@ -11,17 +11,19 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		PortId:                   PortID,
-		LocalDomain:              nil,
-		DomainList:               []Domain{},
-		ForwardPolicy:            nil,
-		ValidityList:             []Validity{},
-		DecisionPolicy:           nil,
-		PermissionList:           []Permission{},
-		DelegationConditionsList: []DelegationConditions{},
-		DelegationDecisionList:   []DelegationDecision{},
-		SelectionPolicy:          nil,
-		SelectionCriteriaList:    []SelectionCriteria{},
+		PortId:                      PortID,
+		LocalDomain:                 nil,
+		DomainList:                  []Domain{},
+		ForwardPolicy:               nil,
+		ValidityList:                []Validity{},
+		DecisionPolicy:              nil,
+		PermissionList:              []Permission{},
+		DelegationConditionsList:    []DelegationConditions{},
+		DelegationDecisionList:      []DelegationDecision{},
+		SelectionPolicy:             nil,
+		SelectionCriteriaList:       []SelectionCriteria{},
+		DelegationRequestList:       []DelegationRequest{},
+		FinalDelegationDecisionList: []FinalDelegationDecision{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -104,6 +106,30 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("selectionCriteria id should be lower or equal than the last id")
 		}
 		selectionCriteriaIdMap[elem.Id] = true
+	}
+	// Check for duplicated ID in delegationRequest
+	delegationRequestIdMap := make(map[uint64]bool)
+	delegationRequestCount := gs.GetDelegationRequestCount()
+	for _, elem := range gs.DelegationRequestList {
+		if _, ok := delegationRequestIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for delegationRequest")
+		}
+		if elem.Id >= delegationRequestCount {
+			return fmt.Errorf("delegationRequest id should be lower or equal than the last id")
+		}
+		delegationRequestIdMap[elem.Id] = true
+	}
+	// Check for duplicated ID in finalDelegationDecision
+	finalDelegationDecisionIdMap := make(map[uint64]bool)
+	finalDelegationDecisionCount := gs.GetFinalDelegationDecisionCount()
+	for _, elem := range gs.FinalDelegationDecisionList {
+		if _, ok := finalDelegationDecisionIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for finalDelegationDecision")
+		}
+		if elem.Id >= finalDelegationDecisionCount {
+			return fmt.Errorf("finalDelegationDecision id should be lower or equal than the last id")
+		}
+		finalDelegationDecisionIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

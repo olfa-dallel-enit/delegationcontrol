@@ -12,6 +12,8 @@ import { DelegationConditions } from "../fdpd/delegation_conditions";
 import { DelegationDecision } from "../fdpd/delegation_decision";
 import { SelectionPolicy } from "../fdpd/selection_policy";
 import { SelectionCriteria } from "../fdpd/selection_criteria";
+import { DelegationRequest } from "../fdpd/delegation_request";
+import { FinalDelegationDecision } from "../fdpd/final_delegation_decision";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -34,8 +36,12 @@ export interface GenesisState {
   delegationDecisionCount: number;
   selectionPolicy: SelectionPolicy | undefined;
   selectionCriteriaList: SelectionCriteria[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   selectionCriteriaCount: number;
+  delegationRequestList: DelegationRequest[];
+  delegationRequestCount: number;
+  finalDelegationDecisionList: FinalDelegationDecision[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  finalDelegationDecisionCount: number;
 }
 
 const baseGenesisState: object = {
@@ -46,6 +52,8 @@ const baseGenesisState: object = {
   delegationConditionsCount: 0,
   delegationDecisionCount: 0,
   selectionCriteriaCount: 0,
+  delegationRequestCount: 0,
+  finalDelegationDecisionCount: 0,
 };
 
 export const GenesisState = {
@@ -116,6 +124,18 @@ export const GenesisState = {
     if (message.selectionCriteriaCount !== 0) {
       writer.uint32(144).uint64(message.selectionCriteriaCount);
     }
+    for (const v of message.delegationRequestList) {
+      DelegationRequest.encode(v!, writer.uint32(154).fork()).ldelim();
+    }
+    if (message.delegationRequestCount !== 0) {
+      writer.uint32(160).uint64(message.delegationRequestCount);
+    }
+    for (const v of message.finalDelegationDecisionList) {
+      FinalDelegationDecision.encode(v!, writer.uint32(170).fork()).ldelim();
+    }
+    if (message.finalDelegationDecisionCount !== 0) {
+      writer.uint32(176).uint64(message.finalDelegationDecisionCount);
+    }
     return writer;
   },
 
@@ -129,6 +149,8 @@ export const GenesisState = {
     message.delegationConditionsList = [];
     message.delegationDecisionList = [];
     message.selectionCriteriaList = [];
+    message.delegationRequestList = [];
+    message.finalDelegationDecisionList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -206,6 +228,26 @@ export const GenesisState = {
             reader.uint64() as Long
           );
           break;
+        case 19:
+          message.delegationRequestList.push(
+            DelegationRequest.decode(reader, reader.uint32())
+          );
+          break;
+        case 20:
+          message.delegationRequestCount = longToNumber(
+            reader.uint64() as Long
+          );
+          break;
+        case 21:
+          message.finalDelegationDecisionList.push(
+            FinalDelegationDecision.decode(reader, reader.uint32())
+          );
+          break;
+        case 22:
+          message.finalDelegationDecisionCount = longToNumber(
+            reader.uint64() as Long
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -222,6 +264,8 @@ export const GenesisState = {
     message.delegationConditionsList = [];
     message.delegationDecisionList = [];
     message.selectionCriteriaList = [];
+    message.delegationRequestList = [];
+    message.finalDelegationDecisionList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -340,6 +384,42 @@ export const GenesisState = {
     } else {
       message.selectionCriteriaCount = 0;
     }
+    if (
+      object.delegationRequestList !== undefined &&
+      object.delegationRequestList !== null
+    ) {
+      for (const e of object.delegationRequestList) {
+        message.delegationRequestList.push(DelegationRequest.fromJSON(e));
+      }
+    }
+    if (
+      object.delegationRequestCount !== undefined &&
+      object.delegationRequestCount !== null
+    ) {
+      message.delegationRequestCount = Number(object.delegationRequestCount);
+    } else {
+      message.delegationRequestCount = 0;
+    }
+    if (
+      object.finalDelegationDecisionList !== undefined &&
+      object.finalDelegationDecisionList !== null
+    ) {
+      for (const e of object.finalDelegationDecisionList) {
+        message.finalDelegationDecisionList.push(
+          FinalDelegationDecision.fromJSON(e)
+        );
+      }
+    }
+    if (
+      object.finalDelegationDecisionCount !== undefined &&
+      object.finalDelegationDecisionCount !== null
+    ) {
+      message.finalDelegationDecisionCount = Number(
+        object.finalDelegationDecisionCount
+      );
+    } else {
+      message.finalDelegationDecisionCount = 0;
+    }
     return message;
   },
 
@@ -418,6 +498,24 @@ export const GenesisState = {
     }
     message.selectionCriteriaCount !== undefined &&
       (obj.selectionCriteriaCount = message.selectionCriteriaCount);
+    if (message.delegationRequestList) {
+      obj.delegationRequestList = message.delegationRequestList.map((e) =>
+        e ? DelegationRequest.toJSON(e) : undefined
+      );
+    } else {
+      obj.delegationRequestList = [];
+    }
+    message.delegationRequestCount !== undefined &&
+      (obj.delegationRequestCount = message.delegationRequestCount);
+    if (message.finalDelegationDecisionList) {
+      obj.finalDelegationDecisionList = message.finalDelegationDecisionList.map(
+        (e) => (e ? FinalDelegationDecision.toJSON(e) : undefined)
+      );
+    } else {
+      obj.finalDelegationDecisionList = [];
+    }
+    message.finalDelegationDecisionCount !== undefined &&
+      (obj.finalDelegationDecisionCount = message.finalDelegationDecisionCount);
     return obj;
   },
 
@@ -429,6 +527,8 @@ export const GenesisState = {
     message.delegationConditionsList = [];
     message.delegationDecisionList = [];
     message.selectionCriteriaList = [];
+    message.delegationRequestList = [];
+    message.finalDelegationDecisionList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -548,6 +648,41 @@ export const GenesisState = {
       message.selectionCriteriaCount = object.selectionCriteriaCount;
     } else {
       message.selectionCriteriaCount = 0;
+    }
+    if (
+      object.delegationRequestList !== undefined &&
+      object.delegationRequestList !== null
+    ) {
+      for (const e of object.delegationRequestList) {
+        message.delegationRequestList.push(DelegationRequest.fromPartial(e));
+      }
+    }
+    if (
+      object.delegationRequestCount !== undefined &&
+      object.delegationRequestCount !== null
+    ) {
+      message.delegationRequestCount = object.delegationRequestCount;
+    } else {
+      message.delegationRequestCount = 0;
+    }
+    if (
+      object.finalDelegationDecisionList !== undefined &&
+      object.finalDelegationDecisionList !== null
+    ) {
+      for (const e of object.finalDelegationDecisionList) {
+        message.finalDelegationDecisionList.push(
+          FinalDelegationDecision.fromPartial(e)
+        );
+      }
+    }
+    if (
+      object.finalDelegationDecisionCount !== undefined &&
+      object.finalDelegationDecisionCount !== null
+    ) {
+      message.finalDelegationDecisionCount =
+        object.finalDelegationDecisionCount;
+    } else {
+      message.finalDelegationDecisionCount = 0;
     }
     return message;
   },

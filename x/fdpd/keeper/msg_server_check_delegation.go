@@ -4,7 +4,10 @@ import (
 	"context"
 
 	"delegationcontrol/x/fdpd/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/spf13/cast"
 )
 
 func (k msgServer) CheckDelegation(goCtx context.Context, msg *types.MsgCheckDelegation) (*types.MsgCheckDelegationResponse, error) {
@@ -13,5 +16,119 @@ func (k msgServer) CheckDelegation(goCtx context.Context, msg *types.MsgCheckDel
 	// TODO: Handling the message
 	_ = ctx
 
+	delegationDecisions := k.GetDelegationDecisionByLabel(ctx, msg.Label)
+
+	finalDecision := "not applicable"
+	switch msg.SelectionCriteria {
+	case "lowest-cost":
+		finalDecision = GetLowestCostBasedDecision(delegationDecisions)
+	case "max-delegatee-nb":
+		finalDecision = GetMaxDelegateeNbBasedDecision(delegationDecisions)
+	case "min-delegatee-nb":
+		finalDecision = GetMinDelegateeNbBasedDecision(delegationDecisions)
+	case "max-validity":
+		finalDecision = GetMaxValidityBasedDecision(delegationDecisions)
+	case "min-validity":
+		finalDecision = GetMinValidityBasedDecision(delegationDecisions)
+	}
+
+	k.AppendFinalDelegationDecision(ctx, types.FinalDelegationDecision{
+		Creator: ctx.ChainID(),
+		DelegationRequestLabel: msg.Label,
+		Decision: finalDecision,
+	})
+
 	return &types.MsgCheckDelegationResponse{}, nil
+}
+
+func GetLowestCostBasedDecision(delegationDecisions []types.DelegationDecision) (finalDecision string) {
+	if len(delegationDecisions) == 0 {
+		finalDecision = "deny"
+	} else if len(delegationDecisions) == 1 {
+		finalDecision = delegationDecisions[0].Decision
+	} else {
+		lowestCost := delegationDecisions[0].DelegationConditions.Cost
+		finalDecision = delegationDecisions[0].Decision
+		for _, delegationDecision := range delegationDecisions {
+			if delegationDecision.DelegationConditions.Cost < lowestCost {
+				lowestCost = delegationDecision.DelegationConditions.Cost
+				finalDecision = delegationDecision.Decision
+			}
+		}
+	}
+	return finalDecision
+}
+
+func GetMaxDelegateeNbBasedDecision(delegationDecisions []types.DelegationDecision) (finalDecision string) {
+	if len(delegationDecisions) == 0 {
+		finalDecision = "deny"
+	} else if len(delegationDecisions) == 1 {
+		finalDecision = delegationDecisions[0].Decision
+	} else {
+		maxDelegateeNb := delegationDecisions[0].DelegationConditions.MaxDelegateeNb
+		finalDecision = delegationDecisions[0].Decision
+		for _, delegationDecision := range delegationDecisions {
+			if delegationDecision.DelegationConditions.MaxDelegateeNb > maxDelegateeNb {
+				maxDelegateeNb = delegationDecision.DelegationConditions.MaxDelegateeNb
+				finalDecision = delegationDecision.Decision
+			}
+		}
+	}
+	return finalDecision
+}
+
+func GetMinDelegateeNbBasedDecision(delegationDecisions []types.DelegationDecision) (finalDecision string) {
+	if len(delegationDecisions) == 0 {
+		finalDecision = "deny"
+	} else if len(delegationDecisions) == 1 {
+		finalDecision = delegationDecisions[0].Decision
+	} else {
+		minDelegateeNb := delegationDecisions[0].DelegationConditions.MaxDelegateeNb
+		finalDecision = delegationDecisions[0].Decision
+		for _, delegationDecision := range delegationDecisions {
+			if delegationDecision.DelegationConditions.MaxDelegateeNb < minDelegateeNb {
+				minDelegateeNb = delegationDecision.DelegationConditions.MaxDelegateeNb
+				finalDecision = delegationDecision.Decision
+			}
+		}
+	}
+	return finalDecision
+}
+
+func GetMaxValidityBasedDecision(delegationDecisions []types.DelegationDecision) (finalDecision string) {
+	if len(delegationDecisions) == 0 {
+		finalDecision = "deny"
+	} else if len(delegationDecisions) == 1 {
+		finalDecision = delegationDecisions[0].Decision
+	} else {
+		maxValidityPeriod := cast.ToTime(delegationDecisions[0].DelegationConditions.Validity.NotAfter).UnixNano() - cast.ToTime(delegationDecisions[0].DelegationConditions.Validity.NotBefore).UnixNano()
+		finalDecision = delegationDecisions[0].Decision
+		for _, delegationDecision := range delegationDecisions {
+			validityPeriod := cast.ToTime(delegationDecision.DelegationConditions.Validity.NotAfter).UnixNano() - cast.ToTime(delegationDecision.DelegationConditions.Validity.NotBefore).UnixNano()
+			if maxValidityPeriod < validityPeriod {
+				maxValidityPeriod = validityPeriod
+				finalDecision = delegationDecision.Decision
+			}
+		}
+	}
+	return finalDecision
+}
+
+func GetMinValidityBasedDecision(delegationDecisions []types.DelegationDecision) (finalDecision string) {
+	if len(delegationDecisions) == 0 {
+		finalDecision = "deny"
+	} else if len(delegationDecisions) == 1 {
+		finalDecision = delegationDecisions[0].Decision
+	} else {
+		minValidityPeriod := cast.ToTime(delegationDecisions[0].DelegationConditions.Validity.NotAfter).UnixNano() - cast.ToTime(delegationDecisions[0].DelegationConditions.Validity.NotBefore).UnixNano()
+		finalDecision = delegationDecisions[0].Decision
+		for _, delegationDecision := range delegationDecisions {
+			validityPeriod := cast.ToTime(delegationDecision.DelegationConditions.Validity.NotAfter).UnixNano() - cast.ToTime(delegationDecision.DelegationConditions.Validity.NotBefore).UnixNano()
+			if minValidityPeriod > validityPeriod {
+				minValidityPeriod = validityPeriod
+				finalDecision = delegationDecision.Decision
+			}
+		}
+	}
+	return finalDecision
 }

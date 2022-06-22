@@ -9,11 +9,10 @@ const TypeMsgCheckDelegation = "check_delegation"
 
 var _ sdk.Msg = &MsgCheckDelegation{}
 
-func NewMsgCheckDelegation(creator string, delegationAction string, permission *Permission, selectionCriteria *SelectionCriteria) *MsgCheckDelegation {
+func NewMsgCheckDelegation(creator string, label string, selectionCriteria string) *MsgCheckDelegation {
 	return &MsgCheckDelegation{
 		Creator:           creator,
-		DelegationAction:  delegationAction,
-		Permission:        permission,
+		Label:             label,
 		SelectionCriteria: selectionCriteria,
 	}
 }

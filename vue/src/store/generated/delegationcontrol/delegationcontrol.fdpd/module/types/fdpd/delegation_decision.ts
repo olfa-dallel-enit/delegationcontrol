@@ -11,6 +11,7 @@ export interface DelegationDecision {
   delegationConditions: DelegationConditions | undefined;
   creator: string;
   decisionDomain: string;
+  delegationRequestLabel: string;
 }
 
 const baseDelegationDecision: object = {
@@ -18,6 +19,7 @@ const baseDelegationDecision: object = {
   decision: "",
   creator: "",
   decisionDomain: "",
+  delegationRequestLabel: "",
 };
 
 export const DelegationDecision = {
@@ -42,6 +44,9 @@ export const DelegationDecision = {
     }
     if (message.decisionDomain !== "") {
       writer.uint32(42).string(message.decisionDomain);
+    }
+    if (message.delegationRequestLabel !== "") {
+      writer.uint32(50).string(message.delegationRequestLabel);
     }
     return writer;
   },
@@ -70,6 +75,9 @@ export const DelegationDecision = {
           break;
         case 5:
           message.decisionDomain = reader.string();
+          break;
+        case 6:
+          message.delegationRequestLabel = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -111,6 +119,14 @@ export const DelegationDecision = {
     } else {
       message.decisionDomain = "";
     }
+    if (
+      object.delegationRequestLabel !== undefined &&
+      object.delegationRequestLabel !== null
+    ) {
+      message.delegationRequestLabel = String(object.delegationRequestLabel);
+    } else {
+      message.delegationRequestLabel = "";
+    }
     return message;
   },
 
@@ -125,6 +141,8 @@ export const DelegationDecision = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.decisionDomain !== undefined &&
       (obj.decisionDomain = message.decisionDomain);
+    message.delegationRequestLabel !== undefined &&
+      (obj.delegationRequestLabel = message.delegationRequestLabel);
     return obj;
   },
 
@@ -159,6 +177,14 @@ export const DelegationDecision = {
       message.decisionDomain = object.decisionDomain;
     } else {
       message.decisionDomain = "";
+    }
+    if (
+      object.delegationRequestLabel !== undefined &&
+      object.delegationRequestLabel !== null
+    ) {
+      message.delegationRequestLabel = object.delegationRequestLabel;
+    } else {
+      message.delegationRequestLabel = "";
     }
     return message;
   },

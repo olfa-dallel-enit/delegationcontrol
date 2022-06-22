@@ -1918,7 +1918,7 @@ var xxx_messageInfo_MsgDeletePermissionResponse proto.InternalMessageInfo
 type MsgCreateDelegationConditions struct {
 	Creator        string    `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Cost           uint64    `protobuf:"varint,2,opt,name=cost,proto3" json:"cost,omitempty"`
-	MaxDelegations uint64    `protobuf:"varint,3,opt,name=maxDelegations,proto3" json:"maxDelegations,omitempty"`
+	MaxDelegateeNb uint64    `protobuf:"varint,3,opt,name=maxDelegateeNb,proto3" json:"maxDelegateeNb,omitempty"`
 	Validity       *Validity `protobuf:"bytes,4,opt,name=validity,proto3" json:"validity,omitempty"`
 }
 
@@ -1969,9 +1969,9 @@ func (m *MsgCreateDelegationConditions) GetCost() uint64 {
 	return 0
 }
 
-func (m *MsgCreateDelegationConditions) GetMaxDelegations() uint64 {
+func (m *MsgCreateDelegationConditions) GetMaxDelegateeNb() uint64 {
 	if m != nil {
-		return m.MaxDelegations
+		return m.MaxDelegateeNb
 	}
 	return 0
 }
@@ -2031,7 +2031,7 @@ type MsgUpdateDelegationConditions struct {
 	Creator        string    `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Id             uint64    `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
 	Cost           uint64    `protobuf:"varint,3,opt,name=cost,proto3" json:"cost,omitempty"`
-	MaxDelegations uint64    `protobuf:"varint,4,opt,name=maxDelegations,proto3" json:"maxDelegations,omitempty"`
+	MaxDelegateeNb uint64    `protobuf:"varint,4,opt,name=maxDelegateeNb,proto3" json:"maxDelegateeNb,omitempty"`
 	Validity       *Validity `protobuf:"bytes,5,opt,name=validity,proto3" json:"validity,omitempty"`
 }
 
@@ -2089,9 +2089,9 @@ func (m *MsgUpdateDelegationConditions) GetCost() uint64 {
 	return 0
 }
 
-func (m *MsgUpdateDelegationConditions) GetMaxDelegations() uint64 {
+func (m *MsgUpdateDelegationConditions) GetMaxDelegateeNb() uint64 {
 	if m != nil {
-		return m.MaxDelegations
+		return m.MaxDelegateeNb
 	}
 	return 0
 }
@@ -2228,11 +2228,10 @@ func (m *MsgDeleteDelegationConditionsResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgDeleteDelegationConditionsResponse proto.InternalMessageInfo
 
 type MsgSendRequestDelegation struct {
-	Creator          string      `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Port             string      `protobuf:"bytes,2,opt,name=port,proto3" json:"port,omitempty"`
-	TimeoutTimestamp uint64      `protobuf:"varint,4,opt,name=timeoutTimestamp,proto3" json:"timeoutTimestamp,omitempty"`
-	DelegationAction string      `protobuf:"bytes,5,opt,name=delegationAction,proto3" json:"delegationAction,omitempty"`
-	Permission       *Permission `protobuf:"bytes,6,opt,name=permission,proto3" json:"permission,omitempty"`
+	Creator           string             `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Port              string             `protobuf:"bytes,2,opt,name=port,proto3" json:"port,omitempty"`
+	TimeoutTimestamp  uint64             `protobuf:"varint,4,opt,name=timeoutTimestamp,proto3" json:"timeoutTimestamp,omitempty"`
+	DelegationRequest *DelegationRequest `protobuf:"bytes,5,opt,name=delegationRequest,proto3" json:"delegationRequest,omitempty"`
 }
 
 func (m *MsgSendRequestDelegation) Reset()         { *m = MsgSendRequestDelegation{} }
@@ -2289,16 +2288,9 @@ func (m *MsgSendRequestDelegation) GetTimeoutTimestamp() uint64 {
 	return 0
 }
 
-func (m *MsgSendRequestDelegation) GetDelegationAction() string {
+func (m *MsgSendRequestDelegation) GetDelegationRequest() *DelegationRequest {
 	if m != nil {
-		return m.DelegationAction
-	}
-	return ""
-}
-
-func (m *MsgSendRequestDelegation) GetPermission() *Permission {
-	if m != nil {
-		return m.Permission
+		return m.DelegationRequest
 	}
 	return nil
 }
@@ -3380,10 +3372,9 @@ func (m *MsgDeleteSelectionCriteriaResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgDeleteSelectionCriteriaResponse proto.InternalMessageInfo
 
 type MsgCheckDelegation struct {
-	Creator           string             `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	DelegationAction  string             `protobuf:"bytes,2,opt,name=delegationAction,proto3" json:"delegationAction,omitempty"`
-	Permission        *Permission        `protobuf:"bytes,3,opt,name=permission,proto3" json:"permission,omitempty"`
-	SelectionCriteria *SelectionCriteria `protobuf:"bytes,4,opt,name=selectionCriteria,proto3" json:"selectionCriteria,omitempty"`
+	Creator           string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Label             string `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	SelectionCriteria string `protobuf:"bytes,3,opt,name=selectionCriteria,proto3" json:"selectionCriteria,omitempty"`
 }
 
 func (m *MsgCheckDelegation) Reset()         { *m = MsgCheckDelegation{} }
@@ -3426,25 +3417,18 @@ func (m *MsgCheckDelegation) GetCreator() string {
 	return ""
 }
 
-func (m *MsgCheckDelegation) GetDelegationAction() string {
+func (m *MsgCheckDelegation) GetLabel() string {
 	if m != nil {
-		return m.DelegationAction
+		return m.Label
 	}
 	return ""
 }
 
-func (m *MsgCheckDelegation) GetPermission() *Permission {
-	if m != nil {
-		return m.Permission
-	}
-	return nil
-}
-
-func (m *MsgCheckDelegation) GetSelectionCriteria() *SelectionCriteria {
+func (m *MsgCheckDelegation) GetSelectionCriteria() string {
 	if m != nil {
 		return m.SelectionCriteria
 	}
-	return nil
+	return ""
 }
 
 type MsgCheckDelegationResponse struct {
@@ -3482,6 +3466,620 @@ func (m *MsgCheckDelegationResponse) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_MsgCheckDelegationResponse proto.InternalMessageInfo
+
+type MsgCreateDelegationRequest struct {
+	Creator          string      `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Label            string      `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	DelegationAction string      `protobuf:"bytes,3,opt,name=delegationAction,proto3" json:"delegationAction,omitempty"`
+	Permission       *Permission `protobuf:"bytes,4,opt,name=permission,proto3" json:"permission,omitempty"`
+}
+
+func (m *MsgCreateDelegationRequest) Reset()         { *m = MsgCreateDelegationRequest{} }
+func (m *MsgCreateDelegationRequest) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDelegationRequest) ProtoMessage()    {}
+func (*MsgCreateDelegationRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{68}
+}
+func (m *MsgCreateDelegationRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateDelegationRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateDelegationRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateDelegationRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDelegationRequest.Merge(m, src)
+}
+func (m *MsgCreateDelegationRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateDelegationRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDelegationRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateDelegationRequest proto.InternalMessageInfo
+
+func (m *MsgCreateDelegationRequest) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCreateDelegationRequest) GetLabel() string {
+	if m != nil {
+		return m.Label
+	}
+	return ""
+}
+
+func (m *MsgCreateDelegationRequest) GetDelegationAction() string {
+	if m != nil {
+		return m.DelegationAction
+	}
+	return ""
+}
+
+func (m *MsgCreateDelegationRequest) GetPermission() *Permission {
+	if m != nil {
+		return m.Permission
+	}
+	return nil
+}
+
+type MsgCreateDelegationRequestResponse struct {
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *MsgCreateDelegationRequestResponse) Reset()         { *m = MsgCreateDelegationRequestResponse{} }
+func (m *MsgCreateDelegationRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateDelegationRequestResponse) ProtoMessage()    {}
+func (*MsgCreateDelegationRequestResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{69}
+}
+func (m *MsgCreateDelegationRequestResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateDelegationRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateDelegationRequestResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateDelegationRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateDelegationRequestResponse.Merge(m, src)
+}
+func (m *MsgCreateDelegationRequestResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateDelegationRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateDelegationRequestResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateDelegationRequestResponse proto.InternalMessageInfo
+
+func (m *MsgCreateDelegationRequestResponse) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type MsgUpdateDelegationRequest struct {
+	Creator          string      `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id               uint64      `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+	Label            string      `protobuf:"bytes,3,opt,name=label,proto3" json:"label,omitempty"`
+	DelegationAction string      `protobuf:"bytes,4,opt,name=delegationAction,proto3" json:"delegationAction,omitempty"`
+	Permission       *Permission `protobuf:"bytes,5,opt,name=permission,proto3" json:"permission,omitempty"`
+}
+
+func (m *MsgUpdateDelegationRequest) Reset()         { *m = MsgUpdateDelegationRequest{} }
+func (m *MsgUpdateDelegationRequest) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateDelegationRequest) ProtoMessage()    {}
+func (*MsgUpdateDelegationRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{70}
+}
+func (m *MsgUpdateDelegationRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateDelegationRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateDelegationRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateDelegationRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateDelegationRequest.Merge(m, src)
+}
+func (m *MsgUpdateDelegationRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateDelegationRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateDelegationRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateDelegationRequest proto.InternalMessageInfo
+
+func (m *MsgUpdateDelegationRequest) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgUpdateDelegationRequest) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *MsgUpdateDelegationRequest) GetLabel() string {
+	if m != nil {
+		return m.Label
+	}
+	return ""
+}
+
+func (m *MsgUpdateDelegationRequest) GetDelegationAction() string {
+	if m != nil {
+		return m.DelegationAction
+	}
+	return ""
+}
+
+func (m *MsgUpdateDelegationRequest) GetPermission() *Permission {
+	if m != nil {
+		return m.Permission
+	}
+	return nil
+}
+
+type MsgUpdateDelegationRequestResponse struct {
+}
+
+func (m *MsgUpdateDelegationRequestResponse) Reset()         { *m = MsgUpdateDelegationRequestResponse{} }
+func (m *MsgUpdateDelegationRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateDelegationRequestResponse) ProtoMessage()    {}
+func (*MsgUpdateDelegationRequestResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{71}
+}
+func (m *MsgUpdateDelegationRequestResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateDelegationRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateDelegationRequestResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateDelegationRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateDelegationRequestResponse.Merge(m, src)
+}
+func (m *MsgUpdateDelegationRequestResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateDelegationRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateDelegationRequestResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateDelegationRequestResponse proto.InternalMessageInfo
+
+type MsgDeleteDelegationRequest struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id      uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *MsgDeleteDelegationRequest) Reset()         { *m = MsgDeleteDelegationRequest{} }
+func (m *MsgDeleteDelegationRequest) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteDelegationRequest) ProtoMessage()    {}
+func (*MsgDeleteDelegationRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{72}
+}
+func (m *MsgDeleteDelegationRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteDelegationRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteDelegationRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteDelegationRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteDelegationRequest.Merge(m, src)
+}
+func (m *MsgDeleteDelegationRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteDelegationRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteDelegationRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteDelegationRequest proto.InternalMessageInfo
+
+func (m *MsgDeleteDelegationRequest) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgDeleteDelegationRequest) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type MsgDeleteDelegationRequestResponse struct {
+}
+
+func (m *MsgDeleteDelegationRequestResponse) Reset()         { *m = MsgDeleteDelegationRequestResponse{} }
+func (m *MsgDeleteDelegationRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteDelegationRequestResponse) ProtoMessage()    {}
+func (*MsgDeleteDelegationRequestResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{73}
+}
+func (m *MsgDeleteDelegationRequestResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteDelegationRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteDelegationRequestResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteDelegationRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteDelegationRequestResponse.Merge(m, src)
+}
+func (m *MsgDeleteDelegationRequestResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteDelegationRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteDelegationRequestResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteDelegationRequestResponse proto.InternalMessageInfo
+
+type MsgCreateFinalDelegationDecision struct {
+	Creator                string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	DelegationRequestLabel string `protobuf:"bytes,2,opt,name=delegationRequestLabel,proto3" json:"delegationRequestLabel,omitempty"`
+	Decision               string `protobuf:"bytes,3,opt,name=decision,proto3" json:"decision,omitempty"`
+}
+
+func (m *MsgCreateFinalDelegationDecision) Reset()         { *m = MsgCreateFinalDelegationDecision{} }
+func (m *MsgCreateFinalDelegationDecision) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateFinalDelegationDecision) ProtoMessage()    {}
+func (*MsgCreateFinalDelegationDecision) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{74}
+}
+func (m *MsgCreateFinalDelegationDecision) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateFinalDelegationDecision) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateFinalDelegationDecision.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateFinalDelegationDecision) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateFinalDelegationDecision.Merge(m, src)
+}
+func (m *MsgCreateFinalDelegationDecision) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateFinalDelegationDecision) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateFinalDelegationDecision.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateFinalDelegationDecision proto.InternalMessageInfo
+
+func (m *MsgCreateFinalDelegationDecision) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCreateFinalDelegationDecision) GetDelegationRequestLabel() string {
+	if m != nil {
+		return m.DelegationRequestLabel
+	}
+	return ""
+}
+
+func (m *MsgCreateFinalDelegationDecision) GetDecision() string {
+	if m != nil {
+		return m.Decision
+	}
+	return ""
+}
+
+type MsgCreateFinalDelegationDecisionResponse struct {
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *MsgCreateFinalDelegationDecisionResponse) Reset() {
+	*m = MsgCreateFinalDelegationDecisionResponse{}
+}
+func (m *MsgCreateFinalDelegationDecisionResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateFinalDelegationDecisionResponse) ProtoMessage()    {}
+func (*MsgCreateFinalDelegationDecisionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{75}
+}
+func (m *MsgCreateFinalDelegationDecisionResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateFinalDelegationDecisionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateFinalDelegationDecisionResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateFinalDelegationDecisionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateFinalDelegationDecisionResponse.Merge(m, src)
+}
+func (m *MsgCreateFinalDelegationDecisionResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateFinalDelegationDecisionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateFinalDelegationDecisionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateFinalDelegationDecisionResponse proto.InternalMessageInfo
+
+func (m *MsgCreateFinalDelegationDecisionResponse) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type MsgUpdateFinalDelegationDecision struct {
+	Creator                string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id                     uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+	DelegationRequestLabel string `protobuf:"bytes,3,opt,name=delegationRequestLabel,proto3" json:"delegationRequestLabel,omitempty"`
+	Decision               string `protobuf:"bytes,4,opt,name=decision,proto3" json:"decision,omitempty"`
+}
+
+func (m *MsgUpdateFinalDelegationDecision) Reset()         { *m = MsgUpdateFinalDelegationDecision{} }
+func (m *MsgUpdateFinalDelegationDecision) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateFinalDelegationDecision) ProtoMessage()    {}
+func (*MsgUpdateFinalDelegationDecision) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{76}
+}
+func (m *MsgUpdateFinalDelegationDecision) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateFinalDelegationDecision) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateFinalDelegationDecision.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateFinalDelegationDecision) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateFinalDelegationDecision.Merge(m, src)
+}
+func (m *MsgUpdateFinalDelegationDecision) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateFinalDelegationDecision) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateFinalDelegationDecision.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateFinalDelegationDecision proto.InternalMessageInfo
+
+func (m *MsgUpdateFinalDelegationDecision) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgUpdateFinalDelegationDecision) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *MsgUpdateFinalDelegationDecision) GetDelegationRequestLabel() string {
+	if m != nil {
+		return m.DelegationRequestLabel
+	}
+	return ""
+}
+
+func (m *MsgUpdateFinalDelegationDecision) GetDecision() string {
+	if m != nil {
+		return m.Decision
+	}
+	return ""
+}
+
+type MsgUpdateFinalDelegationDecisionResponse struct {
+}
+
+func (m *MsgUpdateFinalDelegationDecisionResponse) Reset() {
+	*m = MsgUpdateFinalDelegationDecisionResponse{}
+}
+func (m *MsgUpdateFinalDelegationDecisionResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateFinalDelegationDecisionResponse) ProtoMessage()    {}
+func (*MsgUpdateFinalDelegationDecisionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{77}
+}
+func (m *MsgUpdateFinalDelegationDecisionResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateFinalDelegationDecisionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateFinalDelegationDecisionResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateFinalDelegationDecisionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateFinalDelegationDecisionResponse.Merge(m, src)
+}
+func (m *MsgUpdateFinalDelegationDecisionResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateFinalDelegationDecisionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateFinalDelegationDecisionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateFinalDelegationDecisionResponse proto.InternalMessageInfo
+
+type MsgDeleteFinalDelegationDecision struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id      uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *MsgDeleteFinalDelegationDecision) Reset()         { *m = MsgDeleteFinalDelegationDecision{} }
+func (m *MsgDeleteFinalDelegationDecision) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteFinalDelegationDecision) ProtoMessage()    {}
+func (*MsgDeleteFinalDelegationDecision) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{78}
+}
+func (m *MsgDeleteFinalDelegationDecision) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteFinalDelegationDecision) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteFinalDelegationDecision.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteFinalDelegationDecision) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteFinalDelegationDecision.Merge(m, src)
+}
+func (m *MsgDeleteFinalDelegationDecision) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteFinalDelegationDecision) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteFinalDelegationDecision.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteFinalDelegationDecision proto.InternalMessageInfo
+
+func (m *MsgDeleteFinalDelegationDecision) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgDeleteFinalDelegationDecision) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type MsgDeleteFinalDelegationDecisionResponse struct {
+}
+
+func (m *MsgDeleteFinalDelegationDecisionResponse) Reset() {
+	*m = MsgDeleteFinalDelegationDecisionResponse{}
+}
+func (m *MsgDeleteFinalDelegationDecisionResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteFinalDelegationDecisionResponse) ProtoMessage()    {}
+func (*MsgDeleteFinalDelegationDecisionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bf84d4950afa95e2, []int{79}
+}
+func (m *MsgDeleteFinalDelegationDecisionResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteFinalDelegationDecisionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteFinalDelegationDecisionResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteFinalDelegationDecisionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteFinalDelegationDecisionResponse.Merge(m, src)
+}
+func (m *MsgDeleteFinalDelegationDecisionResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteFinalDelegationDecisionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteFinalDelegationDecisionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteFinalDelegationDecisionResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgCreateLocalDomain)(nil), "delegationcontrol.fdpd.MsgCreateLocalDomain")
@@ -3552,124 +4150,151 @@ func init() {
 	proto.RegisterType((*MsgDeleteSelectionCriteriaResponse)(nil), "delegationcontrol.fdpd.MsgDeleteSelectionCriteriaResponse")
 	proto.RegisterType((*MsgCheckDelegation)(nil), "delegationcontrol.fdpd.MsgCheckDelegation")
 	proto.RegisterType((*MsgCheckDelegationResponse)(nil), "delegationcontrol.fdpd.MsgCheckDelegationResponse")
+	proto.RegisterType((*MsgCreateDelegationRequest)(nil), "delegationcontrol.fdpd.MsgCreateDelegationRequest")
+	proto.RegisterType((*MsgCreateDelegationRequestResponse)(nil), "delegationcontrol.fdpd.MsgCreateDelegationRequestResponse")
+	proto.RegisterType((*MsgUpdateDelegationRequest)(nil), "delegationcontrol.fdpd.MsgUpdateDelegationRequest")
+	proto.RegisterType((*MsgUpdateDelegationRequestResponse)(nil), "delegationcontrol.fdpd.MsgUpdateDelegationRequestResponse")
+	proto.RegisterType((*MsgDeleteDelegationRequest)(nil), "delegationcontrol.fdpd.MsgDeleteDelegationRequest")
+	proto.RegisterType((*MsgDeleteDelegationRequestResponse)(nil), "delegationcontrol.fdpd.MsgDeleteDelegationRequestResponse")
+	proto.RegisterType((*MsgCreateFinalDelegationDecision)(nil), "delegationcontrol.fdpd.MsgCreateFinalDelegationDecision")
+	proto.RegisterType((*MsgCreateFinalDelegationDecisionResponse)(nil), "delegationcontrol.fdpd.MsgCreateFinalDelegationDecisionResponse")
+	proto.RegisterType((*MsgUpdateFinalDelegationDecision)(nil), "delegationcontrol.fdpd.MsgUpdateFinalDelegationDecision")
+	proto.RegisterType((*MsgUpdateFinalDelegationDecisionResponse)(nil), "delegationcontrol.fdpd.MsgUpdateFinalDelegationDecisionResponse")
+	proto.RegisterType((*MsgDeleteFinalDelegationDecision)(nil), "delegationcontrol.fdpd.MsgDeleteFinalDelegationDecision")
+	proto.RegisterType((*MsgDeleteFinalDelegationDecisionResponse)(nil), "delegationcontrol.fdpd.MsgDeleteFinalDelegationDecisionResponse")
 }
 
 func init() { proto.RegisterFile("fdpd/tx.proto", fileDescriptor_bf84d4950afa95e2) }
 
 var fileDescriptor_bf84d4950afa95e2 = []byte{
-	// 1779 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x5a, 0x5b, 0x6f, 0xdc, 0x44,
-	0x14, 0xae, 0x77, 0x37, 0x69, 0x7b, 0x7a, 0x8d, 0x7b, 0xdb, 0xba, 0xe9, 0xb2, 0x98, 0x96, 0x34,
-	0x0d, 0x6c, 0xc2, 0x6e, 0x42, 0x2b, 0x4a, 0x85, 0xda, 0x84, 0xa2, 0x4a, 0xad, 0x54, 0xa5, 0x5c,
-	0x24, 0x5e, 0xda, 0x8d, 0xed, 0x24, 0x16, 0xbb, 0xf6, 0xd6, 0x76, 0x48, 0x2b, 0x84, 0x84, 0x80,
-	0x17, 0x2e, 0x0f, 0x88, 0xcb, 0x2f, 0x41, 0xfc, 0x02, 0x84, 0xc4, 0x63, 0x1f, 0x79, 0x44, 0x2d,
-	0x7f, 0x80, 0x27, 0x5e, 0x91, 0x67, 0xc6, 0xb3, 0xf6, 0x78, 0x6e, 0x4e, 0x40, 0x42, 0xf4, 0x6d,
-	0x3d, 0x9e, 0x73, 0xce, 0x77, 0xbe, 0x73, 0xe6, 0x78, 0xf2, 0x29, 0x70, 0x68, 0xdd, 0x1d, 0xb9,
-	0xf3, 0xc9, 0xc3, 0xce, 0x28, 0x0a, 0x93, 0xd0, 0x3c, 0xe9, 0x7a, 0x03, 0x6f, 0xa3, 0x9f, 0xf8,
-	0x61, 0xe0, 0x84, 0x41, 0x12, 0x85, 0x83, 0x4e, 0xba, 0xc1, 0x3a, 0x85, 0xb6, 0x0d, 0x42, 0xa7,
-	0x3f, 0xb8, 0xe7, 0x86, 0xc3, 0xbe, 0x1f, 0x60, 0x03, 0x6b, 0x0a, 0xbd, 0x28, 0x2c, 0x9d, 0x46,
-	0x4b, 0xeb, 0x61, 0xb4, 0xdd, 0x8f, 0xdc, 0x7b, 0xa3, 0x70, 0xe0, 0x3b, 0x8f, 0xc8, 0x2b, 0x0b,
-	0xef, 0xf6, 0x1c, 0x3f, 0xf6, 0xc3, 0xa0, 0xf8, 0xae, 0x45, 0xde, 0x65, 0xf1, 0xef, 0x65, 0xdb,
-	0xc8, 0xfb, 0x33, 0xe8, 0x7d, 0xec, 0x0d, 0x3c, 0x27, 0x29, 0x19, 0x9f, 0x65, 0x5e, 0x3a, 0x91,
-	0x9f, 0x78, 0x91, 0xdf, 0x27, 0xaf, 0x4f, 0xa0, 0xd7, 0x23, 0x2f, 0x1a, 0xfa, 0x71, 0xce, 0xe5,
-	0x31, 0xb4, 0xfc, 0x61, 0x7f, 0xe0, 0xbb, 0x7e, 0x92, 0xb9, 0x6a, 0xb3, 0x38, 0x9c, 0x30, 0x70,
-	0xfd, 0xf4, 0x57, 0x8c, 0x77, 0xd8, 0xf7, 0xe1, 0xf8, 0xed, 0x78, 0x63, 0x39, 0xf2, 0xfa, 0x89,
-	0x77, 0x2b, 0xa5, 0x64, 0x05, 0xa5, 0x6f, 0x36, 0x61, 0xaf, 0x93, 0x2e, 0x86, 0x51, 0xd3, 0x68,
-	0x1b, 0x17, 0xf6, 0xaf, 0x66, 0x8f, 0xa6, 0x09, 0x8d, 0xa0, 0x3f, 0xf4, 0x9a, 0x75, 0xb4, 0x8c,
-	0x7e, 0x9b, 0x16, 0xec, 0x4b, 0xf9, 0x4c, 0x1d, 0x37, 0x1b, 0x68, 0x9d, 0x3e, 0xdb, 0x2d, 0x98,
-	0xe6, 0x45, 0x58, 0xf5, 0xe2, 0x51, 0x18, 0xc4, 0x1e, 0x41, 0xf0, 0xce, 0xc8, 0xfd, 0x97, 0x11,
-	0x94, 0x22, 0x50, 0x04, 0x0b, 0x08, 0xc1, 0x8a, 0x37, 0xf0, 0x34, 0x11, 0x10, 0x8f, 0x25, 0x0b,
-	0xea, 0xf1, 0x23, 0x38, 0x42, 0x73, 0xd6, 0x4e, 0xa7, 0x26, 0x48, 0xa7, 0x5e, 0x4c, 0xc7, 0x6c,
-	0x01, 0xf8, 0x6b, 0xce, 0xf2, 0x66, 0x3f, 0x08, 0xbc, 0x01, 0x49, 0x36, 0xb7, 0x62, 0xcf, 0xc2,
-	0x29, 0x26, 0x78, 0x86, 0xcb, 0x3c, 0x0c, 0x35, 0xdf, 0x45, 0xf1, 0x1b, 0xab, 0x35, 0xdf, 0xb5,
-	0xbf, 0x32, 0x10, 0x50, 0x4c, 0x8d, 0x12, 0x28, 0xb6, 0xae, 0x65, 0xd6, 0x55, 0xeb, 0xc0, 0x00,
-	0x9f, 0x28, 0x01, 0x3f, 0x8d, 0x80, 0xe7, 0xc1, 0x50, 0x42, 0xaf, 0x20, 0x9c, 0x98, 0xf0, 0xaa,
-	0x38, 0x89, 0xdf, 0xbc, 0x31, 0xf5, 0xfb, 0x83, 0x01, 0x67, 0x6e, 0xc7, 0x1b, 0x77, 0xbd, 0xc0,
-	0x7d, 0x33, 0x4e, 0xfa, 0x6b, 0x03, 0x3f, 0xde, 0x5c, 0x0e, 0xc3, 0x91, 0x17, 0x61, 0xc8, 0xd2,
-	0xaa, 0x8d, 0xc2, 0x28, 0xc9, 0xaa, 0x96, 0xfe, 0x36, 0xa7, 0x61, 0xbf, 0x83, 0x73, 0xb9, 0xb9,
-	0x42, 0x58, 0x19, 0x2f, 0x98, 0x17, 0xe1, 0x68, 0xe2, 0x0f, 0xbd, 0x70, 0x2b, 0x79, 0xdb, 0x1f,
-	0x7a, 0x71, 0xd2, 0x1f, 0x8e, 0x10, 0x45, 0x8d, 0xd5, 0xd2, 0xba, 0x7d, 0x1e, 0x5e, 0x90, 0xc0,
-	0xa2, 0xf0, 0xbf, 0x34, 0xe0, 0x24, 0xad, 0xf5, 0x0d, 0x3c, 0xa5, 0xee, 0xa0, 0x59, 0x22, 0x47,
-	0x3e, 0x0c, 0x5d, 0x5a, 0xb6, 0xf4, 0x77, 0x5a, 0x1a, 0x3c, 0xf7, 0x6e, 0xf9, 0x71, 0xd2, 0x6c,
-	0xb4, 0xeb, 0x69, 0x69, 0xc6, 0x2b, 0xa6, 0x0d, 0x07, 0xb3, 0x32, 0xa2, 0x1d, 0x13, 0x68, 0x47,
-	0x61, 0xcd, 0x6e, 0x43, 0x8b, 0x8f, 0x85, 0x85, 0x8b, 0x2b, 0xfc, 0xdf, 0x80, 0xcb, 0xc1, 0x42,
-	0xe1, 0x76, 0x11, 0x5a, 0xdc, 0x37, 0x9a, 0x68, 0x89, 0x57, 0x8e, 0x0d, 0xf5, 0xba, 0x01, 0x53,
-	0x94, 0xa6, 0x77, 0xc9, 0xb8, 0x96, 0xa4, 0x3f, 0x0d, 0xfb, 0x83, 0x30, 0xb9, 0xee, 0xad, 0x87,
-	0x51, 0x36, 0x22, 0xc6, 0x0b, 0xe9, 0x71, 0x0b, 0xc2, 0xe4, 0xda, 0x7a, 0xe2, 0x45, 0xd9, 0x9c,
-	0xc8, 0x9e, 0xed, 0x39, 0x38, 0x5d, 0x0a, 0x24, 0x9c, 0x04, 0xdb, 0x08, 0x15, 0x66, 0x43, 0x03,
-	0x15, 0x3b, 0x0a, 0x0a, 0x28, 0xeb, 0x32, 0x94, 0x0d, 0x06, 0xe5, 0x19, 0x84, 0xb2, 0x18, 0x98,
-	0x72, 0x75, 0x15, 0xa1, 0xc2, 0x6c, 0x56, 0x47, 0x45, 0x7c, 0x17, 0xcd, 0xa9, 0xef, 0x3f, 0x8d,
-	0xfc, 0x9c, 0x24, 0xdf, 0x67, 0x65, 0x37, 0x16, 0x3b, 0xaf, 0xae, 0xec, 0xbc, 0x46, 0xb9, 0xf3,
-	0xd2, 0x8e, 0x76, 0x42, 0xd4, 0x95, 0x29, 0x50, 0xf4, 0xdb, 0x7c, 0x11, 0x0e, 0x0f, 0xfb, 0x0f,
-	0x57, 0xe8, 0x97, 0x3a, 0x6e, 0x4e, 0xa2, 0xb7, 0xcc, 0xaa, 0xf9, 0x3a, 0xec, 0xcb, 0xbe, 0xf1,
-	0xcd, 0xbd, 0x6d, 0xe3, 0xc2, 0x81, 0x6e, 0xbb, 0xc3, 0xbf, 0xe7, 0x74, 0x68, 0xc6, 0xd4, 0xc2,
-	0x7e, 0x1e, 0x9e, 0x13, 0xa4, 0xcc, 0xd2, 0x42, 0xa6, 0xf0, 0xb3, 0x44, 0x0b, 0x2f, 0x65, 0x4a,
-	0x4b, 0x2f, 0xff, 0x0d, 0xd1, 0x64, 0x85, 0xf8, 0xe5, 0x19, 0x51, 0xbf, 0x0e, 0x1c, 0xa3, 0x15,
-	0xb9, 0x43, 0xef, 0x74, 0x12, 0xa6, 0x4f, 0xc2, 0x64, 0x1f, 0xdd, 0x0b, 0xc9, 0x30, 0x20, 0x4f,
-	0xe9, 0x19, 0x8b, 0xbc, 0x38, 0xdc, 0x8a, 0x9c, 0xec, 0x00, 0xd2, 0x67, 0xfb, 0x65, 0xf4, 0x91,
-	0x63, 0x83, 0x08, 0x67, 0x41, 0x8c, 0x30, 0x61, 0x3a, 0xb4, 0x30, 0xb1, 0xd3, 0x60, 0x8c, 0xb1,
-	0x2e, 0xc4, 0xd8, 0x60, 0x30, 0x9e, 0x45, 0x18, 0xd9, 0xa0, 0x94, 0xa7, 0x37, 0x10, 0x26, 0x4c,
-	0xe5, 0x4e, 0x30, 0x11, 0xff, 0xac, 0x03, 0xea, 0xff, 0x47, 0x03, 0xce, 0xe6, 0x8e, 0x46, 0xd6,
-	0x39, 0xcb, 0xf4, 0xbe, 0x2c, 0xff, 0x42, 0xa1, 0xc6, 0xad, 0x49, 0x1b, 0xb7, 0xae, 0x6c, 0xdc,
-	0x46, 0xe5, 0xc6, 0xbd, 0x04, 0xe7, 0xa5, 0xa0, 0x85, 0x25, 0xfe, 0x19, 0xa7, 0x9b, 0xb5, 0x7c,
-	0xa5, 0x74, 0x39, 0xd7, 0x40, 0x94, 0x7e, 0x5d, 0x9a, 0x7e, 0x43, 0x99, 0xfe, 0x44, 0xe5, 0xf4,
-	0x67, 0x50, 0xfa, 0xe2, 0x24, 0x68, 0x75, 0x6f, 0xa2, 0x6c, 0xb3, 0x83, 0xb8, 0x9b, 0x6c, 0x49,
-	0x4c, 0xb1, 0x2b, 0x1a, 0xf3, 0x0f, 0x03, 0x9a, 0xe4, 0x0e, 0xb7, 0xea, 0x3d, 0xd8, 0xf2, 0xe2,
-	0x64, 0xbc, 0xbd, 0xe2, 0xbd, 0xb2, 0xc2, 0xcd, 0x31, 0xdd, 0x3b, 0x26, 0xf0, 0x1a, 0x3e, 0x85,
-	0xf8, 0xaa, 0x5d, 0x5a, 0x37, 0xaf, 0x03, 0x8c, 0xff, 0x8e, 0x44, 0x93, 0xf5, 0x40, 0xd7, 0x16,
-	0xf1, 0x9f, 0x3b, 0x34, 0x39, 0x2b, 0xdb, 0x86, 0xb6, 0x28, 0x4b, 0x66, 0x78, 0x2e, 0x87, 0xc1,
-	0xba, 0xbf, 0xb1, 0x15, 0x69, 0xfe, 0x8d, 0x45, 0xbe, 0x55, 0x1c, 0x23, 0xea, 0xf7, 0x27, 0x23,
-	0x37, 0xd8, 0xc6, 0x71, 0xb3, 0x51, 0x2b, 0x61, 0xd9, 0x82, 0x7d, 0xd9, 0x9f, 0xe4, 0x84, 0x69,
-	0xfa, 0x6c, 0xde, 0x87, 0xe3, 0x2e, 0xa7, 0xb0, 0xa8, 0xbf, 0x0f, 0x74, 0x5f, 0x12, 0xf1, 0xc3,
-	0x6d, 0x06, 0xae, 0x27, 0x7b, 0x09, 0xdd, 0xee, 0x45, 0xb0, 0x85, 0x87, 0xf6, 0x17, 0x23, 0x37,
-	0x23, 0x2b, 0xa5, 0xcb, 0x1e, 0xd9, 0x7c, 0xfa, 0x75, 0xcd, 0xf4, 0x1b, 0xff, 0x58, 0xfa, 0xf8,
-	0x8f, 0x1b, 0x51, 0x1a, 0xb4, 0xba, 0x6f, 0xe5, 0x26, 0xf6, 0x6e, 0xb2, 0x25, 0xf1, 0x44, 0x8e,
-	0x68, 0xbc, 0x4f, 0x6b, 0xe8, 0xc0, 0xe2, 0xb2, 0xdc, 0xcd, 0xe4, 0x97, 0x5d, 0x5f, 0x7d, 0x16,
-	0xe1, 0x04, 0x61, 0x21, 0x8c, 0x6e, 0x95, 0xef, 0x40, 0xfc, 0x97, 0xdc, 0xcb, 0xd0, 0x39, 0x38,
-	0x14, 0xac, 0x95, 0xef, 0x42, 0xc5, 0xc5, 0x5d, 0x5e, 0x85, 0xf0, 0x71, 0xe6, 0x72, 0xc0, 0x12,
-	0x85, 0x0b, 0xf8, 0x6c, 0x13, 0xc5, 0xe5, 0x80, 0x12, 0xb5, 0x88, 0x78, 0xc2, 0x8d, 0xa7, 0xcd,
-	0x13, 0xf1, 0xcc, 0xb5, 0xa2, 0x9e, 0x3f, 0xaf, 0x81, 0x55, 0xae, 0xd3, 0x32, 0x51, 0x0a, 0xb5,
-	0x8b, 0x50, 0xd3, 0x2f, 0x42, 0x5d, 0xa7, 0x08, 0x0d, 0x59, 0x11, 0x26, 0x54, 0x45, 0x98, 0xac,
-	0x5c, 0x84, 0x45, 0xb0, 0xc5, 0x2c, 0x08, 0xe7, 0xe8, 0xf7, 0x98, 0x3c, 0xa6, 0x76, 0x1a, 0xe4,
-	0xb1, 0x63, 0xf4, 0xff, 0xd5, 0xd1, 0xe7, 0x10, 0x99, 0x02, 0x56, 0x68, 0xe7, 0xdd, 0x40, 0xdc,
-	0x31, 0xdd, 0x59, 0x9d, 0x3b, 0x12, 0x4d, 0xe0, 0x87, 0x46, 0xfb, 0xcb, 0x00, 0x33, 0xad, 0xf0,
-	0xa6, 0xe7, 0x7c, 0xa0, 0x75, 0x7d, 0xe2, 0x5d, 0x7f, 0x6a, 0x5a, 0xd7, 0x9f, 0xfa, 0x4e, 0xae,
-	0x3f, 0xe6, 0x7b, 0x30, 0x15, 0xb3, 0xe8, 0xc9, 0xa7, 0x72, 0x56, 0xe4, 0xaa, 0x9c, 0x6e, 0xd9,
-	0x87, 0x3d, 0x8d, 0x0f, 0x78, 0x31, 0xf1, 0x8c, 0x97, 0xee, 0x77, 0x36, 0xd4, 0x6f, 0xc7, 0x1b,
-	0xe6, 0x36, 0x4c, 0x95, 0xb5, 0x7b, 0xe1, 0x37, 0x9a, 0xa7, 0xc3, 0x5b, 0x8b, 0x55, 0x76, 0xd3,
-	0x33, 0xb5, 0x0d, 0x53, 0x65, 0xc9, 0x5e, 0x16, 0xb8, 0xb4, 0x5b, 0x1a, 0x58, 0x28, 0xd6, 0xa7,
-	0x81, 0xcb, 0x4a, 0xbd, 0x2c, 0x70, 0x69, 0xb7, 0x34, 0xb0, 0x50, 0xd3, 0x37, 0x37, 0xe1, 0x60,
-	0x41, 0xd0, 0x9f, 0x51, 0xf2, 0x46, 0xc2, 0xcd, 0x6b, 0x6e, 0xcc, 0x47, 0x2a, 0x28, 0xf2, 0x33,
-	0x4a, 0xa2, 0x34, 0x22, 0xf1, 0x64, 0xf5, 0x34, 0x52, 0x41, 0x53, 0x9f, 0x51, 0x32, 0xa3, 0x11,
-	0x89, 0x27, 0xb4, 0x9b, 0x5f, 0x1b, 0xd0, 0x14, 0xaa, 0xec, 0x3d, 0x89, 0x37, 0x91, 0x91, 0x75,
-	0x65, 0x07, 0x46, 0x14, 0xce, 0xc7, 0x70, 0x8c, 0x27, 0x9a, 0x77, 0x94, 0xa5, 0x2a, 0xec, 0xb7,
-	0x5e, 0xad, 0xb6, 0x3f, 0x1f, 0x9e, 0x27, 0x82, 0x77, 0x94, 0xf5, 0xd3, 0x0f, 0x2f, 0x11, 0xb6,
-	0xd3, 0xf0, 0x3c, 0x55, 0xbb, 0xa3, 0x2c, 0xaa, 0x7e, 0x78, 0x89, 0x02, 0x6e, 0x06, 0x70, 0x98,
-	0x91, 0xbf, 0x67, 0x95, 0x3c, 0x66, 0x5b, 0xad, 0x57, 0xb4, 0xb7, 0xe6, 0xe3, 0x31, 0xc2, 0xf6,
-	0xac, 0x92, 0x38, 0xad, 0x78, 0x7c, 0xd5, 0x3a, 0x8d, 0xc7, 0x48, 0xd6, 0xb3, 0x4a, 0xa6, 0xb4,
-	0xe2, 0xf1, 0x95, 0x6c, 0xf3, 0x13, 0x03, 0x8e, 0x73, 0x65, 0x6c, 0x8d, 0xc9, 0x53, 0x30, 0xb0,
-	0x2e, 0x55, 0x34, 0x28, 0x40, 0xe0, 0x4a, 0xc6, 0x1a, 0x23, 0x49, 0x1f, 0x82, 0x4c, 0xa1, 0x45,
-	0x10, 0xb8, 0xfa, 0xac, 0xc6, 0xac, 0xd2, 0x87, 0x20, 0x13, 0x73, 0xcd, 0x04, 0x8e, 0x96, 0x94,
-	0xdc, 0x39, 0x25, 0xa5, 0xe3, 0xcd, 0x56, 0xaf, 0xc2, 0xe6, 0x7c, 0xd4, 0x92, 0x56, 0x3b, 0xa7,
-	0x64, 0x51, 0x33, 0xaa, 0x48, 0x90, 0x4d, 0xa3, 0x96, 0xd4, 0xd8, 0x39, 0x25, 0x71, 0x9a, 0x51,
-	0x45, 0x32, 0xad, 0xf9, 0xad, 0x01, 0x96, 0x44, 0xa3, 0x5d, 0xd2, 0xe8, 0xdf, 0xb2, 0x99, 0x75,
-	0x75, 0x47, 0x66, 0x05, 0x50, 0x12, 0x25, 0x75, 0x49, 0xa3, 0xa3, 0x2b, 0x82, 0x52, 0x4b, 0x9e,
-	0x08, 0x94, 0x44, 0xf0, 0x5c, 0xd2, 0xe8, 0xf1, 0x8a, 0xa0, 0xd4, 0x9a, 0xa8, 0xf9, 0x99, 0x01,
-	0x27, 0xf8, 0x82, 0xe8, 0x82, 0xe2, 0x6b, 0x5e, 0xb2, 0xb0, 0x2e, 0x57, 0xb5, 0x28, 0xce, 0x4b,
-	0x9e, 0x18, 0x29, 0x9d, 0x97, 0x1c, 0x03, 0xf9, 0xbc, 0x94, 0x28, 0x97, 0xe8, 0x3a, 0x24, 0x94,
-	0x2d, 0x7b, 0x15, 0xda, 0x31, 0x33, 0x92, 0x5e, 0x87, 0x94, 0x4a, 0x63, 0x0a, 0x47, 0x28, 0x2b,
-	0xf6, 0x2a, 0x34, 0xa2, 0x16, 0x1c, 0x95, 0xf2, 0x87, 0xe0, 0x08, 0x75, 0xbf, 0x5e, 0x85, 0x16,
-	0xd4, 0x82, 0xa3, 0x12, 0x06, 0x51, 0xd7, 0xf2, 0x55, 0xc1, 0x05, 0x25, 0xe9, 0x8c, 0x85, 0xb4,
-	0x6b, 0xa5, 0xaa, 0x1b, 0x42, 0xc1, 0x97, 0xdc, 0x16, 0x94, 0x5c, 0x57, 0x41, 0x21, 0x95, 0xb4,
-	0x10, 0x0a, 0xbe, 0xa0, 0xb5, 0xa0, 0xa4, 0xb8, 0x0a, 0x0a, 0xa9, 0xfc, 0x65, 0x7e, 0x61, 0xc0,
-	0x29, 0x91, 0xf6, 0xd5, 0xd5, 0x67, 0x38, 0xb3, 0xb1, 0x5e, 0xab, 0x6e, 0x53, 0xc0, 0x22, 0x92,
-	0x92, 0xba, 0xfa, 0x3c, 0x6b, 0x61, 0x51, 0x88, 0x33, 0x08, 0x8b, 0x48, 0x9a, 0xe9, 0xea, 0xb3,
-	0xad, 0x85, 0x45, 0x21, 0xdd, 0x98, 0x0f, 0xe0, 0x08, 0x2b, 0xdb, 0x5c, 0x94, 0xd1, 0x5c, 0xdc,
-	0x6b, 0x75, 0xf5, 0xf7, 0x66, 0x21, 0xaf, 0x5f, 0xfe, 0xf5, 0x49, 0xcb, 0x78, 0xfc, 0xa4, 0x65,
-	0xfc, 0xfe, 0xa4, 0x65, 0x7c, 0xf3, 0xb4, 0xb5, 0xe7, 0xf1, 0xd3, 0xd6, 0x9e, 0xdf, 0x9e, 0xb6,
-	0xf6, 0xbc, 0xdf, 0x2a, 0x39, 0x9b, 0x7f, 0x38, 0x8f, 0xff, 0x5d, 0xf4, 0xd1, 0xc8, 0x8b, 0xd7,
-	0x26, 0xd1, 0x7f, 0x43, 0xf6, 0xfe, 0x0e, 0x00, 0x00, 0xff, 0xff, 0x00, 0xcd, 0xe4, 0x66, 0x43,
-	0x2a, 0x00, 0x00,
+	// 2028 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x5b, 0xcd, 0x6f, 0x1c, 0xc5,
+	0x12, 0xcf, 0xec, 0xae, 0x9d, 0xa4, 0xf2, 0xe9, 0x89, 0xe3, 0x6c, 0x26, 0xf6, 0x3e, 0xbf, 0x79,
+	0xc9, 0x73, 0x6c, 0xe7, 0xd9, 0x7e, 0x6b, 0x3b, 0x89, 0x12, 0x22, 0x48, 0x6c, 0x82, 0x22, 0x39,
+	0x28, 0x72, 0xf8, 0x90, 0xb8, 0x24, 0xe3, 0xdd, 0xb1, 0x3d, 0x62, 0x77, 0x66, 0x33, 0x33, 0xc6,
+	0x89, 0x10, 0x12, 0x02, 0x2e, 0x7c, 0x1c, 0x02, 0x82, 0x13, 0x17, 0xfe, 0x07, 0xc4, 0x8d, 0x1b,
+	0x42, 0xe2, 0x00, 0x52, 0x8e, 0x1c, 0x51, 0xf2, 0x17, 0xf0, 0x1f, 0xa0, 0xe9, 0xe9, 0xe9, 0x9d,
+	0xe9, 0xe9, 0xcf, 0x35, 0x48, 0x88, 0xdc, 0x3c, 0xdd, 0x5d, 0x5d, 0xbf, 0xfa, 0x55, 0x75, 0x75,
+	0x6f, 0x95, 0x0c, 0x47, 0x36, 0xdb, 0xbd, 0xf6, 0x7c, 0xfc, 0x70, 0xae, 0x17, 0x06, 0x71, 0x60,
+	0x8e, 0xb5, 0xdd, 0x8e, 0xbb, 0xe5, 0xc4, 0x5e, 0xe0, 0xb7, 0x02, 0x3f, 0x0e, 0x83, 0xce, 0x5c,
+	0xb2, 0xc0, 0x3a, 0x85, 0x96, 0x75, 0x82, 0x96, 0xd3, 0xb9, 0xd7, 0x0e, 0xba, 0x8e, 0xe7, 0xa7,
+	0x02, 0xd6, 0x08, 0x9a, 0x28, 0x0c, 0x9d, 0x46, 0x43, 0x9b, 0x41, 0xb8, 0xeb, 0x84, 0xed, 0x7b,
+	0xbd, 0xa0, 0xe3, 0xb5, 0x1e, 0xe1, 0x29, 0x2b, 0x5d, 0xed, 0xb6, 0xbc, 0xc8, 0x0b, 0xfc, 0xe2,
+	0x5c, 0x03, 0xcf, 0x65, 0xfa, 0xef, 0x65, 0xcb, 0xf0, 0xfc, 0x19, 0x34, 0x1f, 0xb9, 0x1d, 0xb7,
+	0x15, 0x97, 0x84, 0x27, 0x68, 0xe1, 0xd0, 0x7d, 0xb0, 0xe3, 0x46, 0x31, 0x9e, 0x3e, 0x9b, 0x42,
+	0xf2, 0xfc, 0x04, 0x3e, 0x57, 0xc3, 0x49, 0xb4, 0xaa, 0xe7, 0x86, 0x5d, 0x2f, 0xca, 0x0d, 0x4f,
+	0x50, 0x8a, 0x5b, 0xa1, 0x17, 0xbb, 0xa1, 0xe7, 0xe0, 0xe9, 0x13, 0x68, 0xfa, 0x1d, 0xa7, 0xe3,
+	0xb5, 0xbd, 0x38, 0xc3, 0x33, 0x49, 0xe3, 0x69, 0x05, 0x7e, 0xdb, 0x4b, 0xfe, 0x8a, 0xd2, 0x15,
+	0xf6, 0x7d, 0x18, 0xbd, 0x1d, 0x6d, 0xad, 0x84, 0xae, 0x13, 0xbb, 0x6b, 0x09, 0xaf, 0xab, 0x88,
+	0x43, 0xb3, 0x0e, 0xfb, 0x5b, 0xc9, 0x60, 0x10, 0xd6, 0x8d, 0x49, 0xe3, 0xfc, 0xc1, 0xf5, 0xec,
+	0xd3, 0x34, 0xa1, 0xe6, 0x3b, 0x5d, 0xb7, 0x5e, 0x45, 0xc3, 0xe8, 0x6f, 0xd3, 0x82, 0x03, 0x89,
+	0x53, 0x92, 0x8d, 0xeb, 0x35, 0x34, 0x4e, 0xbe, 0xed, 0x06, 0x8c, 0xb3, 0x34, 0xac, 0xbb, 0x51,
+	0x2f, 0xf0, 0x23, 0x17, 0x23, 0x78, 0xbd, 0xd7, 0xfe, 0x8b, 0x11, 0x94, 0x34, 0x10, 0x04, 0x0b,
+	0x08, 0xc1, 0xaa, 0xdb, 0x71, 0x15, 0x11, 0xe0, 0x1d, 0x4b, 0x12, 0x64, 0xc7, 0x77, 0xe1, 0x18,
+	0xb1, 0x59, 0xd9, 0x9c, 0x0a, 0xc7, 0x9c, 0x6a, 0xd1, 0x1c, 0xb3, 0x01, 0xe0, 0x6d, 0xb4, 0x56,
+	0xb6, 0x1d, 0xdf, 0x77, 0x3b, 0xd8, 0xd8, 0xdc, 0x88, 0x3d, 0x0d, 0xa7, 0x28, 0xe5, 0x19, 0x2e,
+	0xf3, 0x28, 0x54, 0xbc, 0x36, 0xd2, 0x5f, 0x5b, 0xaf, 0x78, 0x6d, 0xfb, 0x53, 0x03, 0x01, 0x4d,
+	0xa9, 0x91, 0x02, 0x4d, 0xa5, 0x2b, 0x99, 0xb4, 0xae, 0x1f, 0x28, 0xe0, 0x43, 0x25, 0xe0, 0xa7,
+	0x11, 0xf0, 0x3c, 0x18, 0x42, 0xe8, 0x55, 0x84, 0x33, 0x25, 0x5c, 0x17, 0x27, 0xde, 0x37, 0x2f,
+	0x4c, 0xf6, 0xfd, 0xca, 0x80, 0x33, 0xb7, 0xa3, 0xad, 0xbb, 0xae, 0xdf, 0x7e, 0x39, 0x8a, 0x9d,
+	0x8d, 0x8e, 0x17, 0x6d, 0xaf, 0x04, 0x41, 0xcf, 0x0d, 0x53, 0xc8, 0x42, 0xaf, 0xf5, 0x82, 0x30,
+	0xce, 0xbc, 0x96, 0xfc, 0x6d, 0x8e, 0xc3, 0xc1, 0x56, 0x6a, 0xcb, 0xad, 0x55, 0xcc, 0x4a, 0x7f,
+	0xc0, 0x9c, 0x81, 0xe3, 0xb1, 0xd7, 0x75, 0x83, 0x9d, 0xf8, 0x35, 0xaf, 0xeb, 0x46, 0xb1, 0xd3,
+	0xed, 0x21, 0x8a, 0x6a, 0xeb, 0xa5, 0x71, 0xfb, 0x1c, 0xfc, 0x47, 0x00, 0x8b, 0xc0, 0xff, 0xc4,
+	0x80, 0x31, 0xe2, 0xeb, 0x9b, 0x69, 0xaa, 0xbb, 0x83, 0x12, 0x92, 0x18, 0x79, 0x37, 0x68, 0x13,
+	0xb7, 0x25, 0x7f, 0x27, 0xae, 0x49, 0x93, 0xe7, 0x9a, 0x17, 0xc5, 0xf5, 0xda, 0x64, 0x35, 0x71,
+	0x4d, 0x7f, 0xc4, 0xb4, 0xe1, 0x70, 0xe6, 0x46, 0xb4, 0x62, 0x08, 0xad, 0x28, 0x8c, 0xd9, 0x93,
+	0xd0, 0x60, 0x63, 0xa1, 0xe1, 0xa6, 0x1e, 0xfe, 0x7b, 0xc0, 0x65, 0x60, 0x21, 0x70, 0x9b, 0x08,
+	0x6d, 0x1a, 0x37, 0x8a, 0x68, 0xf1, 0xae, 0x0c, 0x19, 0xb2, 0xeb, 0x16, 0x8c, 0x10, 0x9a, 0xde,
+	0xc0, 0xe9, 0x5a, 0x60, 0xfe, 0x38, 0x1c, 0xf4, 0x83, 0xf8, 0x86, 0xbb, 0x19, 0x84, 0x59, 0x8a,
+	0xe8, 0x0f, 0x24, 0xc7, 0xcd, 0x0f, 0xe2, 0xeb, 0x9b, 0xb1, 0x1b, 0x66, 0x79, 0x22, 0xfb, 0xb6,
+	0x67, 0xe1, 0x74, 0x49, 0x11, 0x37, 0x13, 0xec, 0x22, 0x54, 0x29, 0x1b, 0x0a, 0xa8, 0xe8, 0x54,
+	0x50, 0x40, 0x59, 0x15, 0xa1, 0xac, 0x51, 0x28, 0xcf, 0x20, 0x94, 0x45, 0xc5, 0x84, 0xab, 0x6b,
+	0x08, 0x55, 0xca, 0xa6, 0x3e, 0x2a, 0xbc, 0x77, 0x51, 0x9c, 0xec, 0xfd, 0xbb, 0x91, 0xcf, 0x93,
+	0xf8, 0x0a, 0x96, 0x46, 0x63, 0x31, 0xf2, 0xaa, 0xd2, 0xc8, 0xab, 0x95, 0x23, 0x2f, 0x89, 0xe8,
+	0x56, 0x80, 0xa2, 0x32, 0x01, 0x8a, 0xfe, 0x36, 0xff, 0x0b, 0x47, 0xbb, 0xce, 0xc3, 0x55, 0x72,
+	0x53, 0x47, 0xf5, 0x61, 0x34, 0x4b, 0x8d, 0x9a, 0x2f, 0xc0, 0x81, 0xec, 0x8e, 0xaf, 0xef, 0x9f,
+	0x34, 0xce, 0x1f, 0x6a, 0x4e, 0xce, 0xb1, 0x1f, 0x4b, 0x73, 0xc4, 0x62, 0x22, 0x61, 0xff, 0x1b,
+	0xfe, 0xc5, 0x31, 0x99, 0xa6, 0x05, 0x67, 0xe1, 0xe7, 0x89, 0x16, 0x96, 0xc9, 0x84, 0x96, 0xc5,
+	0xfc, 0x1d, 0xa2, 0xc8, 0x0a, 0xde, 0x97, 0x25, 0x44, 0xf6, 0x6d, 0xc1, 0x09, 0xe2, 0x91, 0x3b,
+	0xe4, 0xc9, 0x27, 0x60, 0x7a, 0x0c, 0x86, 0x1d, 0xf4, 0x00, 0xc4, 0xc9, 0x00, 0x7f, 0x25, 0x67,
+	0x2c, 0x74, 0xa3, 0x60, 0x27, 0x6c, 0x65, 0x07, 0x90, 0x7c, 0xdb, 0xff, 0x43, 0x97, 0x1c, 0xad,
+	0x84, 0x9b, 0x0b, 0x22, 0x84, 0x29, 0xa5, 0x43, 0x09, 0x13, 0x9d, 0x0d, 0xfa, 0x18, 0xab, 0x5c,
+	0x8c, 0x35, 0x0a, 0xe3, 0x04, 0xc2, 0x48, 0x2b, 0x25, 0x3c, 0xbd, 0x88, 0x30, 0xa5, 0x54, 0x0e,
+	0x82, 0x09, 0xef, 0x4f, 0x6f, 0x40, 0xf6, 0xff, 0xd6, 0x80, 0x89, 0xdc, 0xd1, 0xc8, 0x22, 0x67,
+	0x85, 0xbc, 0x97, 0xc5, 0x37, 0x14, 0x0a, 0xdc, 0x0a, 0x2f, 0x70, 0x5d, 0xf7, 0xd5, 0x0d, 0x44,
+	0x45, 0x21, 0x70, 0x93, 0xd1, 0x42, 0xe0, 0xd6, 0xb4, 0x03, 0xf7, 0x12, 0x9c, 0x13, 0x82, 0xe6,
+	0xba, 0xf8, 0x87, 0xd4, 0xdc, 0x2c, 0xe4, 0xb5, 0xcc, 0x65, 0x3c, 0x03, 0x91, 0xf9, 0x55, 0xa1,
+	0xf9, 0x35, 0xa9, 0xf9, 0x43, 0xda, 0xe6, 0x4f, 0x21, 0xf3, 0xf9, 0x46, 0x10, 0xef, 0xde, 0x42,
+	0xd6, 0x66, 0x07, 0x71, 0x2f, 0xd6, 0x62, 0x9d, 0xfc, 0xad, 0x88, 0xce, 0x5f, 0x0c, 0xa8, 0xe3,
+	0x37, 0xdc, 0x7a, 0xfa, 0x2b, 0xb0, 0xbf, 0x5c, 0xf3, 0x5d, 0xa9, 0xf1, 0x72, 0x34, 0xdf, 0x84,
+	0x91, 0x3e, 0x81, 0x58, 0x31, 0xa6, 0x76, 0x9a, 0x47, 0xed, 0x2a, 0x2d, 0xb0, 0x5e, 0xde, 0xc3,
+	0xb6, 0x61, 0x92, 0x67, 0x0e, 0x95, 0x25, 0x57, 0x02, 0x7f, 0xd3, 0xdb, 0xda, 0x09, 0x15, 0x7f,
+	0x4c, 0xe1, 0x4b, 0x89, 0x21, 0x44, 0xf6, 0xfd, 0xce, 0xc8, 0x65, 0xb0, 0xbe, 0xde, 0x2c, 0xa7,
+	0x0a, 0xe8, 0xb4, 0xe0, 0x40, 0xf6, 0xf3, 0x1a, 0x53, 0x4a, 0xbe, 0xcd, 0xfb, 0x30, 0xda, 0x66,
+	0x78, 0x10, 0x05, 0xf2, 0xa1, 0xe6, 0x05, 0x39, 0x5b, 0x39, 0xaf, 0x33, 0x77, 0xb2, 0x97, 0xd1,
+	0x33, 0x9e, 0x07, 0x9b, 0x7b, 0x3a, 0x7f, 0x34, 0x72, 0xc9, 0x50, 0xcb, 0x5c, 0xfa, 0x6c, 0xe6,
+	0xcd, 0xaf, 0x2a, 0x9a, 0x5f, 0xfb, 0xd3, 0xcc, 0x4f, 0x7f, 0xc5, 0xf0, 0xcc, 0x20, 0xde, 0x7d,
+	0x25, 0x97, 0x9a, 0xf7, 0x62, 0x2d, 0xd6, 0xc7, 0xdb, 0x88, 0xe8, 0xfb, 0xa0, 0x82, 0x4e, 0x66,
+	0xea, 0x96, 0xbb, 0x59, 0x41, 0x65, 0xcf, 0x6f, 0x9c, 0x25, 0x38, 0x89, 0x59, 0x08, 0xc2, 0xb5,
+	0xf2, 0x63, 0x87, 0x3d, 0xc9, 0x7c, 0xf5, 0x9c, 0x85, 0x23, 0xfe, 0x46, 0xf9, 0xd1, 0x53, 0x1c,
+	0xdc, 0xe3, 0x9b, 0x27, 0x3d, 0xce, 0x4c, 0x0e, 0x68, 0xa2, 0x52, 0x07, 0x3e, 0xdf, 0x44, 0x31,
+	0x39, 0x20, 0x44, 0x2d, 0x21, 0x9e, 0xd2, 0xc0, 0x53, 0xe6, 0x09, 0xef, 0xcc, 0x94, 0x22, 0x3b,
+	0x7f, 0x54, 0x01, 0xab, 0xec, 0xa7, 0x15, 0x5c, 0xfb, 0x53, 0x76, 0x42, 0x45, 0xdd, 0x09, 0x55,
+	0x15, 0x27, 0xd4, 0x44, 0x4e, 0x18, 0x92, 0x39, 0x61, 0x58, 0xdb, 0x09, 0x4b, 0x60, 0xf3, 0x59,
+	0xe0, 0xe6, 0xd1, 0x2f, 0x53, 0xf2, 0x28, 0xdf, 0x29, 0x90, 0x47, 0xa7, 0xd1, 0x7f, 0x56, 0x44,
+	0x9f, 0x45, 0x64, 0x72, 0x58, 0x21, 0x91, 0x77, 0x13, 0x71, 0x47, 0x45, 0xa7, 0x3e, 0x77, 0x58,
+	0x1b, 0x67, 0x1f, 0xa2, 0x2d, 0x04, 0x33, 0x71, 0xf0, 0xb6, 0xdb, 0x7a, 0x5b, 0xe9, 0x99, 0x34,
+	0x0a, 0x43, 0x1d, 0x67, 0xc3, 0xed, 0xe0, 0x4b, 0x3d, 0xfd, 0x30, 0x2f, 0xc0, 0x48, 0x44, 0xab,
+	0xc0, 0xf7, 0x5e, 0x79, 0xc2, 0x1e, 0x4f, 0x8f, 0x56, 0x51, 0x27, 0x41, 0xf4, 0xbd, 0x91, 0x3b,
+	0x79, 0xa5, 0x17, 0x92, 0x36, 0xb4, 0x19, 0x38, 0xde, 0xf7, 0xd0, 0xf5, 0xfc, 0xaf, 0xa3, 0xd2,
+	0xb8, 0x79, 0x03, 0xa0, 0x5f, 0xfe, 0xc7, 0xf7, 0xb1, 0xcd, 0x73, 0x70, 0xee, 0xc7, 0x4c, 0x4e,
+	0xaa, 0x70, 0x62, 0xca, 0xef, 0x3b, 0xde, 0x89, 0xf9, 0xd9, 0xc8, 0x9d, 0x18, 0x1d, 0xa3, 0xe9,
+	0x13, 0x43, 0x48, 0xa8, 0xca, 0x48, 0xa8, 0x29, 0x91, 0x30, 0x34, 0x10, 0x09, 0xf9, 0x48, 0xe7,
+	0x92, 0x50, 0x88, 0xf4, 0x3d, 0xd8, 0x5c, 0x88, 0x74, 0xbe, 0xb6, 0xc7, 0x46, 0xee, 0xe6, 0xbd,
+	0xe9, 0xf9, 0x4e, 0x47, 0xeb, 0xcd, 0x73, 0x11, 0xc6, 0x4a, 0x6f, 0xf3, 0xb5, 0x5c, 0xb8, 0x71,
+	0x66, 0x45, 0x2f, 0x41, 0xfb, 0x0a, 0x9c, 0x97, 0x21, 0xe2, 0x46, 0xcc, 0x37, 0x46, 0xee, 0x7e,
+	0xd4, 0x37, 0x87, 0x8e, 0x1b, 0xbe, 0x79, 0x55, 0x65, 0xf3, 0x6a, 0x94, 0x79, 0x33, 0xc8, 0x3c,
+	0x21, 0x42, 0xe2, 0x9d, 0xb5, 0xdc, 0x9d, 0xbc, 0x67, 0x6b, 0xb0, 0x66, 0xe1, 0x6e, 0x99, 0xe6,
+	0xe6, 0xe7, 0xd3, 0x50, 0xbd, 0x1d, 0x6d, 0x99, 0xbb, 0x30, 0x52, 0x6e, 0xc7, 0x71, 0x5f, 0xe3,
+	0xac, 0xd6, 0x9a, 0xb5, 0xa4, 0xb3, 0x9a, 0x78, 0x76, 0x17, 0x46, 0xca, 0x5d, 0x38, 0x91, 0xe2,
+	0xd2, 0x6a, 0xa1, 0x62, 0x6e, 0xff, 0x2d, 0x51, 0x5c, 0x6e, 0xbe, 0x89, 0x14, 0x97, 0x56, 0x0b,
+	0x15, 0x73, 0xdb, 0x74, 0xe6, 0x36, 0x1c, 0x2e, 0xf4, 0xe8, 0xa6, 0xa4, 0xbc, 0x61, 0x75, 0xf3,
+	0x8a, 0x0b, 0xf3, 0x9a, 0x0a, 0x4d, 0xb6, 0x29, 0x29, 0x51, 0x0a, 0x9a, 0x58, 0x9d, 0xb2, 0x44,
+	0x53, 0xa1, 0x4d, 0x36, 0x25, 0x65, 0x46, 0x41, 0x13, 0xab, 0x77, 0x66, 0x7e, 0x66, 0x40, 0x9d,
+	0xdb, 0x38, 0x5b, 0x14, 0xec, 0xc6, 0x13, 0xb2, 0xae, 0x0e, 0x20, 0x44, 0xe0, 0xbc, 0x07, 0x27,
+	0x58, 0x7d, 0xb0, 0x39, 0xa9, 0xab, 0x0a, 0xeb, 0xad, 0x8b, 0x7a, 0xeb, 0xf3, 0xea, 0x59, 0x7d,
+	0xad, 0x39, 0xa9, 0xff, 0xd4, 0xd5, 0x0b, 0x7a, 0x55, 0x89, 0x7a, 0x56, 0xa3, 0x6a, 0x4e, 0xea,
+	0x54, 0x75, 0xf5, 0x82, 0xa6, 0x96, 0xe9, 0xc3, 0x51, 0xaa, 0xa3, 0x35, 0x2d, 0xe5, 0x31, 0x5b,
+	0x6a, 0xfd, 0x5f, 0x79, 0x69, 0x5e, 0x1f, 0xd5, 0xab, 0x9a, 0x96, 0x12, 0xa7, 0xa4, 0x8f, 0xdd,
+	0x88, 0x4a, 0xf4, 0x51, 0x5d, 0xa8, 0x69, 0x29, 0x53, 0x4a, 0xfa, 0xd8, 0xcd, 0x29, 0xf3, 0x7d,
+	0x03, 0x46, 0x99, 0x9d, 0x29, 0x85, 0xcc, 0x53, 0x10, 0xb0, 0x2e, 0x69, 0x0a, 0x14, 0x20, 0x30,
+	0xbb, 0x40, 0x0a, 0x29, 0x49, 0x1d, 0x82, 0xa8, 0xe9, 0x82, 0x20, 0x30, 0x5b, 0x2e, 0x0a, 0xb9,
+	0x4a, 0x1d, 0x82, 0xa8, 0x3f, 0x63, 0xc6, 0x70, 0xbc, 0xd4, 0x9c, 0x99, 0x95, 0x52, 0xda, 0x5f,
+	0x6c, 0x2d, 0x6a, 0x2c, 0xce, 0x6b, 0x2d, 0xb5, 0x5f, 0x66, 0xa5, 0x2c, 0x2a, 0x6a, 0xe5, 0xf5,
+	0x58, 0x12, 0xad, 0xa5, 0x06, 0xcb, 0xac, 0x94, 0x38, 0x45, 0xad, 0xbc, 0xce, 0x8b, 0xf9, 0x85,
+	0x01, 0x96, 0xa0, 0xed, 0xb2, 0xac, 0x10, 0xbf, 0x65, 0x31, 0xeb, 0xda, 0x40, 0x62, 0x05, 0x50,
+	0x82, 0xe6, 0xc8, 0xb2, 0x42, 0x44, 0x6b, 0x82, 0x92, 0x77, 0x31, 0x10, 0x28, 0x41, 0x0f, 0x63,
+	0x59, 0x21, 0xc6, 0x35, 0x41, 0xc9, 0xdb, 0x1c, 0xe6, 0x87, 0x06, 0x9c, 0x64, 0xf7, 0x38, 0x16,
+	0x24, 0xb7, 0x79, 0x49, 0xc2, 0xba, 0xac, 0x2b, 0x51, 0xcc, 0x97, 0xac, 0xb6, 0x83, 0x30, 0x5f,
+	0x32, 0x04, 0xc4, 0xf9, 0x52, 0xd0, 0xa3, 0x40, 0xcf, 0x21, 0x6e, 0x83, 0x62, 0x51, 0x23, 0x1c,
+	0x33, 0x21, 0xe1, 0x73, 0x48, 0xda, 0x53, 0x48, 0xe0, 0x70, 0x1b, 0x08, 0x8b, 0x1a, 0x81, 0xa8,
+	0x04, 0x47, 0x56, 0xe3, 0x47, 0x70, 0xb8, 0x15, 0xfe, 0x45, 0x8d, 0x10, 0x54, 0x82, 0x23, 0x6b,
+	0x01, 0xa0, 0xa8, 0x65, 0xd7, 0xff, 0x17, 0xa4, 0xa4, 0x53, 0x12, 0xc2, 0xa8, 0x15, 0xd6, 0xd7,
+	0x11, 0x0a, 0x76, 0x71, 0x7d, 0x41, 0xca, 0xb5, 0x0e, 0x0a, 0x61, 0xf1, 0x1a, 0xa1, 0x60, 0x97,
+	0xae, 0x17, 0xa4, 0x14, 0xeb, 0xa0, 0x10, 0x16, 0xba, 0xcd, 0x8f, 0x0d, 0x38, 0xc5, 0xab, 0x72,
+	0x37, 0xd5, 0x19, 0xce, 0x64, 0xac, 0x2b, 0xfa, 0x32, 0x05, 0x2c, 0xbc, 0xa2, 0x71, 0x53, 0x9d,
+	0x67, 0x25, 0x2c, 0x92, 0x32, 0x2c, 0xc2, 0xc2, 0x2b, 0xc2, 0x36, 0xd5, 0xd9, 0x56, 0xc2, 0x22,
+	0x29, 0xd2, 0x9a, 0x0f, 0xe0, 0x18, 0x5d, 0xa1, 0x9d, 0x11, 0xd1, 0x5c, 0x5c, 0x6b, 0x35, 0xd5,
+	0xd7, 0x32, 0xc2, 0xa2, 0x5c, 0x99, 0x6b, 0x6a, 0xe4, 0x47, 0x2c, 0xa3, 0x10, 0x16, 0xfc, 0x62,
+	0x69, 0x3f, 0x2c, 0xf4, 0xb0, 0x70, 0x64, 0x14, 0xc2, 0x42, 0x8c, 0x85, 0x57, 0xb1, 0x6c, 0x6a,
+	0x64, 0x46, 0x15, 0x2c, 0x92, 0x8a, 0xa6, 0xf9, 0xb5, 0x01, 0x13, 0xe2, 0x72, 0xa6, 0x3c, 0x45,
+	0x72, 0x24, 0xad, 0x97, 0x06, 0x95, 0x2c, 0xa0, 0x13, 0x57, 0x27, 0xe5, 0xa9, 0x73, 0x10, 0x74,
+	0x4a, 0xf5, 0x46, 0x84, 0x4e, 0x5c, 0x6d, 0x94, 0xa7, 0xd4, 0x41, 0xd0, 0x29, 0xd5, 0x24, 0x6f,
+	0x5c, 0xfe, 0xe9, 0x69, 0xc3, 0x78, 0xf2, 0xb4, 0x61, 0xfc, 0xf6, 0xb4, 0x61, 0x3c, 0x7e, 0xd6,
+	0xd8, 0xf7, 0xe4, 0x59, 0x63, 0xdf, 0xaf, 0xcf, 0x1a, 0xfb, 0xde, 0x6a, 0x94, 0xb6, 0x9e, 0x7f,
+	0x38, 0x9f, 0xfe, 0x13, 0xc7, 0xa3, 0x9e, 0x1b, 0x6d, 0x0c, 0xa3, 0x7f, 0x2f, 0x58, 0xfc, 0x23,
+	0x00, 0x00, 0xff, 0xff, 0x41, 0x2b, 0x27, 0x8e, 0xd9, 0x31, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -3718,6 +4343,12 @@ type MsgClient interface {
 	UpdateSelectionCriteria(ctx context.Context, in *MsgUpdateSelectionCriteria, opts ...grpc.CallOption) (*MsgUpdateSelectionCriteriaResponse, error)
 	DeleteSelectionCriteria(ctx context.Context, in *MsgDeleteSelectionCriteria, opts ...grpc.CallOption) (*MsgDeleteSelectionCriteriaResponse, error)
 	CheckDelegation(ctx context.Context, in *MsgCheckDelegation, opts ...grpc.CallOption) (*MsgCheckDelegationResponse, error)
+	CreateDelegationRequest(ctx context.Context, in *MsgCreateDelegationRequest, opts ...grpc.CallOption) (*MsgCreateDelegationRequestResponse, error)
+	UpdateDelegationRequest(ctx context.Context, in *MsgUpdateDelegationRequest, opts ...grpc.CallOption) (*MsgUpdateDelegationRequestResponse, error)
+	DeleteDelegationRequest(ctx context.Context, in *MsgDeleteDelegationRequest, opts ...grpc.CallOption) (*MsgDeleteDelegationRequestResponse, error)
+	CreateFinalDelegationDecision(ctx context.Context, in *MsgCreateFinalDelegationDecision, opts ...grpc.CallOption) (*MsgCreateFinalDelegationDecisionResponse, error)
+	UpdateFinalDelegationDecision(ctx context.Context, in *MsgUpdateFinalDelegationDecision, opts ...grpc.CallOption) (*MsgUpdateFinalDelegationDecisionResponse, error)
+	DeleteFinalDelegationDecision(ctx context.Context, in *MsgDeleteFinalDelegationDecision, opts ...grpc.CallOption) (*MsgDeleteFinalDelegationDecisionResponse, error)
 }
 
 type msgClient struct {
@@ -4034,6 +4665,60 @@ func (c *msgClient) CheckDelegation(ctx context.Context, in *MsgCheckDelegation,
 	return out, nil
 }
 
+func (c *msgClient) CreateDelegationRequest(ctx context.Context, in *MsgCreateDelegationRequest, opts ...grpc.CallOption) (*MsgCreateDelegationRequestResponse, error) {
+	out := new(MsgCreateDelegationRequestResponse)
+	err := c.cc.Invoke(ctx, "/delegationcontrol.fdpd.Msg/CreateDelegationRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateDelegationRequest(ctx context.Context, in *MsgUpdateDelegationRequest, opts ...grpc.CallOption) (*MsgUpdateDelegationRequestResponse, error) {
+	out := new(MsgUpdateDelegationRequestResponse)
+	err := c.cc.Invoke(ctx, "/delegationcontrol.fdpd.Msg/UpdateDelegationRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteDelegationRequest(ctx context.Context, in *MsgDeleteDelegationRequest, opts ...grpc.CallOption) (*MsgDeleteDelegationRequestResponse, error) {
+	out := new(MsgDeleteDelegationRequestResponse)
+	err := c.cc.Invoke(ctx, "/delegationcontrol.fdpd.Msg/DeleteDelegationRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) CreateFinalDelegationDecision(ctx context.Context, in *MsgCreateFinalDelegationDecision, opts ...grpc.CallOption) (*MsgCreateFinalDelegationDecisionResponse, error) {
+	out := new(MsgCreateFinalDelegationDecisionResponse)
+	err := c.cc.Invoke(ctx, "/delegationcontrol.fdpd.Msg/CreateFinalDelegationDecision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateFinalDelegationDecision(ctx context.Context, in *MsgUpdateFinalDelegationDecision, opts ...grpc.CallOption) (*MsgUpdateFinalDelegationDecisionResponse, error) {
+	out := new(MsgUpdateFinalDelegationDecisionResponse)
+	err := c.cc.Invoke(ctx, "/delegationcontrol.fdpd.Msg/UpdateFinalDelegationDecision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteFinalDelegationDecision(ctx context.Context, in *MsgDeleteFinalDelegationDecision, opts ...grpc.CallOption) (*MsgDeleteFinalDelegationDecisionResponse, error) {
+	out := new(MsgDeleteFinalDelegationDecisionResponse)
+	err := c.cc.Invoke(ctx, "/delegationcontrol.fdpd.Msg/DeleteFinalDelegationDecision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateLocalDomain(context.Context, *MsgCreateLocalDomain) (*MsgCreateLocalDomainResponse, error)
@@ -4070,6 +4755,12 @@ type MsgServer interface {
 	UpdateSelectionCriteria(context.Context, *MsgUpdateSelectionCriteria) (*MsgUpdateSelectionCriteriaResponse, error)
 	DeleteSelectionCriteria(context.Context, *MsgDeleteSelectionCriteria) (*MsgDeleteSelectionCriteriaResponse, error)
 	CheckDelegation(context.Context, *MsgCheckDelegation) (*MsgCheckDelegationResponse, error)
+	CreateDelegationRequest(context.Context, *MsgCreateDelegationRequest) (*MsgCreateDelegationRequestResponse, error)
+	UpdateDelegationRequest(context.Context, *MsgUpdateDelegationRequest) (*MsgUpdateDelegationRequestResponse, error)
+	DeleteDelegationRequest(context.Context, *MsgDeleteDelegationRequest) (*MsgDeleteDelegationRequestResponse, error)
+	CreateFinalDelegationDecision(context.Context, *MsgCreateFinalDelegationDecision) (*MsgCreateFinalDelegationDecisionResponse, error)
+	UpdateFinalDelegationDecision(context.Context, *MsgUpdateFinalDelegationDecision) (*MsgUpdateFinalDelegationDecisionResponse, error)
+	DeleteFinalDelegationDecision(context.Context, *MsgDeleteFinalDelegationDecision) (*MsgDeleteFinalDelegationDecisionResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -4177,6 +4868,24 @@ func (*UnimplementedMsgServer) DeleteSelectionCriteria(ctx context.Context, req 
 }
 func (*UnimplementedMsgServer) CheckDelegation(ctx context.Context, req *MsgCheckDelegation) (*MsgCheckDelegationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckDelegation not implemented")
+}
+func (*UnimplementedMsgServer) CreateDelegationRequest(ctx context.Context, req *MsgCreateDelegationRequest) (*MsgCreateDelegationRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDelegationRequest not implemented")
+}
+func (*UnimplementedMsgServer) UpdateDelegationRequest(ctx context.Context, req *MsgUpdateDelegationRequest) (*MsgUpdateDelegationRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDelegationRequest not implemented")
+}
+func (*UnimplementedMsgServer) DeleteDelegationRequest(ctx context.Context, req *MsgDeleteDelegationRequest) (*MsgDeleteDelegationRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDelegationRequest not implemented")
+}
+func (*UnimplementedMsgServer) CreateFinalDelegationDecision(ctx context.Context, req *MsgCreateFinalDelegationDecision) (*MsgCreateFinalDelegationDecisionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateFinalDelegationDecision not implemented")
+}
+func (*UnimplementedMsgServer) UpdateFinalDelegationDecision(ctx context.Context, req *MsgUpdateFinalDelegationDecision) (*MsgUpdateFinalDelegationDecisionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFinalDelegationDecision not implemented")
+}
+func (*UnimplementedMsgServer) DeleteFinalDelegationDecision(ctx context.Context, req *MsgDeleteFinalDelegationDecision) (*MsgDeleteFinalDelegationDecisionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFinalDelegationDecision not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -4795,6 +5504,114 @@ func _Msg_CheckDelegation_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_CreateDelegationRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateDelegationRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/delegationcontrol.fdpd.Msg/CreateDelegationRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateDelegationRequest(ctx, req.(*MsgCreateDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateDelegationRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateDelegationRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/delegationcontrol.fdpd.Msg/UpdateDelegationRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateDelegationRequest(ctx, req.(*MsgUpdateDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteDelegationRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteDelegationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteDelegationRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/delegationcontrol.fdpd.Msg/DeleteDelegationRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteDelegationRequest(ctx, req.(*MsgDeleteDelegationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_CreateFinalDelegationDecision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateFinalDelegationDecision)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateFinalDelegationDecision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/delegationcontrol.fdpd.Msg/CreateFinalDelegationDecision",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateFinalDelegationDecision(ctx, req.(*MsgCreateFinalDelegationDecision))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateFinalDelegationDecision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateFinalDelegationDecision)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateFinalDelegationDecision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/delegationcontrol.fdpd.Msg/UpdateFinalDelegationDecision",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateFinalDelegationDecision(ctx, req.(*MsgUpdateFinalDelegationDecision))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteFinalDelegationDecision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteFinalDelegationDecision)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteFinalDelegationDecision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/delegationcontrol.fdpd.Msg/DeleteFinalDelegationDecision",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteFinalDelegationDecision(ctx, req.(*MsgDeleteFinalDelegationDecision))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "delegationcontrol.fdpd.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -4934,6 +5751,30 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckDelegation",
 			Handler:    _Msg_CheckDelegation_Handler,
+		},
+		{
+			MethodName: "CreateDelegationRequest",
+			Handler:    _Msg_CreateDelegationRequest_Handler,
+		},
+		{
+			MethodName: "UpdateDelegationRequest",
+			Handler:    _Msg_UpdateDelegationRequest_Handler,
+		},
+		{
+			MethodName: "DeleteDelegationRequest",
+			Handler:    _Msg_DeleteDelegationRequest_Handler,
+		},
+		{
+			MethodName: "CreateFinalDelegationDecision",
+			Handler:    _Msg_CreateFinalDelegationDecision_Handler,
+		},
+		{
+			MethodName: "UpdateFinalDelegationDecision",
+			Handler:    _Msg_UpdateFinalDelegationDecision_Handler,
+		},
+		{
+			MethodName: "DeleteFinalDelegationDecision",
+			Handler:    _Msg_DeleteFinalDelegationDecision_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -6299,8 +7140,8 @@ func (m *MsgCreateDelegationConditions) MarshalToSizedBuffer(dAtA []byte) (int, 
 		i--
 		dAtA[i] = 0x22
 	}
-	if m.MaxDelegations != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.MaxDelegations))
+	if m.MaxDelegateeNb != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.MaxDelegateeNb))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -6379,8 +7220,8 @@ func (m *MsgUpdateDelegationConditions) MarshalToSizedBuffer(dAtA []byte) (int, 
 		i--
 		dAtA[i] = 0x2a
 	}
-	if m.MaxDelegations != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.MaxDelegations))
+	if m.MaxDelegateeNb != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.MaxDelegateeNb))
 		i--
 		dAtA[i] = 0x20
 	}
@@ -6505,22 +7346,15 @@ func (m *MsgSendRequestDelegation) MarshalToSizedBuffer(dAtA []byte) (int, error
 	_ = i
 	var l int
 	_ = l
-	if m.Permission != nil {
+	if m.DelegationRequest != nil {
 		{
-			size, err := m.Permission.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.DelegationRequest.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
 			i -= size
 			i = encodeVarintTx(dAtA, i, uint64(size))
 		}
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.DelegationAction) > 0 {
-		i -= len(m.DelegationAction)
-		copy(dAtA[i:], m.DelegationAction)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.DelegationAction)))
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -7347,34 +8181,17 @@ func (m *MsgCheckDelegation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.SelectionCriteria != nil {
-		{
-			size, err := m.SelectionCriteria.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Permission != nil {
-		{
-			size, err := m.Permission.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
+	if len(m.SelectionCriteria) > 0 {
+		i -= len(m.SelectionCriteria)
+		copy(dAtA[i:], m.SelectionCriteria)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.SelectionCriteria)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.DelegationAction) > 0 {
-		i -= len(m.DelegationAction)
-		copy(dAtA[i:], m.DelegationAction)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.DelegationAction)))
+	if len(m.Label) > 0 {
+		i -= len(m.Label)
+		copy(dAtA[i:], m.Label)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Label)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -7404,6 +8221,434 @@ func (m *MsgCheckDelegationResponse) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *MsgCheckDelegationResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateDelegationRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateDelegationRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateDelegationRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Permission != nil {
+		{
+			size, err := m.Permission.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.DelegationAction) > 0 {
+		i -= len(m.DelegationAction)
+		copy(dAtA[i:], m.DelegationAction)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DelegationAction)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Label) > 0 {
+		i -= len(m.Label)
+		copy(dAtA[i:], m.Label)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Label)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateDelegationRequestResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateDelegationRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateDelegationRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateDelegationRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateDelegationRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateDelegationRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Permission != nil {
+		{
+			size, err := m.Permission.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.DelegationAction) > 0 {
+		i -= len(m.DelegationAction)
+		copy(dAtA[i:], m.DelegationAction)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DelegationAction)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Label) > 0 {
+		i -= len(m.Label)
+		copy(dAtA[i:], m.Label)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Label)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.Id != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateDelegationRequestResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateDelegationRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateDelegationRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteDelegationRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteDelegationRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteDelegationRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteDelegationRequestResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteDelegationRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteDelegationRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateFinalDelegationDecision) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateFinalDelegationDecision) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateFinalDelegationDecision) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Decision) > 0 {
+		i -= len(m.Decision)
+		copy(dAtA[i:], m.Decision)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Decision)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.DelegationRequestLabel) > 0 {
+		i -= len(m.DelegationRequestLabel)
+		copy(dAtA[i:], m.DelegationRequestLabel)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DelegationRequestLabel)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateFinalDelegationDecisionResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateFinalDelegationDecisionResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateFinalDelegationDecisionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateFinalDelegationDecision) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateFinalDelegationDecision) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateFinalDelegationDecision) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Decision) > 0 {
+		i -= len(m.Decision)
+		copy(dAtA[i:], m.Decision)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Decision)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.DelegationRequestLabel) > 0 {
+		i -= len(m.DelegationRequestLabel)
+		copy(dAtA[i:], m.DelegationRequestLabel)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DelegationRequestLabel)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.Id != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateFinalDelegationDecisionResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateFinalDelegationDecisionResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateFinalDelegationDecisionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteFinalDelegationDecision) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteFinalDelegationDecision) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteFinalDelegationDecision) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteFinalDelegationDecisionResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteFinalDelegationDecisionResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteFinalDelegationDecisionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -8039,8 +9284,8 @@ func (m *MsgCreateDelegationConditions) Size() (n int) {
 	if m.Cost != 0 {
 		n += 1 + sovTx(uint64(m.Cost))
 	}
-	if m.MaxDelegations != 0 {
-		n += 1 + sovTx(uint64(m.MaxDelegations))
+	if m.MaxDelegateeNb != 0 {
+		n += 1 + sovTx(uint64(m.MaxDelegateeNb))
 	}
 	if m.Validity != nil {
 		l = m.Validity.Size()
@@ -8077,8 +9322,8 @@ func (m *MsgUpdateDelegationConditions) Size() (n int) {
 	if m.Cost != 0 {
 		n += 1 + sovTx(uint64(m.Cost))
 	}
-	if m.MaxDelegations != 0 {
-		n += 1 + sovTx(uint64(m.MaxDelegations))
+	if m.MaxDelegateeNb != 0 {
+		n += 1 + sovTx(uint64(m.MaxDelegateeNb))
 	}
 	if m.Validity != nil {
 		l = m.Validity.Size()
@@ -8138,12 +9383,8 @@ func (m *MsgSendRequestDelegation) Size() (n int) {
 	if m.TimeoutTimestamp != 0 {
 		n += 1 + sovTx(uint64(m.TimeoutTimestamp))
 	}
-	l = len(m.DelegationAction)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.Permission != nil {
-		l = m.Permission.Size()
+	if m.DelegationRequest != nil {
+		l = m.DelegationRequest.Size()
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
@@ -8510,6 +9751,40 @@ func (m *MsgCheckDelegation) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	l = len(m.Label)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.SelectionCriteria)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCheckDelegationResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgCreateDelegationRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Label)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	l = len(m.DelegationAction)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -8518,14 +9793,166 @@ func (m *MsgCheckDelegation) Size() (n int) {
 		l = m.Permission.Size()
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if m.SelectionCriteria != nil {
-		l = m.SelectionCriteria.Size()
+	return n
+}
+
+func (m *MsgCreateDelegationRequestResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovTx(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *MsgUpdateDelegationRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Id != 0 {
+		n += 1 + sovTx(uint64(m.Id))
+	}
+	l = len(m.Label)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.DelegationAction)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Permission != nil {
+		l = m.Permission.Size()
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
 
-func (m *MsgCheckDelegationResponse) Size() (n int) {
+func (m *MsgUpdateDelegationRequestResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgDeleteDelegationRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Id != 0 {
+		n += 1 + sovTx(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *MsgDeleteDelegationRequestResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgCreateFinalDelegationDecision) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.DelegationRequestLabel)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Decision)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCreateFinalDelegationDecisionResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovTx(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *MsgUpdateFinalDelegationDecision) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Id != 0 {
+		n += 1 + sovTx(uint64(m.Id))
+	}
+	l = len(m.DelegationRequestLabel)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Decision)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgUpdateFinalDelegationDecisionResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgDeleteFinalDelegationDecision) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Id != 0 {
+		n += 1 + sovTx(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *MsgDeleteFinalDelegationDecisionResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -12428,9 +13855,9 @@ func (m *MsgCreateDelegationConditions) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MaxDelegations", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxDelegateeNb", wireType)
 			}
-			m.MaxDelegations = 0
+			m.MaxDelegateeNb = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -12440,7 +13867,7 @@ func (m *MsgCreateDelegationConditions) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.MaxDelegations |= uint64(b&0x7F) << shift
+				m.MaxDelegateeNb |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -12672,9 +14099,9 @@ func (m *MsgUpdateDelegationConditions) Unmarshal(dAtA []byte) error {
 			}
 		case 4:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MaxDelegations", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxDelegateeNb", wireType)
 			}
-			m.MaxDelegations = 0
+			m.MaxDelegateeNb = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -12684,7 +14111,7 @@ func (m *MsgUpdateDelegationConditions) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.MaxDelegations |= uint64(b&0x7F) << shift
+				m.MaxDelegateeNb |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -13061,39 +14488,7 @@ func (m *MsgSendRequestDelegation) Unmarshal(dAtA []byte) error {
 			}
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DelegationAction", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.DelegationAction = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Permission", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegationRequest", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -13120,10 +14515,10 @@ func (m *MsgSendRequestDelegation) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Permission == nil {
-				m.Permission = &Permission{}
+			if m.DelegationRequest == nil {
+				m.DelegationRequest = &DelegationRequest{}
 			}
-			if err := m.Permission.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.DelegationRequest.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -15383,7 +16778,7 @@ func (m *MsgCheckDelegation) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DelegationAction", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Label", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -15411,49 +16806,13 @@ func (m *MsgCheckDelegation) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DelegationAction = string(dAtA[iNdEx:postIndex])
+			m.Label = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Permission", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Permission == nil {
-				m.Permission = &Permission{}
-			}
-			if err := m.Permission.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field SelectionCriteria", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -15463,27 +16822,23 @@ func (m *MsgCheckDelegation) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.SelectionCriteria == nil {
-				m.SelectionCriteria = &SelectionCriteria{}
-			}
-			if err := m.SelectionCriteria.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.SelectionCriteria = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -15533,6 +16888,1240 @@ func (m *MsgCheckDelegationResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgCheckDelegationResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateDelegationRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateDelegationRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateDelegationRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Label", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Label = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegationAction", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DelegationAction = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Permission", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Permission == nil {
+				m.Permission = &Permission{}
+			}
+			if err := m.Permission.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateDelegationRequestResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateDelegationRequestResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateDelegationRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateDelegationRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateDelegationRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateDelegationRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Label", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Label = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegationAction", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DelegationAction = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Permission", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Permission == nil {
+				m.Permission = &Permission{}
+			}
+			if err := m.Permission.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateDelegationRequestResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateDelegationRequestResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateDelegationRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteDelegationRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteDelegationRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteDelegationRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteDelegationRequestResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteDelegationRequestResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteDelegationRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateFinalDelegationDecision) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateFinalDelegationDecision: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateFinalDelegationDecision: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegationRequestLabel", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DelegationRequestLabel = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Decision", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Decision = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateFinalDelegationDecisionResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateFinalDelegationDecisionResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateFinalDelegationDecisionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateFinalDelegationDecision) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateFinalDelegationDecision: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateFinalDelegationDecision: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegationRequestLabel", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DelegationRequestLabel = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Decision", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Decision = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateFinalDelegationDecisionResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateFinalDelegationDecisionResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateFinalDelegationDecisionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteFinalDelegationDecision) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteFinalDelegationDecision: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteFinalDelegationDecision: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteFinalDelegationDecisionResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteFinalDelegationDecisionResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteFinalDelegationDecisionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

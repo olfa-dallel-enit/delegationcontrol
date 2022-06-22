@@ -42,6 +42,12 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateSelectionCriteria{}, "fdpd/UpdateSelectionCriteria", nil)
 	cdc.RegisterConcrete(&MsgDeleteSelectionCriteria{}, "fdpd/DeleteSelectionCriteria", nil)
 	cdc.RegisterConcrete(&MsgCheckDelegation{}, "fdpd/CheckDelegation", nil)
+	cdc.RegisterConcrete(&MsgCreateDelegationRequest{}, "fdpd/CreateDelegationRequest", nil)
+	cdc.RegisterConcrete(&MsgUpdateDelegationRequest{}, "fdpd/UpdateDelegationRequest", nil)
+	cdc.RegisterConcrete(&MsgDeleteDelegationRequest{}, "fdpd/DeleteDelegationRequest", nil)
+	cdc.RegisterConcrete(&MsgCreateFinalDelegationDecision{}, "fdpd/CreateFinalDelegationDecision", nil)
+	cdc.RegisterConcrete(&MsgUpdateFinalDelegationDecision{}, "fdpd/UpdateFinalDelegationDecision", nil)
+	cdc.RegisterConcrete(&MsgDeleteFinalDelegationDecision{}, "fdpd/DeleteFinalDelegationDecision", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -107,6 +113,16 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCheckDelegation{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateDelegationRequest{},
+		&MsgUpdateDelegationRequest{},
+		&MsgDeleteDelegationRequest{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateFinalDelegationDecision{},
+		&MsgUpdateFinalDelegationDecision{},
+		&MsgDeleteFinalDelegationDecision{},
 	)
 	// this line is used by starport scaffolding # 3
 

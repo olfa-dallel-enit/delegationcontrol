@@ -13,15 +13,13 @@ func NewMsgSendRequestDelegation(
 	creator string,
 	port string,
 	timeoutTimestamp uint64,
-	delegationAction string,
-	permission *Permission,
+	delegationRequest *DelegationRequest,
 ) *MsgSendRequestDelegation {
 	return &MsgSendRequestDelegation{
-		Creator:          creator,
-		Port:             port,
-		TimeoutTimestamp: timeoutTimestamp,
-		DelegationAction: delegationAction,
-		Permission:       permission,
+		Creator:           creator,
+		Port:              port,
+		TimeoutTimestamp:  timeoutTimestamp,
+		DelegationRequest: delegationRequest,
 	}
 }
 

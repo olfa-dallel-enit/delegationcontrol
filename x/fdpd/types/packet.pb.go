@@ -272,8 +272,10 @@ func (m *EstablishCooperationPacketAck) GetLocation() string {
 
 // RequestDelegationPacketData defines a struct for the packet payload
 type RequestDelegationPacketData struct {
-	DelegationAction string      `protobuf:"bytes,1,opt,name=delegationAction,proto3" json:"delegationAction,omitempty"`
-	Permission       *Permission `protobuf:"bytes,2,opt,name=permission,proto3" json:"permission,omitempty"`
+	Label            string `protobuf:"bytes,1,opt,name=label,proto3" json:"label,omitempty"`
+	DelegationAction string `protobuf:"bytes,2,opt,name=delegationAction,proto3" json:"delegationAction,omitempty"`
+	AccessAction     string `protobuf:"bytes,3,opt,name=accessAction,proto3" json:"accessAction,omitempty"`
+	Resource         string `protobuf:"bytes,4,opt,name=resource,proto3" json:"resource,omitempty"`
 }
 
 func (m *RequestDelegationPacketData) Reset()         { *m = RequestDelegationPacketData{} }
@@ -309,6 +311,13 @@ func (m *RequestDelegationPacketData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RequestDelegationPacketData proto.InternalMessageInfo
 
+func (m *RequestDelegationPacketData) GetLabel() string {
+	if m != nil {
+		return m.Label
+	}
+	return ""
+}
+
 func (m *RequestDelegationPacketData) GetDelegationAction() string {
 	if m != nil {
 		return m.DelegationAction
@@ -316,18 +325,29 @@ func (m *RequestDelegationPacketData) GetDelegationAction() string {
 	return ""
 }
 
-func (m *RequestDelegationPacketData) GetPermission() *Permission {
+func (m *RequestDelegationPacketData) GetAccessAction() string {
 	if m != nil {
-		return m.Permission
+		return m.AccessAction
 	}
-	return nil
+	return ""
+}
+
+func (m *RequestDelegationPacketData) GetResource() string {
+	if m != nil {
+		return m.Resource
+	}
+	return ""
 }
 
 // RequestDelegationPacketAck defines a struct for the packet acknowledgment
 type RequestDelegationPacketAck struct {
-	DecisionDomain       string                `protobuf:"bytes,1,opt,name=decisionDomain,proto3" json:"decisionDomain,omitempty"`
-	Decision             string                `protobuf:"bytes,2,opt,name=decision,proto3" json:"decision,omitempty"`
-	DelegationConditions *DelegationConditions `protobuf:"bytes,3,opt,name=delegationConditions,proto3" json:"delegationConditions,omitempty"`
+	DecisionDomain         string `protobuf:"bytes,1,opt,name=decisionDomain,proto3" json:"decisionDomain,omitempty"`
+	Decision               string `protobuf:"bytes,2,opt,name=decision,proto3" json:"decision,omitempty"`
+	DelegationRequestLabel string `protobuf:"bytes,3,opt,name=delegationRequestLabel,proto3" json:"delegationRequestLabel,omitempty"`
+	Cost                   string `protobuf:"bytes,4,opt,name=cost,proto3" json:"cost,omitempty"`
+	MaxDelegateeNb         string `protobuf:"bytes,5,opt,name=maxDelegateeNb,proto3" json:"maxDelegateeNb,omitempty"`
+	NotBefore              string `protobuf:"bytes,6,opt,name=notBefore,proto3" json:"notBefore,omitempty"`
+	NotAfter               string `protobuf:"bytes,7,opt,name=notAfter,proto3" json:"notAfter,omitempty"`
 }
 
 func (m *RequestDelegationPacketAck) Reset()         { *m = RequestDelegationPacketAck{} }
@@ -377,11 +397,39 @@ func (m *RequestDelegationPacketAck) GetDecision() string {
 	return ""
 }
 
-func (m *RequestDelegationPacketAck) GetDelegationConditions() *DelegationConditions {
+func (m *RequestDelegationPacketAck) GetDelegationRequestLabel() string {
 	if m != nil {
-		return m.DelegationConditions
+		return m.DelegationRequestLabel
 	}
-	return nil
+	return ""
+}
+
+func (m *RequestDelegationPacketAck) GetCost() string {
+	if m != nil {
+		return m.Cost
+	}
+	return ""
+}
+
+func (m *RequestDelegationPacketAck) GetMaxDelegateeNb() string {
+	if m != nil {
+		return m.MaxDelegateeNb
+	}
+	return ""
+}
+
+func (m *RequestDelegationPacketAck) GetNotBefore() string {
+	if m != nil {
+		return m.NotBefore
+	}
+	return ""
+}
+
+func (m *RequestDelegationPacketAck) GetNotAfter() string {
+	if m != nil {
+		return m.NotAfter
+	}
+	return ""
 }
 
 func init() {
@@ -396,35 +444,39 @@ func init() {
 func init() { proto.RegisterFile("fdpd/packet.proto", fileDescriptor_2796c1a2923b5b8e) }
 
 var fileDescriptor_2796c1a2923b5b8e = []byte{
-	// 435 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x53, 0x41, 0x6b, 0xd4, 0x40,
-	0x14, 0xce, 0xb4, 0x10, 0xb6, 0xaf, 0x52, 0x74, 0xd0, 0x5a, 0x22, 0x0e, 0xcb, 0x1c, 0x44, 0x44,
-	0xb2, 0x60, 0x41, 0x7a, 0x6d, 0x1a, 0xc5, 0x93, 0x94, 0xe0, 0xc9, 0x8b, 0xa6, 0x33, 0x53, 0x1d,
-	0x9a, 0xcd, 0xc4, 0xcc, 0x08, 0xed, 0xd1, 0x1f, 0x20, 0xf8, 0x8f, 0x04, 0x4f, 0x1e, 0x7b, 0xf4,
-	0x28, 0xbb, 0x7f, 0x44, 0x32, 0x99, 0x4d, 0xb2, 0x6e, 0x66, 0x6f, 0x79, 0x1f, 0xdf, 0xfb, 0xbe,
-	0x2f, 0xef, 0xcd, 0x83, 0x7b, 0x97, 0xbc, 0xe2, 0xb3, 0x2a, 0x67, 0x57, 0xc2, 0xc4, 0x55, 0xad,
-	0x8c, 0xc2, 0x87, 0x5c, 0x14, 0xe2, 0x53, 0x6e, 0xa4, 0x2a, 0x99, 0x2a, 0x4d, 0xad, 0x8a, 0xb8,
-	0x21, 0x45, 0x0f, 0x5a, 0xaa, 0xa8, 0xe7, 0x52, 0x6b, 0xa9, 0xca, 0x96, 0x1e, 0x4d, 0x2d, 0xdc,
-	0xf7, 0x7c, 0x60, 0xaa, 0xe4, 0xb2, 0xf9, 0xd2, 0x2d, 0x83, 0xfe, 0xdc, 0x81, 0x83, 0xd7, 0xbc,
-	0xe2, 0xe7, 0xd6, 0x25, 0xcd, 0x4d, 0x8e, 0x4f, 0x20, 0x2c, 0x55, 0xf3, 0x75, 0x84, 0xa6, 0xe8,
-	0xe9, 0xfe, 0x0b, 0x12, 0x8f, 0x9b, 0xc6, 0x6f, 0x2d, 0xeb, 0x4d, 0x90, 0x39, 0x3e, 0x56, 0xf0,
-	0xb0, 0x16, 0x5f, 0xbe, 0x0a, 0x6d, 0xd2, 0xae, 0xa3, 0x15, 0x3e, 0xda, 0xb5, 0x52, 0xc7, 0x3e,
-	0xa9, 0x6c, 0xbc, 0xcd, 0xe9, 0xfb, 0x54, 0xf1, 0x35, 0x44, 0x42, 0x9b, 0xfc, 0xa2, 0x90, 0xfa,
-	0xf3, 0x99, 0x52, 0x95, 0xa8, 0x87, 0x9e, 0x3b, 0xd6, 0xf3, 0xa5, 0xcf, 0xf3, 0x95, 0xb7, 0xd3,
-	0xd9, 0x6e, 0xd1, 0x4e, 0x26, 0x10, 0xb6, 0x8b, 0xa1, 0x13, 0x08, 0xdb, 0x41, 0xd0, 0x77, 0x40,
-	0xb6, 0x6b, 0xe2, 0x08, 0x26, 0x85, 0x62, 0x16, 0xb5, 0xc3, 0xdd, 0xcb, 0xba, 0x1a, 0x1f, 0x42,
-	0xa8, 0x45, 0xc9, 0x45, 0x6d, 0x73, 0xef, 0x65, 0xae, 0xa2, 0xdf, 0x10, 0x3c, 0xf6, 0xcb, 0x9e,
-	0xb2, 0x2b, 0x4c, 0xe1, 0x0e, 0x53, 0xe5, 0xa5, 0xac, 0xe7, 0x43, 0xe5, 0x35, 0x0c, 0x4f, 0x61,
-	0xdf, 0xd5, 0x82, 0x27, 0x37, 0xce, 0x62, 0x08, 0xad, 0x65, 0xdb, 0x5d, 0xcf, 0x46, 0xbf, 0x23,
-	0x78, 0xb4, 0x65, 0x45, 0xf8, 0x19, 0xdc, 0xed, 0x87, 0x7c, 0xca, 0x06, 0x29, 0x36, 0x70, 0x9c,
-	0x00, 0xf4, 0xef, 0xd4, 0xed, 0x88, 0xfa, 0x76, 0x74, 0xde, 0x31, 0xb3, 0x41, 0x17, 0xfd, 0x85,
-	0x20, 0xf2, 0xe4, 0x69, 0x06, 0xf2, 0x04, 0x0e, 0xb8, 0x60, 0xb2, 0xa1, 0xa6, 0x6a, 0x9e, 0xcb,
-	0x55, 0x98, 0xff, 0xd0, 0xe6, 0x97, 0x57, 0x88, 0x9b, 0x48, 0x57, 0xe3, 0x8f, 0x70, 0xbf, 0xcf,
-	0x74, 0xd6, 0x9d, 0x8d, 0x7b, 0xc8, 0xcf, 0x7d, 0x81, 0xd3, 0x91, 0x9e, 0x6c, 0x54, 0x29, 0x39,
-	0xf9, 0xbd, 0x20, 0xe8, 0x76, 0x41, 0xd0, 0xdf, 0x05, 0x41, 0x3f, 0x96, 0x24, 0xb8, 0x5d, 0x92,
-	0xe0, 0xcf, 0x92, 0x04, 0xef, 0xc9, 0x86, 0xf8, 0xec, 0x7a, 0x66, 0x4f, 0xd9, 0xdc, 0x54, 0x42,
-	0x5f, 0x84, 0xf6, 0x76, 0x8f, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0xe9, 0x5b, 0x9a, 0xcd, 0x21,
-	0x04, 0x00, 0x00,
+	// 507 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x94, 0xcd, 0x6e, 0xd3, 0x40,
+	0x14, 0x85, 0xe3, 0xb4, 0x35, 0xc9, 0x2d, 0xaa, 0x60, 0x04, 0xc5, 0x32, 0xd4, 0x8a, 0xbc, 0x40,
+	0x88, 0x45, 0x22, 0x51, 0xa9, 0xea, 0x36, 0x21, 0x20, 0x16, 0xa8, 0x42, 0x11, 0x2b, 0x36, 0xc8,
+	0x19, 0xdf, 0x80, 0x55, 0xc7, 0xd7, 0xcc, 0x4c, 0xa5, 0x74, 0xc9, 0x0b, 0x20, 0xde, 0x80, 0x47,
+	0x61, 0xcb, 0xb2, 0x4b, 0x96, 0x28, 0x79, 0x11, 0x34, 0x3f, 0xf9, 0x71, 0x1b, 0x67, 0x37, 0xf7,
+	0xf8, 0xcc, 0x39, 0x9f, 0xc7, 0x1a, 0xc3, 0xc3, 0x49, 0x5a, 0xa6, 0xbd, 0x32, 0xe1, 0x97, 0xa8,
+	0xba, 0xa5, 0x20, 0x45, 0xec, 0x38, 0xc5, 0x1c, 0xbf, 0x24, 0x2a, 0xa3, 0x82, 0x53, 0xa1, 0x04,
+	0xe5, 0x5d, 0x6d, 0x0a, 0x1f, 0x5b, 0x2b, 0x8a, 0x69, 0x26, 0x65, 0x46, 0x85, 0xb5, 0x87, 0x1d,
+	0x23, 0xaf, 0xf7, 0x7c, 0xe6, 0x54, 0xa4, 0x99, 0x5e, 0x49, 0xe7, 0x38, 0xb9, 0xed, 0x10, 0xf8,
+	0xed, 0x0a, 0xa5, 0xeb, 0x8b, 0x7f, 0x37, 0xe1, 0xe8, 0x6d, 0x5a, 0xa6, 0x1f, 0x0c, 0xc4, 0x30,
+	0x51, 0x09, 0x3b, 0x07, 0xbf, 0x20, 0xbd, 0x0a, 0xbc, 0x8e, 0xf7, 0xe2, 0xf0, 0x55, 0xd4, 0xdd,
+	0xce, 0xd4, 0xbd, 0x30, 0xae, 0x77, 0x8d, 0x91, 0xf3, 0x33, 0x82, 0x27, 0x2e, 0x7d, 0xb8, 0xda,
+	0x61, 0x83, 0x83, 0x3d, 0x13, 0x75, 0x5a, 0x17, 0x35, 0xda, 0xbe, 0xcd, 0xe5, 0xd7, 0xa5, 0xb2,
+	0x19, 0x84, 0x28, 0x55, 0x32, 0xce, 0x33, 0xf9, 0xf5, 0x35, 0x51, 0x89, 0x62, 0xb3, 0xb3, 0x69,
+	0x3a, 0xcf, 0xea, 0x3a, 0xdf, 0xd4, 0xee, 0x74, 0xb5, 0x3b, 0xb2, 0x07, 0x2d, 0xf0, 0xed, 0x77,
+	0x8b, 0x5b, 0xe0, 0xdb, 0x83, 0x88, 0x3f, 0x42, 0xb4, 0x3b, 0x93, 0x85, 0xd0, 0xca, 0x89, 0x1b,
+	0xd5, 0x1c, 0x6e, 0x7b, 0xb4, 0x9a, 0xd9, 0x31, 0xf8, 0x12, 0x8b, 0x14, 0x85, 0xe1, 0x6e, 0x8f,
+	0xdc, 0x14, 0x7f, 0xf7, 0xe0, 0xa4, 0x3e, 0xb6, 0xcf, 0x2f, 0x59, 0x0c, 0xf7, 0x39, 0x15, 0x93,
+	0x4c, 0x4c, 0x37, 0x93, 0x2b, 0x1a, 0xeb, 0xc0, 0xa1, 0x9b, 0x31, 0x1d, 0x5c, 0xbb, 0x8a, 0x4d,
+	0xa9, 0xc2, 0xb6, 0x57, 0x65, 0x8b, 0x7f, 0x79, 0xf0, 0x74, 0xc7, 0x27, 0x62, 0x8f, 0xe0, 0x20,
+	0x4f, 0xc6, 0x98, 0xbb, 0x6a, 0x3b, 0xb0, 0x97, 0xf0, 0x60, 0x7d, 0xf4, 0x7d, 0x6e, 0x92, 0x6d,
+	0xf1, 0x1d, 0x5d, 0xbf, 0x43, 0xc2, 0x39, 0x4a, 0xe9, 0x7c, 0x96, 0xa0, 0xa2, 0x69, 0x42, 0x81,
+	0x92, 0xae, 0x04, 0xc7, 0x60, 0xdf, 0x12, 0x2e, 0xe7, 0xf8, 0x47, 0x13, 0xc2, 0x1a, 0x42, 0x7d,
+	0x44, 0xcf, 0xe1, 0x28, 0x45, 0x9e, 0xe9, 0x9b, 0x33, 0xa4, 0x69, 0x92, 0x2d, 0x0f, 0xe9, 0x96,
+	0xaa, 0x2b, 0x96, 0x8a, 0x43, 0x5d, 0xcd, 0xec, 0x0c, 0x36, 0x2e, 0xa7, 0xeb, 0x7a, 0x6f, 0xde,
+	0xda, 0xc2, 0xd6, 0x3c, 0x65, 0x0c, 0xf6, 0x39, 0x49, 0xe5, 0x90, 0xcd, 0x5a, 0xf3, 0x4c, 0x93,
+	0x99, 0x23, 0x45, 0xbc, 0x18, 0x07, 0x07, 0x96, 0xa7, 0xaa, 0xb2, 0x67, 0xd0, 0x2e, 0x48, 0x0d,
+	0x70, 0x42, 0x02, 0x03, 0xdf, 0x58, 0xd6, 0x82, 0xa6, 0x2d, 0x48, 0xf5, 0x27, 0x0a, 0x45, 0x70,
+	0xcf, 0xd2, 0x2e, 0xe7, 0xc1, 0xf9, 0x9f, 0x79, 0xe4, 0xdd, 0xcc, 0x23, 0xef, 0xdf, 0x3c, 0xf2,
+	0x7e, 0x2e, 0xa2, 0xc6, 0xcd, 0x22, 0x6a, 0xfc, 0x5d, 0x44, 0x8d, 0x4f, 0xd1, 0x9d, 0xfb, 0xd0,
+	0x9b, 0xf5, 0xcc, 0x5f, 0x42, 0x5d, 0x97, 0x28, 0xc7, 0xbe, 0xf9, 0x33, 0x9c, 0xfe, 0x0f, 0x00,
+	0x00, 0xff, 0xff, 0x34, 0x81, 0xb7, 0xb2, 0x9e, 0x04, 0x00, 0x00,
 }
 
 func (m *FdpdPacketData) Marshal() (dAtA []byte, err error) {
@@ -646,22 +698,31 @@ func (m *RequestDelegationPacketData) MarshalToSizedBuffer(dAtA []byte) (int, er
 	_ = i
 	var l int
 	_ = l
-	if m.Permission != nil {
-		{
-			size, err := m.Permission.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintPacket(dAtA, i, uint64(size))
-		}
+	if len(m.Resource) > 0 {
+		i -= len(m.Resource)
+		copy(dAtA[i:], m.Resource)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Resource)))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x22
+	}
+	if len(m.AccessAction) > 0 {
+		i -= len(m.AccessAction)
+		copy(dAtA[i:], m.AccessAction)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.AccessAction)))
+		i--
+		dAtA[i] = 0x1a
 	}
 	if len(m.DelegationAction) > 0 {
 		i -= len(m.DelegationAction)
 		copy(dAtA[i:], m.DelegationAction)
 		i = encodeVarintPacket(dAtA, i, uint64(len(m.DelegationAction)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Label) > 0 {
+		i -= len(m.Label)
+		copy(dAtA[i:], m.Label)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Label)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -688,15 +749,38 @@ func (m *RequestDelegationPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, err
 	_ = i
 	var l int
 	_ = l
-	if m.DelegationConditions != nil {
-		{
-			size, err := m.DelegationConditions.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintPacket(dAtA, i, uint64(size))
-		}
+	if len(m.NotAfter) > 0 {
+		i -= len(m.NotAfter)
+		copy(dAtA[i:], m.NotAfter)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.NotAfter)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.NotBefore) > 0 {
+		i -= len(m.NotBefore)
+		copy(dAtA[i:], m.NotBefore)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.NotBefore)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.MaxDelegateeNb) > 0 {
+		i -= len(m.MaxDelegateeNb)
+		copy(dAtA[i:], m.MaxDelegateeNb)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.MaxDelegateeNb)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.Cost) > 0 {
+		i -= len(m.Cost)
+		copy(dAtA[i:], m.Cost)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Cost)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.DelegationRequestLabel) > 0 {
+		i -= len(m.DelegationRequestLabel)
+		copy(dAtA[i:], m.DelegationRequestLabel)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.DelegationRequestLabel)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -829,12 +913,20 @@ func (m *RequestDelegationPacketData) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = len(m.Label)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
 	l = len(m.DelegationAction)
 	if l > 0 {
 		n += 1 + l + sovPacket(uint64(l))
 	}
-	if m.Permission != nil {
-		l = m.Permission.Size()
+	l = len(m.AccessAction)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Resource)
+	if l > 0 {
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
@@ -854,8 +946,24 @@ func (m *RequestDelegationPacketAck) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovPacket(uint64(l))
 	}
-	if m.DelegationConditions != nil {
-		l = m.DelegationConditions.Size()
+	l = len(m.DelegationRequestLabel)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Cost)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.MaxDelegateeNb)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.NotBefore)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.NotAfter)
+	if l > 0 {
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
@@ -1363,6 +1471,38 @@ func (m *RequestDelegationPacketData) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Label", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Label = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field DelegationAction", wireType)
 			}
 			var stringLen uint64
@@ -1393,11 +1533,11 @@ func (m *RequestDelegationPacketData) Unmarshal(dAtA []byte) error {
 			}
 			m.DelegationAction = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 2:
+		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Permission", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field AccessAction", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPacket
@@ -1407,27 +1547,55 @@ func (m *RequestDelegationPacketData) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthPacket
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthPacket
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Permission == nil {
-				m.Permission = &Permission{}
+			m.AccessAction = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Resource", wireType)
 			}
-			if err := m.Permission.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Resource = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1545,9 +1713,9 @@ func (m *RequestDelegationPacketAck) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DelegationConditions", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegationRequestLabel", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPacket
@@ -1557,27 +1725,151 @@ func (m *RequestDelegationPacketAck) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthPacket
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthPacket
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.DelegationConditions == nil {
-				m.DelegationConditions = &DelegationConditions{}
+			m.DelegationRequestLabel = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Cost", wireType)
 			}
-			if err := m.DelegationConditions.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Cost = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxDelegateeNb", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MaxDelegateeNb = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NotBefore", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.NotBefore = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NotAfter", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.NotAfter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

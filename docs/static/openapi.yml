@@ -19831,7 +19831,7 @@ paths:
                     cost:
                       type: string
                       format: uint64
-                    maxDelegations:
+                    maxDelegateeNb:
                       type: string
                       format: uint64
                     validity:
@@ -19971,7 +19971,7 @@ paths:
                   cost:
                     type: string
                     format: uint64
-                  maxDelegations:
+                  maxDelegateeNb:
                     type: string
                     format: uint64
                   validity:
@@ -20043,7 +20043,7 @@ paths:
                         cost:
                           type: string
                           format: uint64
-                        maxDelegations:
+                        maxDelegateeNb:
                           type: string
                           format: uint64
                         validity:
@@ -20063,6 +20063,8 @@ paths:
                     creator:
                       type: string
                     decisionDomain:
+                      type: string
+                    delegationRequestLabel:
                       type: string
               pagination:
                 type: object
@@ -20195,7 +20197,7 @@ paths:
                       cost:
                         type: string
                         format: uint64
-                      maxDelegations:
+                      maxDelegateeNb:
                         type: string
                         format: uint64
                       validity:
@@ -20215,6 +20217,208 @@ paths:
                   creator:
                     type: string
                   decisionDomain:
+                    type: string
+                  delegationRequestLabel:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /delegationcontrol/fdpd/delegation_request:
+    get:
+      summary: Queries a list of DelegationRequest items.
+      operationId: DelegationcontrolFdpdDelegationRequestAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              DelegationRequest:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    label:
+                      type: string
+                    delegationAction:
+                      type: string
+                    permission:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uint64
+                        action:
+                          type: string
+                        resource:
+                          type: string
+                        creator:
+                          type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/delegationcontrol/fdpd/delegation_request/{id}':
+    get:
+      summary: Queries a DelegationRequest by id.
+      operationId: DelegationcontrolFdpdDelegationRequest
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              DelegationRequest:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  label:
+                    type: string
+                  delegationAction:
+                    type: string
+                  permission:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uint64
+                      action:
+                        type: string
+                      resource:
+                        type: string
+                      creator:
+                        type: string
+                  creator:
                     type: string
         default:
           description: An unexpected error response.
@@ -20393,6 +20597,182 @@ paths:
                   location:
                     type: string
                   ibcChannel:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /delegationcontrol/fdpd/final_delegation_decision:
+    get:
+      summary: Queries a list of FinalDelegationDecision items.
+      operationId: DelegationcontrolFdpdFinalDelegationDecisionAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              FinalDelegationDecision:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    delegationRequestLabel:
+                      type: string
+                    decision:
+                      type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/delegationcontrol/fdpd/final_delegation_decision/{id}':
+    get:
+      summary: Queries a FinalDelegationDecision by id.
+      operationId: DelegationcontrolFdpdFinalDelegationDecision
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              FinalDelegationDecision:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  delegationRequestLabel:
+                    type: string
+                  decision:
                     type: string
                   creator:
                     type: string
@@ -48558,7 +48938,7 @@ definitions:
       cost:
         type: string
         format: uint64
-      maxDelegations:
+      maxDelegateeNb:
         type: string
         format: uint64
       validity:
@@ -48592,7 +48972,7 @@ definitions:
           cost:
             type: string
             format: uint64
-          maxDelegations:
+          maxDelegateeNb:
             type: string
             format: uint64
           validity:
@@ -48613,6 +48993,32 @@ definitions:
         type: string
       decisionDomain:
         type: string
+      delegationRequestLabel:
+        type: string
+  delegationcontrol.fdpd.DelegationRequest:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      label:
+        type: string
+      delegationAction:
+        type: string
+      permission:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          action:
+            type: string
+          resource:
+            type: string
+          creator:
+            type: string
+      creator:
+        type: string
   delegationcontrol.fdpd.Domain:
     type: object
     properties:
@@ -48624,6 +49030,18 @@ definitions:
       location:
         type: string
       ibcChannel:
+        type: string
+      creator:
+        type: string
+  delegationcontrol.fdpd.FinalDelegationDecision:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      delegationRequestLabel:
+        type: string
+      decision:
         type: string
       creator:
         type: string
@@ -48669,7 +49087,19 @@ definitions:
       id:
         type: string
         format: uint64
+  delegationcontrol.fdpd.MsgCreateDelegationRequestResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   delegationcontrol.fdpd.MsgCreateDomainResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  delegationcontrol.fdpd.MsgCreateFinalDelegationDecisionResponse:
     type: object
     properties:
       id:
@@ -48705,7 +49135,11 @@ definitions:
     type: object
   delegationcontrol.fdpd.MsgDeleteDelegationDecisionResponse:
     type: object
+  delegationcontrol.fdpd.MsgDeleteDelegationRequestResponse:
+    type: object
   delegationcontrol.fdpd.MsgDeleteDomainResponse:
+    type: object
+  delegationcontrol.fdpd.MsgDeleteFinalDelegationDecisionResponse:
     type: object
   delegationcontrol.fdpd.MsgDeleteForwardPolicyResponse:
     type: object
@@ -48729,7 +49163,11 @@ definitions:
     type: object
   delegationcontrol.fdpd.MsgUpdateDelegationDecisionResponse:
     type: object
+  delegationcontrol.fdpd.MsgUpdateDelegationRequestResponse:
+    type: object
   delegationcontrol.fdpd.MsgUpdateDomainResponse:
+    type: object
+  delegationcontrol.fdpd.MsgUpdateFinalDelegationDecisionResponse:
     type: object
   delegationcontrol.fdpd.MsgUpdateForwardPolicyResponse:
     type: object
@@ -48772,7 +49210,7 @@ definitions:
             cost:
               type: string
               format: uint64
-            maxDelegations:
+            maxDelegateeNb:
               type: string
               format: uint64
             validity:
@@ -48836,7 +49274,7 @@ definitions:
                 cost:
                   type: string
                   format: uint64
-                maxDelegations:
+                maxDelegateeNb:
                   type: string
                   format: uint64
                 validity:
@@ -48856,6 +49294,62 @@ definitions:
             creator:
               type: string
             decisionDomain:
+              type: string
+            delegationRequestLabel:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  delegationcontrol.fdpd.QueryAllDelegationRequestResponse:
+    type: object
+    properties:
+      DelegationRequest:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            label:
+              type: string
+            delegationAction:
+              type: string
+            permission:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uint64
+                action:
+                  type: string
+                resource:
+                  type: string
+                creator:
+                  type: string
+            creator:
               type: string
       pagination:
         type: object
@@ -48898,6 +49392,48 @@ definitions:
             location:
               type: string
             ibcChannel:
+              type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  delegationcontrol.fdpd.QueryAllFinalDelegationDecisionResponse:
+    type: object
+    properties:
+      FinalDelegationDecision:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            delegationRequestLabel:
+              type: string
+            decision:
               type: string
             creator:
               type: string
@@ -49120,7 +49656,7 @@ definitions:
           cost:
             type: string
             format: uint64
-          maxDelegations:
+          maxDelegateeNb:
             type: string
             format: uint64
           validity:
@@ -49157,7 +49693,7 @@ definitions:
               cost:
                 type: string
                 format: uint64
-              maxDelegations:
+              maxDelegateeNb:
                 type: string
                 format: uint64
               validity:
@@ -49178,6 +49714,35 @@ definitions:
             type: string
           decisionDomain:
             type: string
+          delegationRequestLabel:
+            type: string
+  delegationcontrol.fdpd.QueryGetDelegationRequestResponse:
+    type: object
+    properties:
+      DelegationRequest:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          label:
+            type: string
+          delegationAction:
+            type: string
+          permission:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uint64
+              action:
+                type: string
+              resource:
+                type: string
+              creator:
+                type: string
+          creator:
+            type: string
   delegationcontrol.fdpd.QueryGetDomainResponse:
     type: object
     properties:
@@ -49192,6 +49757,21 @@ definitions:
           location:
             type: string
           ibcChannel:
+            type: string
+          creator:
+            type: string
+  delegationcontrol.fdpd.QueryGetFinalDelegationDecisionResponse:
+    type: object
+    properties:
+      FinalDelegationDecision:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          delegationRequestLabel:
+            type: string
+          decision:
             type: string
           creator:
             type: string

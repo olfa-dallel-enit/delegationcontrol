@@ -1,6 +1,4 @@
 /* eslint-disable */
-import { Permission } from "../fdpd/permission";
-import { DelegationConditions } from "../fdpd/delegation_conditions";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "delegationcontrol.fdpd";
@@ -30,15 +28,21 @@ export interface EstablishCooperationPacketAck {
 
 /** RequestDelegationPacketData defines a struct for the packet payload */
 export interface RequestDelegationPacketData {
+  label: string;
   delegationAction: string;
-  permission: Permission | undefined;
+  accessAction: string;
+  resource: string;
 }
 
 /** RequestDelegationPacketAck defines a struct for the packet acknowledgment */
 export interface RequestDelegationPacketAck {
   decisionDomain: string;
   decision: string;
-  delegationConditions: DelegationConditions | undefined;
+  delegationRequestLabel: string;
+  cost: string;
+  maxDelegateeNb: string;
+  notBefore: string;
+  notAfter: string;
 }
 
 const baseFdpdPacketData: object = {};
@@ -404,18 +408,29 @@ export const EstablishCooperationPacketAck = {
   },
 };
 
-const baseRequestDelegationPacketData: object = { delegationAction: "" };
+const baseRequestDelegationPacketData: object = {
+  label: "",
+  delegationAction: "",
+  accessAction: "",
+  resource: "",
+};
 
 export const RequestDelegationPacketData = {
   encode(
     message: RequestDelegationPacketData,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.delegationAction !== "") {
-      writer.uint32(10).string(message.delegationAction);
+    if (message.label !== "") {
+      writer.uint32(10).string(message.label);
     }
-    if (message.permission !== undefined) {
-      Permission.encode(message.permission, writer.uint32(18).fork()).ldelim();
+    if (message.delegationAction !== "") {
+      writer.uint32(18).string(message.delegationAction);
+    }
+    if (message.accessAction !== "") {
+      writer.uint32(26).string(message.accessAction);
+    }
+    if (message.resource !== "") {
+      writer.uint32(34).string(message.resource);
     }
     return writer;
   },
@@ -433,10 +448,16 @@ export const RequestDelegationPacketData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.delegationAction = reader.string();
+          message.label = reader.string();
           break;
         case 2:
-          message.permission = Permission.decode(reader, reader.uint32());
+          message.delegationAction = reader.string();
+          break;
+        case 3:
+          message.accessAction = reader.string();
+          break;
+        case 4:
+          message.resource = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -450,6 +471,11 @@ export const RequestDelegationPacketData = {
     const message = {
       ...baseRequestDelegationPacketData,
     } as RequestDelegationPacketData;
+    if (object.label !== undefined && object.label !== null) {
+      message.label = String(object.label);
+    } else {
+      message.label = "";
+    }
     if (
       object.delegationAction !== undefined &&
       object.delegationAction !== null
@@ -458,22 +484,27 @@ export const RequestDelegationPacketData = {
     } else {
       message.delegationAction = "";
     }
-    if (object.permission !== undefined && object.permission !== null) {
-      message.permission = Permission.fromJSON(object.permission);
+    if (object.accessAction !== undefined && object.accessAction !== null) {
+      message.accessAction = String(object.accessAction);
     } else {
-      message.permission = undefined;
+      message.accessAction = "";
+    }
+    if (object.resource !== undefined && object.resource !== null) {
+      message.resource = String(object.resource);
+    } else {
+      message.resource = "";
     }
     return message;
   },
 
   toJSON(message: RequestDelegationPacketData): unknown {
     const obj: any = {};
+    message.label !== undefined && (obj.label = message.label);
     message.delegationAction !== undefined &&
       (obj.delegationAction = message.delegationAction);
-    message.permission !== undefined &&
-      (obj.permission = message.permission
-        ? Permission.toJSON(message.permission)
-        : undefined);
+    message.accessAction !== undefined &&
+      (obj.accessAction = message.accessAction);
+    message.resource !== undefined && (obj.resource = message.resource);
     return obj;
   },
 
@@ -483,6 +514,11 @@ export const RequestDelegationPacketData = {
     const message = {
       ...baseRequestDelegationPacketData,
     } as RequestDelegationPacketData;
+    if (object.label !== undefined && object.label !== null) {
+      message.label = object.label;
+    } else {
+      message.label = "";
+    }
     if (
       object.delegationAction !== undefined &&
       object.delegationAction !== null
@@ -491,10 +527,15 @@ export const RequestDelegationPacketData = {
     } else {
       message.delegationAction = "";
     }
-    if (object.permission !== undefined && object.permission !== null) {
-      message.permission = Permission.fromPartial(object.permission);
+    if (object.accessAction !== undefined && object.accessAction !== null) {
+      message.accessAction = object.accessAction;
     } else {
-      message.permission = undefined;
+      message.accessAction = "";
+    }
+    if (object.resource !== undefined && object.resource !== null) {
+      message.resource = object.resource;
+    } else {
+      message.resource = "";
     }
     return message;
   },
@@ -503,6 +544,11 @@ export const RequestDelegationPacketData = {
 const baseRequestDelegationPacketAck: object = {
   decisionDomain: "",
   decision: "",
+  delegationRequestLabel: "",
+  cost: "",
+  maxDelegateeNb: "",
+  notBefore: "",
+  notAfter: "",
 };
 
 export const RequestDelegationPacketAck = {
@@ -516,11 +562,20 @@ export const RequestDelegationPacketAck = {
     if (message.decision !== "") {
       writer.uint32(18).string(message.decision);
     }
-    if (message.delegationConditions !== undefined) {
-      DelegationConditions.encode(
-        message.delegationConditions,
-        writer.uint32(26).fork()
-      ).ldelim();
+    if (message.delegationRequestLabel !== "") {
+      writer.uint32(26).string(message.delegationRequestLabel);
+    }
+    if (message.cost !== "") {
+      writer.uint32(34).string(message.cost);
+    }
+    if (message.maxDelegateeNb !== "") {
+      writer.uint32(42).string(message.maxDelegateeNb);
+    }
+    if (message.notBefore !== "") {
+      writer.uint32(50).string(message.notBefore);
+    }
+    if (message.notAfter !== "") {
+      writer.uint32(58).string(message.notAfter);
     }
     return writer;
   },
@@ -544,10 +599,19 @@ export const RequestDelegationPacketAck = {
           message.decision = reader.string();
           break;
         case 3:
-          message.delegationConditions = DelegationConditions.decode(
-            reader,
-            reader.uint32()
-          );
+          message.delegationRequestLabel = reader.string();
+          break;
+        case 4:
+          message.cost = reader.string();
+          break;
+        case 5:
+          message.maxDelegateeNb = reader.string();
+          break;
+        case 6:
+          message.notBefore = reader.string();
+          break;
+        case 7:
+          message.notAfter = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -572,14 +636,32 @@ export const RequestDelegationPacketAck = {
       message.decision = "";
     }
     if (
-      object.delegationConditions !== undefined &&
-      object.delegationConditions !== null
+      object.delegationRequestLabel !== undefined &&
+      object.delegationRequestLabel !== null
     ) {
-      message.delegationConditions = DelegationConditions.fromJSON(
-        object.delegationConditions
-      );
+      message.delegationRequestLabel = String(object.delegationRequestLabel);
     } else {
-      message.delegationConditions = undefined;
+      message.delegationRequestLabel = "";
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = String(object.cost);
+    } else {
+      message.cost = "";
+    }
+    if (object.maxDelegateeNb !== undefined && object.maxDelegateeNb !== null) {
+      message.maxDelegateeNb = String(object.maxDelegateeNb);
+    } else {
+      message.maxDelegateeNb = "";
+    }
+    if (object.notBefore !== undefined && object.notBefore !== null) {
+      message.notBefore = String(object.notBefore);
+    } else {
+      message.notBefore = "";
+    }
+    if (object.notAfter !== undefined && object.notAfter !== null) {
+      message.notAfter = String(object.notAfter);
+    } else {
+      message.notAfter = "";
     }
     return message;
   },
@@ -589,10 +671,13 @@ export const RequestDelegationPacketAck = {
     message.decisionDomain !== undefined &&
       (obj.decisionDomain = message.decisionDomain);
     message.decision !== undefined && (obj.decision = message.decision);
-    message.delegationConditions !== undefined &&
-      (obj.delegationConditions = message.delegationConditions
-        ? DelegationConditions.toJSON(message.delegationConditions)
-        : undefined);
+    message.delegationRequestLabel !== undefined &&
+      (obj.delegationRequestLabel = message.delegationRequestLabel);
+    message.cost !== undefined && (obj.cost = message.cost);
+    message.maxDelegateeNb !== undefined &&
+      (obj.maxDelegateeNb = message.maxDelegateeNb);
+    message.notBefore !== undefined && (obj.notBefore = message.notBefore);
+    message.notAfter !== undefined && (obj.notAfter = message.notAfter);
     return obj;
   },
 
@@ -613,14 +698,32 @@ export const RequestDelegationPacketAck = {
       message.decision = "";
     }
     if (
-      object.delegationConditions !== undefined &&
-      object.delegationConditions !== null
+      object.delegationRequestLabel !== undefined &&
+      object.delegationRequestLabel !== null
     ) {
-      message.delegationConditions = DelegationConditions.fromPartial(
-        object.delegationConditions
-      );
+      message.delegationRequestLabel = object.delegationRequestLabel;
     } else {
-      message.delegationConditions = undefined;
+      message.delegationRequestLabel = "";
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = object.cost;
+    } else {
+      message.cost = "";
+    }
+    if (object.maxDelegateeNb !== undefined && object.maxDelegateeNb !== null) {
+      message.maxDelegateeNb = object.maxDelegateeNb;
+    } else {
+      message.maxDelegateeNb = "";
+    }
+    if (object.notBefore !== undefined && object.notBefore !== null) {
+      message.notBefore = object.notBefore;
+    } else {
+      message.notBefore = "";
+    }
+    if (object.notAfter !== undefined && object.notAfter !== null) {
+      message.notAfter = object.notAfter;
+    } else {
+      message.notAfter = "";
     }
     return message;
   },

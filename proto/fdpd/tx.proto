@@ -7,9 +7,11 @@ import "fdpd/forward_policy.proto";
 import "fdpd/decision_policy.proto";
 import "fdpd/delegation_decision.proto";
 import "fdpd/selection_policy.proto";
+import "fdpd/delegation_request.proto";
+import "fdpd/final_delegation_decision.proto";
 // this line is used by starport scaffolding # proto/tx/import
-import "fdpd/selection_criteria.proto";
 import "fdpd/permission.proto";
+import "fdpd/selection_criteria.proto";
 import "fdpd/validity.proto";
 import "fdpd/delegation_conditions.proto";
 
@@ -51,6 +53,12 @@ rpc CreateSelectionCriteria(MsgCreateSelectionCriteria) returns (MsgCreateSelect
   rpc UpdateSelectionCriteria(MsgUpdateSelectionCriteria) returns (MsgUpdateSelectionCriteriaResponse);
   rpc DeleteSelectionCriteria(MsgDeleteSelectionCriteria) returns (MsgDeleteSelectionCriteriaResponse);
   rpc CheckDelegation(MsgCheckDelegation) returns (MsgCheckDelegationResponse);
+rpc CreateDelegationRequest(MsgCreateDelegationRequest) returns (MsgCreateDelegationRequestResponse);
+  rpc UpdateDelegationRequest(MsgUpdateDelegationRequest) returns (MsgUpdateDelegationRequestResponse);
+  rpc DeleteDelegationRequest(MsgDeleteDelegationRequest) returns (MsgDeleteDelegationRequestResponse);
+rpc CreateFinalDelegationDecision(MsgCreateFinalDelegationDecision) returns (MsgCreateFinalDelegationDecisionResponse);
+  rpc UpdateFinalDelegationDecision(MsgUpdateFinalDelegationDecision) returns (MsgUpdateFinalDelegationDecisionResponse);
+  rpc DeleteFinalDelegationDecision(MsgDeleteFinalDelegationDecision) returns (MsgDeleteFinalDelegationDecisionResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -208,7 +216,7 @@ message MsgDeletePermissionResponse {}
 message MsgCreateDelegationConditions {
   string creator = 1;
   uint64 cost = 2;
-  uint64 maxDelegations = 3;
+  uint64 maxDelegateeNb = 3;
   Validity validity = 4;
 }
 
@@ -220,7 +228,7 @@ message MsgUpdateDelegationConditions {
   string creator = 1;
   uint64 id = 2;
   uint64 cost = 3;
-  uint64 maxDelegations = 4;
+  uint64 maxDelegateeNb = 4;
   Validity validity = 5;
 }
 
@@ -237,8 +245,7 @@ message MsgSendRequestDelegation {
   string creator = 1;
   string port = 2;
   uint64 timeoutTimestamp = 4;
-  string delegationAction = 5;
-  Permission permission = 6;
+  DelegationRequest delegationRequest = 5;
 }
 
 message MsgSendRequestDelegationResponse {
@@ -334,12 +341,65 @@ message MsgDeleteSelectionCriteriaResponse {}
 
 message MsgCheckDelegation {
   string creator = 1;
-  string delegationAction = 2;
-  Permission permission = 3;
-  SelectionCriteria selectionCriteria = 4;
+  string label = 2;
+  string selectionCriteria = 3;
 }
 
 message MsgCheckDelegationResponse {
 }
+
+message MsgCreateDelegationRequest {
+  string creator = 1;
+  string label = 2;
+  string delegationAction = 3;
+  Permission permission = 4;
+}
+
+message MsgCreateDelegationRequestResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateDelegationRequest {
+  string creator = 1;
+  uint64 id = 2;
+  string label = 3;
+  string delegationAction = 4;
+  Permission permission = 5;
+}
+
+message MsgUpdateDelegationRequestResponse {}
+
+message MsgDeleteDelegationRequest {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteDelegationRequestResponse {}
+
+message MsgCreateFinalDelegationDecision {
+  string creator = 1;
+  string delegationRequestLabel = 2;
+  string decision = 3;
+}
+
+message MsgCreateFinalDelegationDecisionResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateFinalDelegationDecision {
+  string creator = 1;
+  uint64 id = 2;
+  string delegationRequestLabel = 3;
+  string decision = 4;
+}
+
+message MsgUpdateFinalDelegationDecisionResponse {}
+
+message MsgDeleteFinalDelegationDecision {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteFinalDelegationDecisionResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

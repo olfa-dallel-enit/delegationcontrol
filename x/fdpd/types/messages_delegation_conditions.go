@@ -13,11 +13,11 @@ const (
 
 var _ sdk.Msg = &MsgCreateDelegationConditions{}
 
-func NewMsgCreateDelegationConditions(creator string, cost uint64, maxDelegations uint64, validity *Validity) *MsgCreateDelegationConditions {
+func NewMsgCreateDelegationConditions(creator string, cost uint64, maxDelegateeNb uint64, validity *Validity) *MsgCreateDelegationConditions {
 	return &MsgCreateDelegationConditions{
 		Creator:        creator,
 		Cost:           cost,
-		MaxDelegations: maxDelegations,
+		MaxDelegateeNb: maxDelegateeNb,
 		Validity:       validity,
 	}
 }
@@ -53,12 +53,12 @@ func (msg *MsgCreateDelegationConditions) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateDelegationConditions{}
 
-func NewMsgUpdateDelegationConditions(creator string, id uint64, cost uint64, maxDelegations uint64, validity *Validity) *MsgUpdateDelegationConditions {
+func NewMsgUpdateDelegationConditions(creator string, id uint64, cost uint64, maxDelegateeNb uint64, validity *Validity) *MsgUpdateDelegationConditions {
 	return &MsgUpdateDelegationConditions{
 		Id:             id,
 		Creator:        creator,
 		Cost:           cost,
-		MaxDelegations: maxDelegations,
+		MaxDelegateeNb: maxDelegateeNb,
 		Validity:       validity,
 	}
 }

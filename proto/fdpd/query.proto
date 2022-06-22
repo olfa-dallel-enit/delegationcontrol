@@ -15,6 +15,8 @@ import "fdpd/delegation_conditions.proto";
 import "fdpd/delegation_decision.proto";
 import "fdpd/selection_policy.proto";
 import "fdpd/selection_criteria.proto";
+import "fdpd/delegation_request.proto";
+import "fdpd/final_delegation_decision.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "delegationcontrol/x/fdpd/types";
@@ -99,6 +101,26 @@ service Query {
 	// Queries a list of SelectionCriteria items.
 	rpc SelectionCriteriaAll(QueryAllSelectionCriteriaRequest) returns (QueryAllSelectionCriteriaResponse) {
 		option (google.api.http).get = "/delegationcontrol/fdpd/selection_criteria";
+	}
+
+// Queries a DelegationRequest by id.
+	rpc DelegationRequest(QueryGetDelegationRequestRequest) returns (QueryGetDelegationRequestResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_request/{id}";
+	}
+
+	// Queries a list of DelegationRequest items.
+	rpc DelegationRequestAll(QueryAllDelegationRequestRequest) returns (QueryAllDelegationRequestResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/delegation_request";
+	}
+
+// Queries a FinalDelegationDecision by id.
+	rpc FinalDelegationDecision(QueryGetFinalDelegationDecisionRequest) returns (QueryGetFinalDelegationDecisionResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/final_delegation_decision/{id}";
+	}
+
+	// Queries a list of FinalDelegationDecision items.
+	rpc FinalDelegationDecisionAll(QueryAllFinalDelegationDecisionRequest) returns (QueryAllFinalDelegationDecisionResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/final_delegation_decision";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -232,6 +254,40 @@ message QueryAllSelectionCriteriaRequest {
 
 message QueryAllSelectionCriteriaResponse {
 	repeated SelectionCriteria SelectionCriteria = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDelegationRequestRequest {
+	uint64 id = 1;
+}
+
+message QueryGetDelegationRequestResponse {
+	DelegationRequest DelegationRequest = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDelegationRequestRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDelegationRequestResponse {
+	repeated DelegationRequest DelegationRequest = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetFinalDelegationDecisionRequest {
+	uint64 id = 1;
+}
+
+message QueryGetFinalDelegationDecisionResponse {
+	FinalDelegationDecision FinalDelegationDecision = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFinalDelegationDecisionRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFinalDelegationDecisionResponse {
+	repeated FinalDelegationDecision FinalDelegationDecision = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

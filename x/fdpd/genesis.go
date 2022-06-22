@@ -67,6 +67,20 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 	// Set selectionCriteria count
 	k.SetSelectionCriteriaCount(ctx, genState.SelectionCriteriaCount)
+	// Set all the delegationRequest
+	for _, elem := range genState.DelegationRequestList {
+		k.SetDelegationRequest(ctx, elem)
+	}
+
+	// Set delegationRequest count
+	k.SetDelegationRequestCount(ctx, genState.DelegationRequestCount)
+	// Set all the finalDelegationDecision
+	for _, elem := range genState.FinalDelegationDecisionList {
+		k.SetFinalDelegationDecision(ctx, elem)
+	}
+
+	// Set finalDelegationDecision count
+	k.SetFinalDelegationDecisionCount(ctx, genState.FinalDelegationDecisionCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -120,6 +134,10 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	}
 	genesis.SelectionCriteriaList = k.GetAllSelectionCriteria(ctx)
 	genesis.SelectionCriteriaCount = k.GetSelectionCriteriaCount(ctx)
+	genesis.DelegationRequestList = k.GetAllDelegationRequest(ctx)
+	genesis.DelegationRequestCount = k.GetDelegationRequestCount(ctx)
+	genesis.FinalDelegationDecisionList = k.GetAllFinalDelegationDecision(ctx)
+	genesis.FinalDelegationDecisionCount = k.GetFinalDelegationDecisionCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
