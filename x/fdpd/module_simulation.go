@@ -136,6 +136,22 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteSelectionPolicy int = 100
 
+	opWeightMsgCreateSelectionCriteria = "op_weight_msg_selection_criteria"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateSelectionCriteria int = 100
+
+	opWeightMsgUpdateSelectionCriteria = "op_weight_msg_selection_criteria"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateSelectionCriteria int = 100
+
+	opWeightMsgDeleteSelectionCriteria = "op_weight_msg_selection_criteria"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteSelectionCriteria int = 100
+
+	opWeightMsgCheckDelegation = "op_weight_msg_check_delegation"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCheckDelegation int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -203,6 +219,17 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			},
 		},
 		DelegationDecisionCount: 2,
+		SelectionCriteriaList: []types.SelectionCriteria{
+			{
+				Id:      0,
+				Creator: sample.AccAddress(),
+			},
+			{
+				Id:      1,
+				Creator: sample.AccAddress(),
+			},
+		},
+		SelectionCriteriaCount: 2,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&fdpdGenesis)
@@ -532,6 +559,50 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteSelectionPolicy,
 		fdpdsimulation.SimulateMsgDeleteSelectionPolicy(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateSelectionCriteria int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateSelectionCriteria, &weightMsgCreateSelectionCriteria, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateSelectionCriteria = defaultWeightMsgCreateSelectionCriteria
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateSelectionCriteria,
+		fdpdsimulation.SimulateMsgCreateSelectionCriteria(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateSelectionCriteria int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateSelectionCriteria, &weightMsgUpdateSelectionCriteria, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateSelectionCriteria = defaultWeightMsgUpdateSelectionCriteria
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateSelectionCriteria,
+		fdpdsimulation.SimulateMsgUpdateSelectionCriteria(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteSelectionCriteria int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteSelectionCriteria, &weightMsgDeleteSelectionCriteria, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteSelectionCriteria = defaultWeightMsgDeleteSelectionCriteria
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteSelectionCriteria,
+		fdpdsimulation.SimulateMsgDeleteSelectionCriteria(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCheckDelegation int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCheckDelegation, &weightMsgCheckDelegation, nil,
+		func(_ *rand.Rand) {
+			weightMsgCheckDelegation = defaultWeightMsgCheckDelegation
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCheckDelegation,
+		fdpdsimulation.SimulateMsgCheckDelegation(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

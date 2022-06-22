@@ -4,6 +4,7 @@ import * as Long from "long";
 import { Validity } from "../fdpd/validity";
 import { Permission } from "../fdpd/permission";
 import { DelegationConditions } from "../fdpd/delegation_conditions";
+import { SelectionCriteria } from "../fdpd/selection_criteria";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -267,6 +268,47 @@ export interface MsgDeleteSelectionPolicy {
 }
 
 export interface MsgDeleteSelectionPolicyResponse {}
+
+export interface MsgCreateSelectionCriteria {
+  creator: string;
+  domainList: string[];
+  delegatorLocationList: string[];
+  cost: number;
+  nbDelegations: number;
+  validity: Validity | undefined;
+}
+
+export interface MsgCreateSelectionCriteriaResponse {
+  id: number;
+}
+
+export interface MsgUpdateSelectionCriteria {
+  creator: string;
+  id: number;
+  domainList: string[];
+  delegatorLocationList: string[];
+  cost: number;
+  nbDelegations: number;
+  validity: Validity | undefined;
+}
+
+export interface MsgUpdateSelectionCriteriaResponse {}
+
+export interface MsgDeleteSelectionCriteria {
+  creator: string;
+  id: number;
+}
+
+export interface MsgDeleteSelectionCriteriaResponse {}
+
+export interface MsgCheckDelegation {
+  creator: string;
+  delegationAction: string;
+  permission: Permission | undefined;
+  selectionCriteria: SelectionCriteria | undefined;
+}
+
+export interface MsgCheckDelegationResponse {}
 
 const baseMsgCreateLocalDomain: object = {
   creator: "",
@@ -5262,6 +5304,841 @@ export const MsgDeleteSelectionPolicyResponse = {
   },
 };
 
+const baseMsgCreateSelectionCriteria: object = {
+  creator: "",
+  domainList: "",
+  delegatorLocationList: "",
+  cost: 0,
+  nbDelegations: 0,
+};
+
+export const MsgCreateSelectionCriteria = {
+  encode(
+    message: MsgCreateSelectionCriteria,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    for (const v of message.domainList) {
+      writer.uint32(18).string(v!);
+    }
+    for (const v of message.delegatorLocationList) {
+      writer.uint32(26).string(v!);
+    }
+    if (message.cost !== 0) {
+      writer.uint32(32).uint64(message.cost);
+    }
+    if (message.nbDelegations !== 0) {
+      writer.uint32(40).uint64(message.nbDelegations);
+    }
+    if (message.validity !== undefined) {
+      Validity.encode(message.validity, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateSelectionCriteria {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateSelectionCriteria,
+    } as MsgCreateSelectionCriteria;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.domainList.push(reader.string());
+          break;
+        case 3:
+          message.delegatorLocationList.push(reader.string());
+          break;
+        case 4:
+          message.cost = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
+          message.nbDelegations = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.validity = Validity.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateSelectionCriteria {
+    const message = {
+      ...baseMsgCreateSelectionCriteria,
+    } as MsgCreateSelectionCriteria;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(String(e));
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(String(e));
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = Number(object.cost);
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = Number(object.nbDelegations);
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromJSON(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateSelectionCriteria): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.domainList) {
+      obj.domainList = message.domainList.map((e) => e);
+    } else {
+      obj.domainList = [];
+    }
+    if (message.delegatorLocationList) {
+      obj.delegatorLocationList = message.delegatorLocationList.map((e) => e);
+    } else {
+      obj.delegatorLocationList = [];
+    }
+    message.cost !== undefined && (obj.cost = message.cost);
+    message.nbDelegations !== undefined &&
+      (obj.nbDelegations = message.nbDelegations);
+    message.validity !== undefined &&
+      (obj.validity = message.validity
+        ? Validity.toJSON(message.validity)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateSelectionCriteria>
+  ): MsgCreateSelectionCriteria {
+    const message = {
+      ...baseMsgCreateSelectionCriteria,
+    } as MsgCreateSelectionCriteria;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(e);
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(e);
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = object.cost;
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = object.nbDelegations;
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromPartial(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateSelectionCriteriaResponse: object = { id: 0 };
+
+export const MsgCreateSelectionCriteriaResponse = {
+  encode(
+    message: MsgCreateSelectionCriteriaResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateSelectionCriteriaResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateSelectionCriteriaResponse,
+    } as MsgCreateSelectionCriteriaResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateSelectionCriteriaResponse {
+    const message = {
+      ...baseMsgCreateSelectionCriteriaResponse,
+    } as MsgCreateSelectionCriteriaResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateSelectionCriteriaResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateSelectionCriteriaResponse>
+  ): MsgCreateSelectionCriteriaResponse {
+    const message = {
+      ...baseMsgCreateSelectionCriteriaResponse,
+    } as MsgCreateSelectionCriteriaResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateSelectionCriteria: object = {
+  creator: "",
+  id: 0,
+  domainList: "",
+  delegatorLocationList: "",
+  cost: 0,
+  nbDelegations: 0,
+};
+
+export const MsgUpdateSelectionCriteria = {
+  encode(
+    message: MsgUpdateSelectionCriteria,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    for (const v of message.domainList) {
+      writer.uint32(26).string(v!);
+    }
+    for (const v of message.delegatorLocationList) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.cost !== 0) {
+      writer.uint32(40).uint64(message.cost);
+    }
+    if (message.nbDelegations !== 0) {
+      writer.uint32(48).uint64(message.nbDelegations);
+    }
+    if (message.validity !== undefined) {
+      Validity.encode(message.validity, writer.uint32(58).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateSelectionCriteria {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateSelectionCriteria,
+    } as MsgUpdateSelectionCriteria;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.domainList.push(reader.string());
+          break;
+        case 4:
+          message.delegatorLocationList.push(reader.string());
+          break;
+        case 5:
+          message.cost = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.nbDelegations = longToNumber(reader.uint64() as Long);
+          break;
+        case 7:
+          message.validity = Validity.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateSelectionCriteria {
+    const message = {
+      ...baseMsgUpdateSelectionCriteria,
+    } as MsgUpdateSelectionCriteria;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(String(e));
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(String(e));
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = Number(object.cost);
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = Number(object.nbDelegations);
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromJSON(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUpdateSelectionCriteria): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    if (message.domainList) {
+      obj.domainList = message.domainList.map((e) => e);
+    } else {
+      obj.domainList = [];
+    }
+    if (message.delegatorLocationList) {
+      obj.delegatorLocationList = message.delegatorLocationList.map((e) => e);
+    } else {
+      obj.delegatorLocationList = [];
+    }
+    message.cost !== undefined && (obj.cost = message.cost);
+    message.nbDelegations !== undefined &&
+      (obj.nbDelegations = message.nbDelegations);
+    message.validity !== undefined &&
+      (obj.validity = message.validity
+        ? Validity.toJSON(message.validity)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgUpdateSelectionCriteria>
+  ): MsgUpdateSelectionCriteria {
+    const message = {
+      ...baseMsgUpdateSelectionCriteria,
+    } as MsgUpdateSelectionCriteria;
+    message.domainList = [];
+    message.delegatorLocationList = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    if (object.domainList !== undefined && object.domainList !== null) {
+      for (const e of object.domainList) {
+        message.domainList.push(e);
+      }
+    }
+    if (
+      object.delegatorLocationList !== undefined &&
+      object.delegatorLocationList !== null
+    ) {
+      for (const e of object.delegatorLocationList) {
+        message.delegatorLocationList.push(e);
+      }
+    }
+    if (object.cost !== undefined && object.cost !== null) {
+      message.cost = object.cost;
+    } else {
+      message.cost = 0;
+    }
+    if (object.nbDelegations !== undefined && object.nbDelegations !== null) {
+      message.nbDelegations = object.nbDelegations;
+    } else {
+      message.nbDelegations = 0;
+    }
+    if (object.validity !== undefined && object.validity !== null) {
+      message.validity = Validity.fromPartial(object.validity);
+    } else {
+      message.validity = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateSelectionCriteriaResponse: object = {};
+
+export const MsgUpdateSelectionCriteriaResponse = {
+  encode(
+    _: MsgUpdateSelectionCriteriaResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateSelectionCriteriaResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateSelectionCriteriaResponse,
+    } as MsgUpdateSelectionCriteriaResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateSelectionCriteriaResponse {
+    const message = {
+      ...baseMsgUpdateSelectionCriteriaResponse,
+    } as MsgUpdateSelectionCriteriaResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUpdateSelectionCriteriaResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUpdateSelectionCriteriaResponse>
+  ): MsgUpdateSelectionCriteriaResponse {
+    const message = {
+      ...baseMsgUpdateSelectionCriteriaResponse,
+    } as MsgUpdateSelectionCriteriaResponse;
+    return message;
+  },
+};
+
+const baseMsgDeleteSelectionCriteria: object = { creator: "", id: 0 };
+
+export const MsgDeleteSelectionCriteria = {
+  encode(
+    message: MsgDeleteSelectionCriteria,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteSelectionCriteria {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteSelectionCriteria,
+    } as MsgDeleteSelectionCriteria;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteSelectionCriteria {
+    const message = {
+      ...baseMsgDeleteSelectionCriteria,
+    } as MsgDeleteSelectionCriteria;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgDeleteSelectionCriteria): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgDeleteSelectionCriteria>
+  ): MsgDeleteSelectionCriteria {
+    const message = {
+      ...baseMsgDeleteSelectionCriteria,
+    } as MsgDeleteSelectionCriteria;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgDeleteSelectionCriteriaResponse: object = {};
+
+export const MsgDeleteSelectionCriteriaResponse = {
+  encode(
+    _: MsgDeleteSelectionCriteriaResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteSelectionCriteriaResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteSelectionCriteriaResponse,
+    } as MsgDeleteSelectionCriteriaResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteSelectionCriteriaResponse {
+    const message = {
+      ...baseMsgDeleteSelectionCriteriaResponse,
+    } as MsgDeleteSelectionCriteriaResponse;
+    return message;
+  },
+
+  toJSON(_: MsgDeleteSelectionCriteriaResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgDeleteSelectionCriteriaResponse>
+  ): MsgDeleteSelectionCriteriaResponse {
+    const message = {
+      ...baseMsgDeleteSelectionCriteriaResponse,
+    } as MsgDeleteSelectionCriteriaResponse;
+    return message;
+  },
+};
+
+const baseMsgCheckDelegation: object = { creator: "", delegationAction: "" };
+
+export const MsgCheckDelegation = {
+  encode(
+    message: MsgCheckDelegation,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.delegationAction !== "") {
+      writer.uint32(18).string(message.delegationAction);
+    }
+    if (message.permission !== undefined) {
+      Permission.encode(message.permission, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.selectionCriteria !== undefined) {
+      SelectionCriteria.encode(
+        message.selectionCriteria,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCheckDelegation {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCheckDelegation } as MsgCheckDelegation;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.delegationAction = reader.string();
+          break;
+        case 3:
+          message.permission = Permission.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.selectionCriteria = SelectionCriteria.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCheckDelegation {
+    const message = { ...baseMsgCheckDelegation } as MsgCheckDelegation;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (
+      object.delegationAction !== undefined &&
+      object.delegationAction !== null
+    ) {
+      message.delegationAction = String(object.delegationAction);
+    } else {
+      message.delegationAction = "";
+    }
+    if (object.permission !== undefined && object.permission !== null) {
+      message.permission = Permission.fromJSON(object.permission);
+    } else {
+      message.permission = undefined;
+    }
+    if (
+      object.selectionCriteria !== undefined &&
+      object.selectionCriteria !== null
+    ) {
+      message.selectionCriteria = SelectionCriteria.fromJSON(
+        object.selectionCriteria
+      );
+    } else {
+      message.selectionCriteria = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCheckDelegation): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.delegationAction !== undefined &&
+      (obj.delegationAction = message.delegationAction);
+    message.permission !== undefined &&
+      (obj.permission = message.permission
+        ? Permission.toJSON(message.permission)
+        : undefined);
+    message.selectionCriteria !== undefined &&
+      (obj.selectionCriteria = message.selectionCriteria
+        ? SelectionCriteria.toJSON(message.selectionCriteria)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgCheckDelegation>): MsgCheckDelegation {
+    const message = { ...baseMsgCheckDelegation } as MsgCheckDelegation;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (
+      object.delegationAction !== undefined &&
+      object.delegationAction !== null
+    ) {
+      message.delegationAction = object.delegationAction;
+    } else {
+      message.delegationAction = "";
+    }
+    if (object.permission !== undefined && object.permission !== null) {
+      message.permission = Permission.fromPartial(object.permission);
+    } else {
+      message.permission = undefined;
+    }
+    if (
+      object.selectionCriteria !== undefined &&
+      object.selectionCriteria !== null
+    ) {
+      message.selectionCriteria = SelectionCriteria.fromPartial(
+        object.selectionCriteria
+      );
+    } else {
+      message.selectionCriteria = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgCheckDelegationResponse: object = {};
+
+export const MsgCheckDelegationResponse = {
+  encode(
+    _: MsgCheckDelegationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCheckDelegationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCheckDelegationResponse,
+    } as MsgCheckDelegationResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCheckDelegationResponse {
+    const message = {
+      ...baseMsgCheckDelegationResponse,
+    } as MsgCheckDelegationResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCheckDelegationResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCheckDelegationResponse>
+  ): MsgCheckDelegationResponse {
+    const message = {
+      ...baseMsgCheckDelegationResponse,
+    } as MsgCheckDelegationResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateLocalDomain(
@@ -5345,10 +6222,22 @@ export interface Msg {
   UpdateSelectionPolicy(
     request: MsgUpdateSelectionPolicy
   ): Promise<MsgUpdateSelectionPolicyResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteSelectionPolicy(
     request: MsgDeleteSelectionPolicy
   ): Promise<MsgDeleteSelectionPolicyResponse>;
+  CreateSelectionCriteria(
+    request: MsgCreateSelectionCriteria
+  ): Promise<MsgCreateSelectionCriteriaResponse>;
+  UpdateSelectionCriteria(
+    request: MsgUpdateSelectionCriteria
+  ): Promise<MsgUpdateSelectionCriteriaResponse>;
+  DeleteSelectionCriteria(
+    request: MsgDeleteSelectionCriteria
+  ): Promise<MsgDeleteSelectionCriteriaResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CheckDelegation(
+    request: MsgCheckDelegation
+  ): Promise<MsgCheckDelegationResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -5767,6 +6656,62 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgDeleteSelectionPolicyResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateSelectionCriteria(
+    request: MsgCreateSelectionCriteria
+  ): Promise<MsgCreateSelectionCriteriaResponse> {
+    const data = MsgCreateSelectionCriteria.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "CreateSelectionCriteria",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateSelectionCriteriaResponse.decode(new Reader(data))
+    );
+  }
+
+  UpdateSelectionCriteria(
+    request: MsgUpdateSelectionCriteria
+  ): Promise<MsgUpdateSelectionCriteriaResponse> {
+    const data = MsgUpdateSelectionCriteria.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "UpdateSelectionCriteria",
+      data
+    );
+    return promise.then((data) =>
+      MsgUpdateSelectionCriteriaResponse.decode(new Reader(data))
+    );
+  }
+
+  DeleteSelectionCriteria(
+    request: MsgDeleteSelectionCriteria
+  ): Promise<MsgDeleteSelectionCriteriaResponse> {
+    const data = MsgDeleteSelectionCriteria.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "DeleteSelectionCriteria",
+      data
+    );
+    return promise.then((data) =>
+      MsgDeleteSelectionCriteriaResponse.decode(new Reader(data))
+    );
+  }
+
+  CheckDelegation(
+    request: MsgCheckDelegation
+  ): Promise<MsgCheckDelegationResponse> {
+    const data = MsgCheckDelegation.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "CheckDelegation",
+      data
+    );
+    return promise.then((data) =>
+      MsgCheckDelegationResponse.decode(new Reader(data))
     );
   }
 }

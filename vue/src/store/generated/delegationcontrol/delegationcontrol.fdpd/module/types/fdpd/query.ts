@@ -15,6 +15,7 @@ import { Permission } from "../fdpd/permission";
 import { DelegationConditions } from "../fdpd/delegation_conditions";
 import { DelegationDecision } from "../fdpd/delegation_decision";
 import { SelectionPolicy } from "../fdpd/selection_policy";
+import { SelectionCriteria } from "../fdpd/selection_criteria";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -134,6 +135,23 @@ export interface QueryGetSelectionPolicyRequest {}
 
 export interface QueryGetSelectionPolicyResponse {
   SelectionPolicy: SelectionPolicy | undefined;
+}
+
+export interface QueryGetSelectionCriteriaRequest {
+  id: number;
+}
+
+export interface QueryGetSelectionCriteriaResponse {
+  SelectionCriteria: SelectionCriteria | undefined;
+}
+
+export interface QueryAllSelectionCriteriaRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllSelectionCriteriaResponse {
+  SelectionCriteria: SelectionCriteria[];
+  pagination: PageResponse | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -2333,6 +2351,344 @@ export const QueryGetSelectionPolicyResponse = {
   },
 };
 
+const baseQueryGetSelectionCriteriaRequest: object = { id: 0 };
+
+export const QueryGetSelectionCriteriaRequest = {
+  encode(
+    message: QueryGetSelectionCriteriaRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetSelectionCriteriaRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetSelectionCriteriaRequest,
+    } as QueryGetSelectionCriteriaRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSelectionCriteriaRequest {
+    const message = {
+      ...baseQueryGetSelectionCriteriaRequest,
+    } as QueryGetSelectionCriteriaRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSelectionCriteriaRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSelectionCriteriaRequest>
+  ): QueryGetSelectionCriteriaRequest {
+    const message = {
+      ...baseQueryGetSelectionCriteriaRequest,
+    } as QueryGetSelectionCriteriaRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetSelectionCriteriaResponse: object = {};
+
+export const QueryGetSelectionCriteriaResponse = {
+  encode(
+    message: QueryGetSelectionCriteriaResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.SelectionCriteria !== undefined) {
+      SelectionCriteria.encode(
+        message.SelectionCriteria,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetSelectionCriteriaResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetSelectionCriteriaResponse,
+    } as QueryGetSelectionCriteriaResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.SelectionCriteria = SelectionCriteria.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSelectionCriteriaResponse {
+    const message = {
+      ...baseQueryGetSelectionCriteriaResponse,
+    } as QueryGetSelectionCriteriaResponse;
+    if (
+      object.SelectionCriteria !== undefined &&
+      object.SelectionCriteria !== null
+    ) {
+      message.SelectionCriteria = SelectionCriteria.fromJSON(
+        object.SelectionCriteria
+      );
+    } else {
+      message.SelectionCriteria = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSelectionCriteriaResponse): unknown {
+    const obj: any = {};
+    message.SelectionCriteria !== undefined &&
+      (obj.SelectionCriteria = message.SelectionCriteria
+        ? SelectionCriteria.toJSON(message.SelectionCriteria)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSelectionCriteriaResponse>
+  ): QueryGetSelectionCriteriaResponse {
+    const message = {
+      ...baseQueryGetSelectionCriteriaResponse,
+    } as QueryGetSelectionCriteriaResponse;
+    if (
+      object.SelectionCriteria !== undefined &&
+      object.SelectionCriteria !== null
+    ) {
+      message.SelectionCriteria = SelectionCriteria.fromPartial(
+        object.SelectionCriteria
+      );
+    } else {
+      message.SelectionCriteria = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSelectionCriteriaRequest: object = {};
+
+export const QueryAllSelectionCriteriaRequest = {
+  encode(
+    message: QueryAllSelectionCriteriaRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllSelectionCriteriaRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllSelectionCriteriaRequest,
+    } as QueryAllSelectionCriteriaRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSelectionCriteriaRequest {
+    const message = {
+      ...baseQueryAllSelectionCriteriaRequest,
+    } as QueryAllSelectionCriteriaRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSelectionCriteriaRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSelectionCriteriaRequest>
+  ): QueryAllSelectionCriteriaRequest {
+    const message = {
+      ...baseQueryAllSelectionCriteriaRequest,
+    } as QueryAllSelectionCriteriaRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSelectionCriteriaResponse: object = {};
+
+export const QueryAllSelectionCriteriaResponse = {
+  encode(
+    message: QueryAllSelectionCriteriaResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.SelectionCriteria) {
+      SelectionCriteria.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllSelectionCriteriaResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllSelectionCriteriaResponse,
+    } as QueryAllSelectionCriteriaResponse;
+    message.SelectionCriteria = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.SelectionCriteria.push(
+            SelectionCriteria.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSelectionCriteriaResponse {
+    const message = {
+      ...baseQueryAllSelectionCriteriaResponse,
+    } as QueryAllSelectionCriteriaResponse;
+    message.SelectionCriteria = [];
+    if (
+      object.SelectionCriteria !== undefined &&
+      object.SelectionCriteria !== null
+    ) {
+      for (const e of object.SelectionCriteria) {
+        message.SelectionCriteria.push(SelectionCriteria.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSelectionCriteriaResponse): unknown {
+    const obj: any = {};
+    if (message.SelectionCriteria) {
+      obj.SelectionCriteria = message.SelectionCriteria.map((e) =>
+        e ? SelectionCriteria.toJSON(e) : undefined
+      );
+    } else {
+      obj.SelectionCriteria = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSelectionCriteriaResponse>
+  ): QueryAllSelectionCriteriaResponse {
+    const message = {
+      ...baseQueryAllSelectionCriteriaResponse,
+    } as QueryAllSelectionCriteriaResponse;
+    message.SelectionCriteria = [];
+    if (
+      object.SelectionCriteria !== undefined &&
+      object.SelectionCriteria !== null
+    ) {
+      for (const e of object.SelectionCriteria) {
+        message.SelectionCriteria.push(SelectionCriteria.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -2387,6 +2743,14 @@ export interface Query {
   SelectionPolicy(
     request: QueryGetSelectionPolicyRequest
   ): Promise<QueryGetSelectionPolicyResponse>;
+  /** Queries a SelectionCriteria by id. */
+  SelectionCriteria(
+    request: QueryGetSelectionCriteriaRequest
+  ): Promise<QueryGetSelectionCriteriaResponse>;
+  /** Queries a list of SelectionCriteria items. */
+  SelectionCriteriaAll(
+    request: QueryAllSelectionCriteriaRequest
+  ): Promise<QueryAllSelectionCriteriaResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -2593,6 +2957,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetSelectionPolicyResponse.decode(new Reader(data))
+    );
+  }
+
+  SelectionCriteria(
+    request: QueryGetSelectionCriteriaRequest
+  ): Promise<QueryGetSelectionCriteriaResponse> {
+    const data = QueryGetSelectionCriteriaRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Query",
+      "SelectionCriteria",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetSelectionCriteriaResponse.decode(new Reader(data))
+    );
+  }
+
+  SelectionCriteriaAll(
+    request: QueryAllSelectionCriteriaRequest
+  ): Promise<QueryAllSelectionCriteriaResponse> {
+    const data = QueryAllSelectionCriteriaRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Query",
+      "SelectionCriteriaAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllSelectionCriteriaResponse.decode(new Reader(data))
     );
   }
 }

@@ -38,6 +38,10 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateSelectionPolicy{}, "fdpd/CreateSelectionPolicy", nil)
 	cdc.RegisterConcrete(&MsgUpdateSelectionPolicy{}, "fdpd/UpdateSelectionPolicy", nil)
 	cdc.RegisterConcrete(&MsgDeleteSelectionPolicy{}, "fdpd/DeleteSelectionPolicy", nil)
+	cdc.RegisterConcrete(&MsgCreateSelectionCriteria{}, "fdpd/CreateSelectionCriteria", nil)
+	cdc.RegisterConcrete(&MsgUpdateSelectionCriteria{}, "fdpd/UpdateSelectionCriteria", nil)
+	cdc.RegisterConcrete(&MsgDeleteSelectionCriteria{}, "fdpd/DeleteSelectionCriteria", nil)
+	cdc.RegisterConcrete(&MsgCheckDelegation{}, "fdpd/CheckDelegation", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -95,6 +99,14 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateSelectionPolicy{},
 		&MsgUpdateSelectionPolicy{},
 		&MsgDeleteSelectionPolicy{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateSelectionCriteria{},
+		&MsgUpdateSelectionCriteria{},
+		&MsgDeleteSelectionCriteria{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCheckDelegation{},
 	)
 	// this line is used by starport scaffolding # 3
 

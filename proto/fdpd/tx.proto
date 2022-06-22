@@ -8,9 +8,10 @@ import "fdpd/decision_policy.proto";
 import "fdpd/delegation_decision.proto";
 import "fdpd/selection_policy.proto";
 // this line is used by starport scaffolding # proto/tx/import
+import "fdpd/selection_criteria.proto";
+import "fdpd/permission.proto";
 import "fdpd/validity.proto";
 import "fdpd/delegation_conditions.proto";
-import "fdpd/permission.proto";
 
 option go_package = "delegationcontrol/x/fdpd/types";
 
@@ -46,6 +47,10 @@ rpc CreateDelegationDecision(MsgCreateDelegationDecision) returns (MsgCreateDele
   rpc CreateSelectionPolicy(MsgCreateSelectionPolicy) returns (MsgCreateSelectionPolicyResponse);
   rpc UpdateSelectionPolicy(MsgUpdateSelectionPolicy) returns (MsgUpdateSelectionPolicyResponse);
   rpc DeleteSelectionPolicy(MsgDeleteSelectionPolicy) returns (MsgDeleteSelectionPolicyResponse);
+rpc CreateSelectionCriteria(MsgCreateSelectionCriteria) returns (MsgCreateSelectionCriteriaResponse);
+  rpc UpdateSelectionCriteria(MsgUpdateSelectionCriteria) returns (MsgUpdateSelectionCriteriaResponse);
+  rpc DeleteSelectionCriteria(MsgDeleteSelectionCriteria) returns (MsgDeleteSelectionCriteriaResponse);
+  rpc CheckDelegation(MsgCheckDelegation) returns (MsgCheckDelegationResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -295,4 +300,46 @@ message MsgDeleteSelectionPolicy {
   string creator = 1;
 }
 message MsgDeleteSelectionPolicyResponse {}
+message MsgCreateSelectionCriteria {
+  string creator = 1;
+  repeated string domainList = 2;
+  repeated string delegatorLocationList = 3;
+  uint64 cost = 4;
+  uint64 nbDelegations = 5;
+  Validity validity = 6;
+}
+
+message MsgCreateSelectionCriteriaResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateSelectionCriteria {
+  string creator = 1;
+  uint64 id = 2;
+  repeated string domainList = 3;
+  repeated string delegatorLocationList = 4;
+  uint64 cost = 5;
+  uint64 nbDelegations = 6;
+  Validity validity = 7;
+}
+
+message MsgUpdateSelectionCriteriaResponse {}
+
+message MsgDeleteSelectionCriteria {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteSelectionCriteriaResponse {}
+
+message MsgCheckDelegation {
+  string creator = 1;
+  string delegationAction = 2;
+  Permission permission = 3;
+  SelectionCriteria selectionCriteria = 4;
+}
+
+message MsgCheckDelegationResponse {
+}
+
 // this line is used by starport scaffolding # proto/tx/message

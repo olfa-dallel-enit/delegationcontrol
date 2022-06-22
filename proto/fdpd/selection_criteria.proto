@@ -1,0 +1,15 @@
+syntax = "proto3";
+package delegationcontrol.fdpd;
+
+option go_package = "delegationcontrol/x/fdpd/types";
+import "fdpd/validity.proto"; 
+
+message SelectionCriteria {
+  uint64 id = 1;
+  repeated string domainList = 2; 
+  repeated string delegatorLocationList = 3; 
+  uint64 cost = 4; 
+  uint64 nbDelegations = 5; 
+  Validity validity = 6; 
+  string creator = 7;
+}

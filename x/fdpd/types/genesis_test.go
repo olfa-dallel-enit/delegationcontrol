@@ -90,6 +90,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					NbDelegations:         14,
 					Validity:              new(types.Validity),
 				},
+				SelectionCriteriaList: []types.SelectionCriteria{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				SelectionCriteriaCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -221,6 +230,32 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				DelegationDecisionCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated selectionCriteria",
+			genState: &types.GenesisState{
+				SelectionCriteriaList: []types.SelectionCriteria{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid selectionCriteria count",
+			genState: &types.GenesisState{
+				SelectionCriteriaList: []types.SelectionCriteria{
+					{
+						Id: 1,
+					},
+				},
+				SelectionCriteriaCount: 0,
 			},
 			valid: false,
 		},

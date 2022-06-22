@@ -14,6 +14,7 @@ import "fdpd/permission.proto";
 import "fdpd/delegation_conditions.proto";
 import "fdpd/delegation_decision.proto";
 import "fdpd/selection_policy.proto";
+import "fdpd/selection_criteria.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "delegationcontrol/x/fdpd/types";
@@ -90,6 +91,16 @@ service Query {
 	rpc SelectionPolicy(QueryGetSelectionPolicyRequest) returns (QueryGetSelectionPolicyResponse) {
 		option (google.api.http).get = "/delegationcontrol/fdpd/selection_policy";
 	}
+// Queries a SelectionCriteria by id.
+	rpc SelectionCriteria(QueryGetSelectionCriteriaRequest) returns (QueryGetSelectionCriteriaResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/selection_criteria/{id}";
+	}
+
+	// Queries a list of SelectionCriteria items.
+	rpc SelectionCriteriaAll(QueryAllSelectionCriteriaRequest) returns (QueryAllSelectionCriteriaResponse) {
+		option (google.api.http).get = "/delegationcontrol/fdpd/selection_criteria";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -207,4 +218,21 @@ message QueryGetSelectionPolicyRequest {}
 message QueryGetSelectionPolicyResponse {
 	SelectionPolicy SelectionPolicy = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetSelectionCriteriaRequest {
+	uint64 id = 1;
+}
+
+message QueryGetSelectionCriteriaResponse {
+	SelectionCriteria SelectionCriteria = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSelectionCriteriaRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSelectionCriteriaResponse {
+	repeated SelectionCriteria SelectionCriteria = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 // this line is used by starport scaffolding # 3

@@ -66,6 +66,8 @@ export interface FdpdLocalDomain {
   creator?: string;
 }
 
+export type FdpdMsgCheckDelegationResponse = object;
+
 export type FdpdMsgConfigureLocalDomainResponse = object;
 
 export type FdpdMsgCreateDecisionPolicyResponse = object;
@@ -94,6 +96,11 @@ export interface FdpdMsgCreatePermissionResponse {
   id?: string;
 }
 
+export interface FdpdMsgCreateSelectionCriteriaResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
 export type FdpdMsgCreateSelectionPolicyResponse = object;
 
 export interface FdpdMsgCreateValidityResponse {
@@ -114,6 +121,8 @@ export type FdpdMsgDeleteForwardPolicyResponse = object;
 export type FdpdMsgDeleteLocalDomainResponse = object;
 
 export type FdpdMsgDeletePermissionResponse = object;
+
+export type FdpdMsgDeleteSelectionCriteriaResponse = object;
 
 export type FdpdMsgDeleteSelectionPolicyResponse = object;
 
@@ -136,6 +145,8 @@ export type FdpdMsgUpdateForwardPolicyResponse = object;
 export type FdpdMsgUpdateLocalDomainResponse = object;
 
 export type FdpdMsgUpdatePermissionResponse = object;
+
+export type FdpdMsgUpdateSelectionCriteriaResponse = object;
 
 export type FdpdMsgUpdateSelectionPolicyResponse = object;
 
@@ -214,6 +225,21 @@ export interface FdpdQueryAllPermissionResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface FdpdQueryAllSelectionCriteriaResponse {
+  SelectionCriteria?: FdpdSelectionCriteria[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface FdpdQueryAllValidityResponse {
   Validity?: FdpdValidity[];
 
@@ -257,6 +283,10 @@ export interface FdpdQueryGetPermissionResponse {
   Permission?: FdpdPermission;
 }
 
+export interface FdpdQueryGetSelectionCriteriaResponse {
+  SelectionCriteria?: FdpdSelectionCriteria;
+}
+
 export interface FdpdQueryGetSelectionPolicyResponse {
   SelectionPolicy?: FdpdSelectionPolicy;
 }
@@ -271,6 +301,21 @@ export interface FdpdQueryGetValidityResponse {
 export interface FdpdQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: FdpdParams;
+}
+
+export interface FdpdSelectionCriteria {
+  /** @format uint64 */
+  id?: string;
+  domainList?: string[];
+  delegatorLocationList?: string[];
+
+  /** @format uint64 */
+  cost?: string;
+
+  /** @format uint64 */
+  nbDelegations?: string;
+  validity?: FdpdValidity;
+  creator?: string;
 }
 
 export interface FdpdSelectionPolicy {
@@ -791,6 +836,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryPermission = (id: string, params: RequestParams = {}) =>
     this.request<FdpdQueryGetPermissionResponse, RpcStatus>({
       path: `/delegationcontrol/fdpd/permission/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySelectionCriteriaAll
+   * @summary Queries a list of SelectionCriteria items.
+   * @request GET:/delegationcontrol/fdpd/selection_criteria
+   */
+  querySelectionCriteriaAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FdpdQueryAllSelectionCriteriaResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/selection_criteria`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySelectionCriteria
+   * @summary Queries a SelectionCriteria by id.
+   * @request GET:/delegationcontrol/fdpd/selection_criteria/{id}
+   */
+  querySelectionCriteria = (id: string, params: RequestParams = {}) =>
+    this.request<FdpdQueryGetSelectionCriteriaResponse, RpcStatus>({
+      path: `/delegationcontrol/fdpd/selection_criteria/${id}`,
       method: "GET",
       format: "json",
       ...params,

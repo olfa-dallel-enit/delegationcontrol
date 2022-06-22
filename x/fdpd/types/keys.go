@@ -72,3 +72,8 @@ const (
 const (
 	SelectionPolicyKey = "SelectionPolicy-value-"
 )
+
+const (
+	SelectionCriteriaKey      = "SelectionCriteria-value-"
+	SelectionCriteriaCountKey = "SelectionCriteria-count-"
+)

@@ -11,6 +11,7 @@ import { Permission } from "../fdpd/permission";
 import { DelegationConditions } from "../fdpd/delegation_conditions";
 import { DelegationDecision } from "../fdpd/delegation_decision";
 import { SelectionPolicy } from "../fdpd/selection_policy";
+import { SelectionCriteria } from "../fdpd/selection_criteria";
 
 export const protobufPackage = "delegationcontrol.fdpd";
 
@@ -31,8 +32,10 @@ export interface GenesisState {
   delegationConditionsCount: number;
   delegationDecisionList: DelegationDecision[];
   delegationDecisionCount: number;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   selectionPolicy: SelectionPolicy | undefined;
+  selectionCriteriaList: SelectionCriteria[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  selectionCriteriaCount: number;
 }
 
 const baseGenesisState: object = {
@@ -42,6 +45,7 @@ const baseGenesisState: object = {
   permissionCount: 0,
   delegationConditionsCount: 0,
   delegationDecisionCount: 0,
+  selectionCriteriaCount: 0,
 };
 
 export const GenesisState = {
@@ -106,6 +110,12 @@ export const GenesisState = {
         writer.uint32(130).fork()
       ).ldelim();
     }
+    for (const v of message.selectionCriteriaList) {
+      SelectionCriteria.encode(v!, writer.uint32(138).fork()).ldelim();
+    }
+    if (message.selectionCriteriaCount !== 0) {
+      writer.uint32(144).uint64(message.selectionCriteriaCount);
+    }
     return writer;
   },
 
@@ -118,6 +128,7 @@ export const GenesisState = {
     message.permissionList = [];
     message.delegationConditionsList = [];
     message.delegationDecisionList = [];
+    message.selectionCriteriaList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -185,6 +196,16 @@ export const GenesisState = {
             reader.uint32()
           );
           break;
+        case 17:
+          message.selectionCriteriaList.push(
+            SelectionCriteria.decode(reader, reader.uint32())
+          );
+          break;
+        case 18:
+          message.selectionCriteriaCount = longToNumber(
+            reader.uint64() as Long
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -200,6 +221,7 @@ export const GenesisState = {
     message.permissionList = [];
     message.delegationConditionsList = [];
     message.delegationDecisionList = [];
+    message.selectionCriteriaList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -302,6 +324,22 @@ export const GenesisState = {
     } else {
       message.selectionPolicy = undefined;
     }
+    if (
+      object.selectionCriteriaList !== undefined &&
+      object.selectionCriteriaList !== null
+    ) {
+      for (const e of object.selectionCriteriaList) {
+        message.selectionCriteriaList.push(SelectionCriteria.fromJSON(e));
+      }
+    }
+    if (
+      object.selectionCriteriaCount !== undefined &&
+      object.selectionCriteriaCount !== null
+    ) {
+      message.selectionCriteriaCount = Number(object.selectionCriteriaCount);
+    } else {
+      message.selectionCriteriaCount = 0;
+    }
     return message;
   },
 
@@ -371,6 +409,15 @@ export const GenesisState = {
       (obj.selectionPolicy = message.selectionPolicy
         ? SelectionPolicy.toJSON(message.selectionPolicy)
         : undefined);
+    if (message.selectionCriteriaList) {
+      obj.selectionCriteriaList = message.selectionCriteriaList.map((e) =>
+        e ? SelectionCriteria.toJSON(e) : undefined
+      );
+    } else {
+      obj.selectionCriteriaList = [];
+    }
+    message.selectionCriteriaCount !== undefined &&
+      (obj.selectionCriteriaCount = message.selectionCriteriaCount);
     return obj;
   },
 
@@ -381,6 +428,7 @@ export const GenesisState = {
     message.permissionList = [];
     message.delegationConditionsList = [];
     message.delegationDecisionList = [];
+    message.selectionCriteriaList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -484,6 +532,22 @@ export const GenesisState = {
       );
     } else {
       message.selectionPolicy = undefined;
+    }
+    if (
+      object.selectionCriteriaList !== undefined &&
+      object.selectionCriteriaList !== null
+    ) {
+      for (const e of object.selectionCriteriaList) {
+        message.selectionCriteriaList.push(SelectionCriteria.fromPartial(e));
+      }
+    }
+    if (
+      object.selectionCriteriaCount !== undefined &&
+      object.selectionCriteriaCount !== null
+    ) {
+      message.selectionCriteriaCount = object.selectionCriteriaCount;
+    } else {
+      message.selectionCriteriaCount = 0;
     }
     return message;
   },

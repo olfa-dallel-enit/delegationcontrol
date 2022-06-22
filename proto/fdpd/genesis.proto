@@ -12,6 +12,7 @@ import "fdpd/permission.proto";
 import "fdpd/delegation_conditions.proto";
 import "fdpd/delegation_decision.proto";
 import "fdpd/selection_policy.proto";
+import "fdpd/selection_criteria.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "delegationcontrol/x/fdpd/types";
@@ -34,5 +35,7 @@ message GenesisState {
   repeated DelegationDecision delegationDecisionList = 14 [(gogoproto.nullable) = false];
   uint64 delegationDecisionCount = 15;
   SelectionPolicy selectionPolicy = 16;
+  repeated SelectionCriteria selectionCriteriaList = 17 [(gogoproto.nullable) = false];
+  uint64 selectionCriteriaCount = 18;
   // this line is used by starport scaffolding # genesis/proto/state
 }
