@@ -5,6 +5,7 @@ bash execution/chains/earth/configuration.sh
 delegationcontrold tx fdpd add-delegation-decision "permit" '{"cost":120,"maxDelegateeNb":20, "validity":{"notBefore":"2022-02-03 00:00:00","notAfter":"2022-12-31 00:00:00"}}' "domain1" "request1" --from alice --yes --home ~/.earth --chain-id earth --node tcp://localhost:26657 --gas=auto --gas-adjustment=1.15
 
 #delegationcontrold query fdpd list-delegation-decision --node tcp://localhost:26657
+#delegationcontrold query fdpd  show-delegation-decision 699 --node tcp://localhost:26657
 
 sleep 10
 

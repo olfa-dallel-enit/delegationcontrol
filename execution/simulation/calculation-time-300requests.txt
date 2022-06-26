@@ -1,0 +1,39 @@
+CalculationTime:
+- creator: ""
+  details: 'SelectionCriteria: lowest-cost'
+  duration: "628071"
+  endTimestamp: "1656255444103991687"
+  id: "0"
+  requestLabel: request1
+  startTimestamp: "1656255444103363616"
+- creator: ""
+  details: 'SelectionCriteria: max-delegatee-nb'
+  duration: "608010"
+  endTimestamp: "1656255445109377218"
+  id: "1"
+  requestLabel: request1
+  startTimestamp: "1656255445108769208"
+- creator: ""
+  details: 'SelectionCriteria: min-delegatee-nb'
+  duration: "663020"
+  endTimestamp: "1656255446114594299"
+  id: "2"
+  requestLabel: request1
+  startTimestamp: "1656255446113931279"
+- creator: ""
+  details: 'SelectionCriteria: max-validity'
+  duration: "1399350"
+  endTimestamp: "1656255447121056900"
+  id: "3"
+  requestLabel: request1
+  startTimestamp: "1656255447119657550"
+- creator: ""
+  details: 'SelectionCriteria: min-validity'
+  duration: "1438300"
+  endTimestamp: "1656255448126305722"
+  id: "4"
+  requestLabel: request1
+  startTimestamp: "1656255448124867422"
+pagination:
+  next_key: null
+  total: "0"
