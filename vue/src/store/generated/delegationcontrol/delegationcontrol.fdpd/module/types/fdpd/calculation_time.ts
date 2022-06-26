@@ -11,6 +11,7 @@ export interface CalculationTime {
   duration: number;
   requestLabel: string;
   creator: string;
+  details: string;
 }
 
 const baseCalculationTime: object = {
@@ -20,6 +21,7 @@ const baseCalculationTime: object = {
   duration: 0,
   requestLabel: "",
   creator: "",
+  details: "",
 };
 
 export const CalculationTime = {
@@ -41,6 +43,9 @@ export const CalculationTime = {
     }
     if (message.creator !== "") {
       writer.uint32(50).string(message.creator);
+    }
+    if (message.details !== "") {
+      writer.uint32(58).string(message.details);
     }
     return writer;
   },
@@ -69,6 +74,9 @@ export const CalculationTime = {
           break;
         case 6:
           message.creator = reader.string();
+          break;
+        case 7:
+          message.details = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -110,6 +118,11 @@ export const CalculationTime = {
     } else {
       message.creator = "";
     }
+    if (object.details !== undefined && object.details !== null) {
+      message.details = String(object.details);
+    } else {
+      message.details = "";
+    }
     return message;
   },
 
@@ -124,6 +137,7 @@ export const CalculationTime = {
     message.requestLabel !== undefined &&
       (obj.requestLabel = message.requestLabel);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.details !== undefined && (obj.details = message.details);
     return obj;
   },
 
@@ -158,6 +172,11 @@ export const CalculationTime = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.details !== undefined && object.details !== null) {
+      message.details = object.details;
+    } else {
+      message.details = "";
     }
     return message;
   },

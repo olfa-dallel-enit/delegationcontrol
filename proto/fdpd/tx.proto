@@ -12,10 +12,10 @@ import "fdpd/final_delegation_decision.proto";
 import "fdpd/delegation_request_log.proto";
 import "fdpd/calculation_time.proto";
 // this line is used by starport scaffolding # proto/tx/import
+import "fdpd/delegation_conditions.proto";
 import "fdpd/permission.proto";
 import "fdpd/selection_criteria.proto";
 import "fdpd/validity.proto";
-import "fdpd/delegation_conditions.proto";
 
 option go_package = "delegationcontrol/x/fdpd/types";
 
@@ -68,6 +68,7 @@ rpc CreateCalculationTime(MsgCreateCalculationTime) returns (MsgCreateCalculatio
   rpc UpdateCalculationTime(MsgUpdateCalculationTime) returns (MsgUpdateCalculationTimeResponse);
   rpc DeleteCalculationTime(MsgDeleteCalculationTime) returns (MsgDeleteCalculationTimeResponse);
   rpc CalculateRequestDelegationTiming(MsgCalculateRequestDelegationTiming) returns (MsgCalculateRequestDelegationTimingResponse);
+  rpc AddDelegationDecision(MsgAddDelegationDecision) returns (MsgAddDelegationDecisionResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -477,6 +478,17 @@ message MsgCalculateRequestDelegationTiming {
 }
 
 message MsgCalculateRequestDelegationTimingResponse {
+}
+
+message MsgAddDelegationDecision {
+  string creator = 1;
+  string decision = 2;
+  DelegationConditions delegationConditions = 3;
+  string decisionDomain = 4;
+  string delegationRequestLabel = 5;
+}
+
+message MsgAddDelegationDecisionResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

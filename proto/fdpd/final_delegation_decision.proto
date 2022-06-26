@@ -2,10 +2,14 @@ syntax = "proto3";
 package delegationcontrol.fdpd;
 
 option go_package = "delegationcontrol/x/fdpd/types";
+import "fdpd/delegation_decision.proto";
 
 message FinalDelegationDecision {
   uint64 id = 1;
   string delegationRequestLabel = 2; 
   string decision = 3; 
   string creator = 4;
+  string decisionDomain = 5;
+  DelegationDecision DelegationDecision = 6;
+  string criterion = 7;
 }

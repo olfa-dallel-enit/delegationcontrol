@@ -114,7 +114,7 @@ func (k Keeper) GetAllDelegationRequestLogByLabel(ctx sdk.Context, label string)
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.DelegationRequestLog
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		if val.RequestLabel == label{
+		if val.RequestLabel == label {
 			list = append(list, val)
 		}
 	}

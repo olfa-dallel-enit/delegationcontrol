@@ -19778,6 +19778,8 @@ paths:
                       type: string
                     creator:
                       type: string
+                    details:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -19908,6 +19910,8 @@ paths:
                   requestLabel:
                     type: string
                   creator:
+                    type: string
+                  details:
                     type: string
         default:
           description: An unexpected error response.
@@ -49289,6 +49293,8 @@ definitions:
         type: string
       creator:
         type: string
+      details:
+        type: string
   delegationcontrol.fdpd.DecisionPolicy:
     type: object
     properties:
@@ -49478,6 +49484,8 @@ definitions:
         type: string
       creator:
         type: string
+  delegationcontrol.fdpd.MsgAddDelegationDecisionResponse:
+    type: object
   delegationcontrol.fdpd.MsgCalculateRequestDelegationTimingResponse:
     type: object
   delegationcontrol.fdpd.MsgCheckDelegationResponse:
@@ -49648,6 +49656,8 @@ definitions:
             requestLabel:
               type: string
             creator:
+              type: string
+            details:
               type: string
       pagination:
         type: object
@@ -50155,6 +50165,8 @@ definitions:
           requestLabel:
             type: string
           creator:
+            type: string
+          details:
             type: string
   delegationcontrol.fdpd.QueryGetDecisionPolicyResponse:
     type: object

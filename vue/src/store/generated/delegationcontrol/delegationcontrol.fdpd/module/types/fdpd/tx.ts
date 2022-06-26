@@ -429,6 +429,16 @@ export interface MsgCalculateRequestDelegationTiming {
 
 export interface MsgCalculateRequestDelegationTimingResponse {}
 
+export interface MsgAddDelegationDecision {
+  creator: string;
+  decision: string;
+  delegationConditions: DelegationConditions | undefined;
+  decisionDomain: string;
+  delegationRequestLabel: string;
+}
+
+export interface MsgAddDelegationDecisionResponse {}
+
 const baseMsgCreateLocalDomain: object = {
   creator: "",
   name: "",
@@ -8542,6 +8552,227 @@ export const MsgCalculateRequestDelegationTimingResponse = {
   },
 };
 
+const baseMsgAddDelegationDecision: object = {
+  creator: "",
+  decision: "",
+  decisionDomain: "",
+  delegationRequestLabel: "",
+};
+
+export const MsgAddDelegationDecision = {
+  encode(
+    message: MsgAddDelegationDecision,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.decision !== "") {
+      writer.uint32(18).string(message.decision);
+    }
+    if (message.delegationConditions !== undefined) {
+      DelegationConditions.encode(
+        message.delegationConditions,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.decisionDomain !== "") {
+      writer.uint32(34).string(message.decisionDomain);
+    }
+    if (message.delegationRequestLabel !== "") {
+      writer.uint32(42).string(message.delegationRequestLabel);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgAddDelegationDecision {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgAddDelegationDecision,
+    } as MsgAddDelegationDecision;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.decision = reader.string();
+          break;
+        case 3:
+          message.delegationConditions = DelegationConditions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.decisionDomain = reader.string();
+          break;
+        case 5:
+          message.delegationRequestLabel = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAddDelegationDecision {
+    const message = {
+      ...baseMsgAddDelegationDecision,
+    } as MsgAddDelegationDecision;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.decision !== undefined && object.decision !== null) {
+      message.decision = String(object.decision);
+    } else {
+      message.decision = "";
+    }
+    if (
+      object.delegationConditions !== undefined &&
+      object.delegationConditions !== null
+    ) {
+      message.delegationConditions = DelegationConditions.fromJSON(
+        object.delegationConditions
+      );
+    } else {
+      message.delegationConditions = undefined;
+    }
+    if (object.decisionDomain !== undefined && object.decisionDomain !== null) {
+      message.decisionDomain = String(object.decisionDomain);
+    } else {
+      message.decisionDomain = "";
+    }
+    if (
+      object.delegationRequestLabel !== undefined &&
+      object.delegationRequestLabel !== null
+    ) {
+      message.delegationRequestLabel = String(object.delegationRequestLabel);
+    } else {
+      message.delegationRequestLabel = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgAddDelegationDecision): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.decision !== undefined && (obj.decision = message.decision);
+    message.delegationConditions !== undefined &&
+      (obj.delegationConditions = message.delegationConditions
+        ? DelegationConditions.toJSON(message.delegationConditions)
+        : undefined);
+    message.decisionDomain !== undefined &&
+      (obj.decisionDomain = message.decisionDomain);
+    message.delegationRequestLabel !== undefined &&
+      (obj.delegationRequestLabel = message.delegationRequestLabel);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgAddDelegationDecision>
+  ): MsgAddDelegationDecision {
+    const message = {
+      ...baseMsgAddDelegationDecision,
+    } as MsgAddDelegationDecision;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.decision !== undefined && object.decision !== null) {
+      message.decision = object.decision;
+    } else {
+      message.decision = "";
+    }
+    if (
+      object.delegationConditions !== undefined &&
+      object.delegationConditions !== null
+    ) {
+      message.delegationConditions = DelegationConditions.fromPartial(
+        object.delegationConditions
+      );
+    } else {
+      message.delegationConditions = undefined;
+    }
+    if (object.decisionDomain !== undefined && object.decisionDomain !== null) {
+      message.decisionDomain = object.decisionDomain;
+    } else {
+      message.decisionDomain = "";
+    }
+    if (
+      object.delegationRequestLabel !== undefined &&
+      object.delegationRequestLabel !== null
+    ) {
+      message.delegationRequestLabel = object.delegationRequestLabel;
+    } else {
+      message.delegationRequestLabel = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgAddDelegationDecisionResponse: object = {};
+
+export const MsgAddDelegationDecisionResponse = {
+  encode(
+    _: MsgAddDelegationDecisionResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgAddDelegationDecisionResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgAddDelegationDecisionResponse,
+    } as MsgAddDelegationDecisionResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgAddDelegationDecisionResponse {
+    const message = {
+      ...baseMsgAddDelegationDecisionResponse,
+    } as MsgAddDelegationDecisionResponse;
+    return message;
+  },
+
+  toJSON(_: MsgAddDelegationDecisionResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgAddDelegationDecisionResponse>
+  ): MsgAddDelegationDecisionResponse {
+    const message = {
+      ...baseMsgAddDelegationDecisionResponse,
+    } as MsgAddDelegationDecisionResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateLocalDomain(
@@ -8676,10 +8907,13 @@ export interface Msg {
   DeleteCalculationTime(
     request: MsgDeleteCalculationTime
   ): Promise<MsgDeleteCalculationTimeResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CalculateRequestDelegationTiming(
     request: MsgCalculateRequestDelegationTiming
   ): Promise<MsgCalculateRequestDelegationTimingResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  AddDelegationDecision(
+    request: MsgAddDelegationDecision
+  ): Promise<MsgAddDelegationDecisionResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -9336,6 +9570,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCalculateRequestDelegationTimingResponse.decode(new Reader(data))
+    );
+  }
+
+  AddDelegationDecision(
+    request: MsgAddDelegationDecision
+  ): Promise<MsgAddDelegationDecisionResponse> {
+    const data = MsgAddDelegationDecision.encode(request).finish();
+    const promise = this.rpc.request(
+      "delegationcontrol.fdpd.Msg",
+      "AddDelegationDecision",
+      data
+    );
+    return promise.then((data) =>
+      MsgAddDelegationDecisionResponse.decode(new Reader(data))
     );
   }
 }

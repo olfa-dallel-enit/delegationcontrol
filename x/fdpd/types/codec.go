@@ -55,6 +55,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateCalculationTime{}, "fdpd/UpdateCalculationTime", nil)
 	cdc.RegisterConcrete(&MsgDeleteCalculationTime{}, "fdpd/DeleteCalculationTime", nil)
 	cdc.RegisterConcrete(&MsgCalculateRequestDelegationTiming{}, "fdpd/CalculateRequestDelegationTiming", nil)
+	cdc.RegisterConcrete(&MsgAddDelegationDecision{}, "fdpd/AddDelegationDecision", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -143,6 +144,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCalculateRequestDelegationTiming{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddDelegationDecision{},
 	)
 	// this line is used by starport scaffolding # 3
 

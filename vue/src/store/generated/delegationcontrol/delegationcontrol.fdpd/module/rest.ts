@@ -19,6 +19,7 @@ export interface FdpdCalculationTime {
   duration?: string;
   requestLabel?: string;
   creator?: string;
+  details?: string;
 }
 
 export interface FdpdDecisionPolicy {
@@ -106,6 +107,8 @@ export interface FdpdLocalDomain {
   location?: string;
   creator?: string;
 }
+
+export type FdpdMsgAddDelegationDecisionResponse = object;
 
 export type FdpdMsgCalculateRequestDelegationTimingResponse = object;
 
